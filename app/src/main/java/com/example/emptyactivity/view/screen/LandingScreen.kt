@@ -11,7 +11,9 @@ fun LandingScreen() {
     MainLayout(screenTitle = "Landing") { paddingValues: PaddingValues ->
         Text(
             text = "This is the Landing screen",
-            modifier = androidx.compose.ui.Modifier.padding(paddingValues)
+            modifier =
+                androidx.compose.ui.Modifier
+                    .padding(paddingValues),
         )
     }
 }

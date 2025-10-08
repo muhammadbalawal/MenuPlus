@@ -10,12 +10,13 @@ import androidx.compose.runtime.Composable
 fun MainLayout(
     screenTitle: String,
     showBackButton: Boolean = false,
-    content: @Composable (PaddingValues) -> Unit
+    content: @Composable (PaddingValues) -> Unit,
 ) {
     Scaffold(
         topBar = { SharedTopBar(screenTitle, showBackButton) },
-        bottomBar = { SharedBottomBar() }
+        bottomBar = { SharedBottomBar() },
     ) { paddingValues ->
         content(paddingValues)
     }
 }
+
