@@ -1,14 +1,28 @@
-# PROJECT NAME
+# MenuPlus
 
 ## Goal
-A brief description of your application. Should answer, as concisely as you can: what is it? what is its purpose?
+MenuPlus is an intelligent menu helper app designed to make dining smarter and safer, you should never eat at a restaurant again without it.  
+Simply take a picture of a menu, upload it to the app with the restaurant name and some details, and let MenuPlus do the rest.
+
+By combining this with your previously entered preferences, dislikes, dietary restrictions, and allergies, MenuPlus generates a personalized, easy-to-read menu just for you.  
+It highlights foods you love, warns you about ingredients you dislike or can’t eat, and even **translates menus** from other languages into your native language.  
+
+The app leverages **AI** to power the translation, allergy detection, and preference-matching logic — all built in **Kotlin** using **Jetpack Compose** for a seamless Android experience.
+
+---
 
 ## Quick-start
-How to install and launch your application. These should include instructions for:
-- (by Sprint 1) building and running your release from source code (i.e. your github repo)
+
+### Build and Run from Source (by Sprint 1)
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/yourusername/MenuPlus.git
+
+
+### Quick-start
 
 ## Screenshots of application
-- (by Sprint 1): Screenshots from each of the main screens of your application.
 
 ## Team members
-List each person's name and email address.
+Malik Al-Shourbaji @malik.shourbaji@gmail.com 
+Muhammad Balawal Safdar @msafdar@greavesadac.com
