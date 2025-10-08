@@ -25,4 +25,4 @@ The app leverages **AI** to power the translation, allergy detection, and prefer
 
 ## Team members
 Malik Al-Shourbaji @malik.shourbaji@gmail.com 
-Muhammad Balawal Safdar @msafdar@greavesadac.com
+Muhammad Balawal Safdar @muhammadbalawalsafdar@gmail.com
