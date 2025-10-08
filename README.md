@@ -22,6 +22,8 @@ The app leverages **AI** to power the translation, allergy detection, and prefer
 ### Quick-start
 
 ## Screenshots of application
+<img width="265" height="580" alt="image" src="https://github.com/user-attachments/assets/ef21fdda-0c8a-4988-8548-a36168bb651d" />
+
 
 ## Team members
 Malik Al-Shourbaji @malik.shourbaji@gmail.com 
