@@ -10,7 +10,7 @@ import com.example.emptyactivity.navigation.LocalNavController
 @Composable
 fun SharedTopBar(
     screenTitle: String,
-    showBackButton: Boolean
+    showBackButton: Boolean,
 ) {
     val navController = LocalNavController.current
 
@@ -21,10 +21,10 @@ fun SharedTopBar(
                 IconButton(onClick = { navController.navigateUp() }) {
                     Icon(
                         imageVector = Icons.Filled.ArrowBack,
-                        contentDescription = "Go Back"
+                        contentDescription = "Go Back",
                     )
                 }
             }
-        }
+        },
     )
 }

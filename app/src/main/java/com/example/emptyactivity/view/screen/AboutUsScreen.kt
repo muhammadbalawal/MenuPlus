@@ -21,30 +21,32 @@ import com.example.emptyactivity.view.layout.MainLayout
 fun AboutScreen() {
     MainLayout(screenTitle = "About Us") { paddingValues ->
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.2f))
-                .padding(24.dp),
-            contentAlignment = Alignment.Center
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+                    .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.2f))
+                    .padding(24.dp),
+            contentAlignment = Alignment.Center,
         ) {
             Card(
                 shape = RoundedCornerShape(16.dp),
                 elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surface
-                ),
-                modifier = Modifier.fillMaxWidth()
+                colors =
+                    CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surface,
+                    ),
+                modifier = Modifier.fillMaxWidth(),
             ) {
                 Column(
                     modifier = Modifier.padding(24.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Text(
                         text = "About Us",
                         fontSize = 28.sp,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary
+                        color = MaterialTheme.colorScheme.primary,
                     )
 
                     Spacer(Modifier.height(12.dp))
@@ -52,17 +54,18 @@ fun AboutScreen() {
                     Divider(
                         color = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f),
                         thickness = 1.dp,
-                        modifier = Modifier.width(80.dp)
+                        modifier = Modifier.width(80.dp),
                     )
 
                     Spacer(Modifier.height(16.dp))
 
                     Text(
-                        text = "MenuPlus is an AI-powered menu assistant that makes dining effortless and personal. " +
+                        text =
+                            "MenuPlus is an AI-powered menu assistant that makes dining effortless and personal. " +
                                 "Snap a photo of any menu and we instantly translate, flag allergens, and match dishes to your tastes.",
                         fontSize = 16.sp,
                         textAlign = TextAlign.Center,
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = MaterialTheme.colorScheme.onSurface,
                     )
 
                     Spacer(Modifier.height(20.dp))
@@ -71,7 +74,7 @@ fun AboutScreen() {
                         text = "— The MenuPlus Team",
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Medium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
             }
