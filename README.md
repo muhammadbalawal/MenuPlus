@@ -29,10 +29,10 @@ The app leverages **AI** to power the translation, allergy detection, and prefer
 ## Screenshots of application
 
 ### Landing Page
-![Landing Page](screenshots/landing_page.png)
+<img src="screenshots/landing_page.png" width="300" alt="Landing Page">
 
 ### About Us Page
-![About Us Page](screenshots/about_us_page.png)
+<img src="screenshots/about_us_page.png" width="300" alt="About Us Page">
 
 
 ## Team members
