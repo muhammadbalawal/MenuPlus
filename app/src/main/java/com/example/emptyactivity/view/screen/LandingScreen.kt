@@ -22,19 +22,21 @@ import com.example.emptyactivity.view.layout.MainLayout
 fun LandingScreen() {
     MainLayout(screenTitle = "Welcome") { paddingValues ->
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.2f))
-                .padding(24.dp),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+                    .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.2f))
+                    .padding(24.dp),
             contentAlignment = Alignment.Center,
         ) {
             Card(
                 shape = RoundedCornerShape(16.dp),
                 elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surface,
-                ),
+                colors =
+                    CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surface,
+                    ),
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 Column(
@@ -59,7 +61,8 @@ fun LandingScreen() {
                     Spacer(Modifier.height(16.dp))
 
                     Text(
-                        text = "Your intelligent dining companion. Snap, translate, and discover dishes " +
+                        text =
+                            "Your intelligent dining companion. Snap, translate, and discover dishes " +
                                 "perfectly matched to your preferences. MenuPlus transforms every menu into " +
                                 "a personalized culinary journey.",
                         fontSize = 16.sp,
