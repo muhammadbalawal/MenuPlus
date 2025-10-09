@@ -16,15 +16,25 @@ The app leverages **AI** to power the translation, allergy detection, and prefer
 ### Build and Run from Source (by Sprint 1)
 1. Clone this repository:
    ```bash
-   git clone https://github.com/yourusername/MenuPlus.git
+   git clone https://github.com/YOUR-ACTUAL-USERNAME/MenuPlus.git
+   cd MenuPlus
+   ```
 
+2. Open the project in Android Studio
+3. Sync Gradle dependencies
+4. Run the app on an emulator or physical device:
+   - Click the "Run" button in Android Studio
 
-### Quick-start
 
 ## Screenshots of application
-<img width="265" height="580" alt="image" src="https://github.com/user-attachments/assets/ef21fdda-0c8a-4988-8548-a36168bb651d" />
+
+### Landing Page
+![Landing Page](screenshots/landing_page.png)
+
+### About Us Page
+![About Us Page](screenshots/about_us_page.png)
 
 
 ## Team members
-Malik Al-Shourbaji @malik.shourbaji@gmail.com 
-Muhammad Balawal Safdar @muhammadbalawalsafdar@gmail.com
+Malik Al-Shourbaji - malik.shourbaji@gmail.com
+Muhammad Balawal Safdar - muhammadbalawalsafdar@gmail.com
