@@ -1,3 +1,4 @@
+// File: MainLayout.kt
 package com.example.emptyactivity.view.layout
 
 import androidx.compose.foundation.layout.PaddingValues
@@ -10,13 +11,22 @@ import androidx.compose.runtime.Composable
 fun MainLayout(
     screenTitle: String,
     showBackButton: Boolean = false,
+    showTopBar: Boolean = true,
+    showBottomBar: Boolean = true,
     content: @Composable (PaddingValues) -> Unit,
 ) {
     Scaffold(
-        topBar = { SharedTopBar(screenTitle, showBackButton) },
-        bottomBar = { SharedBottomBar() },
+        topBar = {
+            if (showTopBar) {
+                SharedTopBar(screenTitle, showBackButton)
+            }
+        },
+        bottomBar = {
+            if (showBottomBar) {
+                SharedBottomBar()
+            }
+        },
     ) { paddingValues ->
         content(paddingValues)
     }
 }
-
