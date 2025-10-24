@@ -88,15 +88,8 @@ fun LandingScreen() {
                                 Color(0xFFFFF4C8),
                                 Color(0xFFD4AF37)
                             )
-                        ),
-                                shadow = Shadow(
-                                color = Color(0xAA8B7500),
-                        offset = Offset(2f, 2f),
-                        blurRadius = 6f
+                        )
                     )
-                    ),
-
-                    color = Color.Unspecified
 
                 )
 

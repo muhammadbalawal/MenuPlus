@@ -11,6 +11,7 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
@@ -24,16 +25,6 @@ import com.example.emptyactivity.ui.theme.Ink
 import com.example.emptyactivity.ui.theme.PrestigeBlack
 import com.example.emptyactivity.ui.theme.RoyalGold
 import com.example.emptyactivity.view.layout.MainLayout
-import androidx.compose.foundation.Canvas
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.drawscope.Fill
-import androidx.compose.ui.graphics.evaluateCubic
-import androidx.compose.ui.modifier.modifierLocalOf
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.graphics.Shadow
-import androidx.compose.ui.geometry.Offset
-
 
 @Composable
 fun LandingScreen() {
@@ -50,57 +41,18 @@ fun LandingScreen() {
                     .background(color = PrestigeBlack)
                     .safeDrawingPadding(),
         ) {
-            Box(
+            Text(
+                text = "MenuPlus",
+                fontSize = 65.sp,
+                fontWeight = FontWeight.SemiBold,
+                fontFamily = FontFamily.Cursive, // no custom font
+                color = RoyalGold,
+                textAlign = TextAlign.Center,
                 modifier = Modifier
                     .align(Alignment.Center)
                     .padding(horizontal = 24.dp),
-                contentAlignment = Alignment.Center
-            ){
-                Canvas(
-                modifier = Modifier
-                    .size(300.dp)){
-                    drawCircle(
-                        brush = Brush.radialGradient(
-                            colors = listOf(
-                                RoyalGold.copy(alpha = 0.35f),
-                                Color.Transparent
-                            ),
-                            radius = size.minDimension / 2f
-                        ),
-                        radius = size.minDimension / 2f,
-                        center = center,
-                        style = Fill
-                    )
-                }
 
-                Text(
-                    text= "MenuPlus",
-                    fontSize = 65.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    fontFamily = FontFamily.Cursive,
-                    textAlign = TextAlign.Center,
-
-                    style = TextStyle(
-                        Brush.linearGradient(
-                            colors = listOf(
-                                Color(0xFF7A5A00),
-                                RoyalGold,
-                                Color(0xFFFFF4C8),
-                                Color(0xFFD4AF37)
-                            )
-                        ),
-                                shadow = Shadow(
-                                color = Color(0xAA8B7500),
-                        offset = Offset(2f, 2f),
-                        blurRadius = 6f
-                    )
-                    ),
-
-                    color = Color.Unspecified
-
-                )
-
-            }
+            )
 
             val navController = LocalNavController.current
 
