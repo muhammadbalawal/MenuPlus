@@ -1,6 +1,5 @@
 // File: LandingScreen.kt
-package com.example.emptyactivity.view.screens
-
+package com.example.emptyactivity.view.screen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -77,12 +76,8 @@ fun LandingScreen() {
                     fontFamily = FontFamily.Default,
                 )
             }
-
-
-
-
         }
-            }
-        }
+    }
+}
 
 

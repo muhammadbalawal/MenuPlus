@@ -1,0 +1,20 @@
+{
+  "enabled": true,
+  "backup_interval": 180,
+  "exclude_extensions": [
+    ".png",
+    ".jpg",
+    ".jpeg",
+    ".gif",
+    ".svg",
+    ".ico"
+  ],
+  "skip_dirs": [
+    "build",
+    ".gradle",
+    ".kotlin",
+    "AndroidStudioRevisionHistory",
+    ".git",
+    ".idea"
+  ]
+}
