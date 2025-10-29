@@ -7,10 +7,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import com.example.emptyactivity.ui.screens.auth.login.LoginScreen
+import com.example.emptyactivity.ui.screens.auth.register.RegisterScreen
 import com.example.emptyactivity.ui.screens.landing.LandingScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -20,22 +22,21 @@ fun MenuPlusApp() {
 
     Scaffold(
         bottomBar = {
-            if (showBottomBar(navController)){
+            if (showBottomBar(navController)) {
                 BottomNavigationBar(navController)
             }
-        }
+        },
     ) { paddingValues ->
         NavHost(
             navController = navController,
             startDestination = Route.Landing,
-            modifier = Modifier.padding(paddingValues)
+            modifier = Modifier.padding(paddingValues),
         ) {
-
-            composable<Route.Landing>{
+            composable<Route.Landing> {
                 LandingScreen(
                     onContinue = {
                         navController.navigate(Route.Login)
-                    }
+                    },
                 )
             }
 
@@ -43,13 +44,25 @@ fun MenuPlusApp() {
                 LoginScreen(
                     onNavigateToRegister = {
                         navController.navigate(Route.Register)
-
                     },
                     onLoginSuccess = {
                         navController.navigate(Route.SavedMenu) {
                             popUpTo(Route.Landing) { inclusive = true }
                         }
-                    }
+                    },
+                )
+            }
+
+            composable<Route.Login> {
+                RegisterScreen(
+                    onNavigateToLogin = {
+                        navController.navigate(Route.Login)
+                    },
+                    onRegisterSuccess = {
+                        navController.navigate(Route.SavedMenu) {
+                            popUpTo(Route.Landing) { inclusive = true }
+                        }
+                    },
                 )
             }
         }
@@ -63,9 +76,9 @@ private fun showBottomBar(navController: NavHostController): Boolean {
     val currentRoute = navBackStackEntry?.destination?.route
 
     return currentRoute in 
-            listOf(
-                Route.SavedMenu::class.qualifiedName,
-                Route.ImportMenu::class.qualifiedName,
-                Route.Profile::class.qualifiedName,
-            )
+        listOf(
+            Route.SavedMenu::class.qualifiedName,
+            Route.ImportMenu::class.qualifiedName,
+            Route.Profile::class.qualifiedName,
+        )
 }

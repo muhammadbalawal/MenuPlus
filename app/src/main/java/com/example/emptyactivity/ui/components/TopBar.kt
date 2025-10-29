@@ -1,4 +1,3 @@
 package com.example.emptyactivity.ui.components
 
-class TopBar {
-}
+class TopBar

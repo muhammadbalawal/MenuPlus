@@ -1,19 +1,19 @@
 package com.example.emptyactivity.ui.navigation
 
 import androidx.compose.material.icons.Icons
-import androidx.navigation.NavHostController
-import androidx.compose.material3.NavigationBar
-import androidx.compose.runtime.Composable
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.QrCodeScanner
 import androidx.compose.material.icons.filled.Restaurant
 import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavDestination.Companion.hasRoute
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 
 @Composable
 fun BottomNavigationBar(navController: NavHostController) {
@@ -36,39 +36,38 @@ fun BottomNavigationBar(navController: NavHostController) {
                 icon = {
                     Icon(
                         imageVector = item.icon,
-                        contentDescription = item.label
+                        contentDescription = item.label,
                     )
                 },
-                label = { Text(item.label) }
+                label = { Text(item.label) },
             )
         }
-
     }
-
 }
 
 private data class BottomNavItem(
     val route: Route,
     val label: String,
-    val icon: ImageVector
+    val icon: ImageVector,
 )
 
-private val bottomNavItems = listOf(
-    BottomNavItem(
-        route = Route.SavedMenu ,
-        label = "Menu",
-        icon = Icons.Default.Restaurant,
-    ),
-    BottomNavItem(
-        route = Route.Scanning ,
-        label = "Scan",
-        icon = Icons.Default.QrCodeScanner,
-    ),
-    BottomNavItem(
-        route = Route.Profile ,
-        label = "Profile",
-        icon = Icons.Default.Person,
-    ),
-)
+private val bottomNavItems =
+    listOf(
+        BottomNavItem(
+            route = Route.SavedMenu,
+            label = "Menu",
+            icon = Icons.Default.Restaurant,
+        ),
+        BottomNavItem(
+            route = Route.Scanning,
+            label = "Scan",
+            icon = Icons.Default.QrCodeScanner,
+        ),
+        BottomNavItem(
+            route = Route.Profile,
+            label = "Profile",
+            icon = Icons.Default.Person,
+        ),
+    )
 
 
