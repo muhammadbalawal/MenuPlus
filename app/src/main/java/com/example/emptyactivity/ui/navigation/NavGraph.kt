@@ -62,10 +62,10 @@ private fun showBottomBar(navController: NavHostController): Boolean {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-    return currentRoute in listOf(
-        Route.SavedMenu::class.qualifiedName,
-        Route.ImportMenu::class.qualifiedName,
-        Route.Profile::class.qualifiedName
-    )
+    return currentRoute in 
+            listOf(
+                Route.SavedMenu::class.qualifiedName,
+                Route.ImportMenu::class.qualifiedName,
+                Route.Profile::class.qualifiedName,
+            )
 }
-        
