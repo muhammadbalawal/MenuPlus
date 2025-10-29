@@ -1,4 +1,4 @@
-package com.example.emptyactivity
+package com.example.emptyactivity.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -19,7 +19,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             EmptyActivityTheme {
-                Surface(modifier = Modifier.fillMaxSize()) {
+                Surface(modifier = Modifier.Companion.fillMaxSize()) {
                     val navController = rememberNavController()
                     CompositionLocalProvider(LocalNavController provides navController) {
                         Router()

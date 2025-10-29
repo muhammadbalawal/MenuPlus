@@ -1,4 +1,4 @@
-package com.example.emptyactivity.navigation
+package com.example.emptyactivity.ui.navigation
 
 import androidx.compose.runtime.compositionLocalOf
 import androidx.navigation.NavHostController
