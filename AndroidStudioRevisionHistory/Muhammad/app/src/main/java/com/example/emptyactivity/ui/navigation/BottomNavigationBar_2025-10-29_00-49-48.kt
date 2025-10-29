@@ -34,7 +34,7 @@ fun BottomNavigationBar(navController: NavHostController) {
                     }
                 },
                 icon = {
-                    Icon(
+                    Icon(  
                         imageVector = item.icon,
                         contentDescription = item.label
                     )
@@ -57,18 +57,18 @@ private val bottomNavItems = listOf(
     BottomNavItem(
         route = Route.SavedMenu ,
         label = "Menu",
-        icon = Icons.Default.Restaurant,
+        icon = Icons.Default.Restaurant
     ),
     BottomNavItem(
         route = Route.Scanning ,
         label = "Scan",
-        icon = Icons.Default.QrCodeScanner,
+        icon = Icons.Default.QrCodeScanner
     ),
     BottomNavItem(
         route = Route.Profile ,
         label = "Profile",
-        icon = Icons.Default.Person,
-    ),
+        icon = Icons.Default.Person
+    )
 )
 
 
