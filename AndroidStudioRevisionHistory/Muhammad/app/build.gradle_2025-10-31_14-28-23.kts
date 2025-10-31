@@ -13,6 +13,7 @@ plugins {
     id("com.google.dagger.hilt.android")
     kotlin("kapt")
 
+
 }
 
 android {
@@ -77,6 +78,18 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.8.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
     implementation("androidx.compose.material:material-icons-extended:1.7.5")
+
+    // --- Supabase ---
+    implementation("io.github.jan-tennert.supabase:gotrue-kt:2.5.0")
+    implementation("io.github.jan-tennert.supabase:postgrest-kt:2.5.0")
+    implementation("io.github.jan-tennert.supabase:storage-kt:2.5.0")
+    implementation("io.github.jan-tennert.supabase:realtime-kt:2.5.0")
+
+    // --- Hilt (Dependency Injection) ---
+    implementation("com.google.dagger:hilt-android:2.52")
+    kapt("com.google.dagger:hilt-compiler:2.52")
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+
 
 
     testImplementation("junit:junit:4.13.2")

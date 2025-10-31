@@ -78,6 +78,19 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
     implementation("androidx.compose.material:material-icons-extended:1.7.5")
 
+    // --- Supabase (Auth + Database) ---
+    implementation("io.github.jan-tennert.supabase:gotrue-kt:2.5.0")
+    implementation("io.github.jan-tennert.supabase:postgrest-kt:2.5.0")
+
+// --- Kotlin Coroutines (for background tasks) ---
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0")
+
+// --- Dependency Injection (Hilt) ---
+    implementation("com.google.dagger:hilt-android:2.52")
+    kapt("com.google.dagger:hilt-compiler:2.52")
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+
+
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
