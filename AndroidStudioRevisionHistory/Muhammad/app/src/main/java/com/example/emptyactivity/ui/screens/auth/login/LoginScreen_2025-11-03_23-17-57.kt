@@ -23,7 +23,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 fun LoginScreen(
     onNavigateToRegister: () -> Unit,
     onLoginSuccess: () -> Unit,
-    viewModel: LoginViewModel = hiltViewModel(),
+    viewModel: LoginViewModel = hiltViewModel()
+
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -41,23 +42,22 @@ fun LoginScreen(
                 TextButton(onClick = { viewModel.onErrorDismissed() }) {
                     Text("OK")
                 }
-            },
+            }
         )
     }
     Box(
-        modifier =
-            Modifier
-                .fillMaxSize()
-                .padding(24.dp),
-        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(24.dp),
+        contentAlignment = Alignment.Center
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-        ) {
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ){
             Text(
                 text = "Login",
-                style = MaterialTheme.typography.headlineLarge,
+                style = MaterialTheme.typography.headlineLarge
             )
 
             Spacer(modifier = Modifier.height(32.dp))
@@ -68,7 +68,7 @@ fun LoginScreen(
                 label = { Text("Email") },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth()
             )
 
             OutlinedTextField(
@@ -76,27 +76,25 @@ fun LoginScreen(
                 onValueChange = { viewModel.onPasswordChange(it) },
                 label = { Text("Password") },
                 singleLine = true,
-                visualTransformation =
-                    if (uiState.isPasswordVisible) {
-                        VisualTransformation.None
-                    } else {
-                        PasswordVisualTransformation()
-                    },
+                visualTransformation = if (uiState.isPasswordVisible) {
+                    VisualTransformation.None
+                } else {
+                    PasswordVisualTransformation()
+                },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 trailingIcon = {
                     IconButton(onClick = { viewModel.onTogglePasswordVisibility() }) {
                         Icon(
-                            imageVector =
-                                if (uiState.isPasswordVisible) {
-                                    Icons.Default.VisibilityOff
-                                } else {
-                                    Icons.Default.Visibility
-                                },
-                            contentDescription = "Toggle password visibility",
+                            imageVector = if (uiState.isPasswordVisible) {
+                                Icons.Default.VisibilityOff
+                            } else {
+                                Icons.Default.Visibility
+                            },
+                            contentDescription = "Toggle password visibility"
                         )
                     }
                 },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth()
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -105,15 +103,14 @@ fun LoginScreen(
             Button(
                 onClick = { viewModel.onLoginClick() },
                 enabled = !uiState.isLoading,
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .height(56.dp),
-            ) {
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp)
+            ){
                 if (uiState.isLoading) {
                     CircularProgressIndicator(
                         modifier = Modifier.size(24.dp),
-                        color = MaterialTheme.colorScheme.onPrimary,
+                        color = MaterialTheme.colorScheme.onPrimary
                     )
                 } else {
                     Text("Login")
