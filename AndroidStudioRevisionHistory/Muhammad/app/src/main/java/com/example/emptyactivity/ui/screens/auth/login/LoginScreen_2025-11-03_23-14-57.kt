@@ -1,4 +1,4 @@
-package com.example.emptyactivity.ui.screens.auth.register
+package com.example.emptyactivity.ui.screens.auth.login
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -18,21 +18,20 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RegisterScreen(
-    onNavigateToLogin: () -> Unit,
-    onRegisterSuccess: () -> Unit,
-    viewModel: RegisterViewModel = hiltViewModel()
+fun LoginScreen(
+    onNavigateToRegister: () -> Unit,
+    onLoginSuccess: () -> Unit,
+    viewModel: LoginViewModel = hiltViewModel()
+
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(uiState.isSuccess) {
         if (uiState.isSuccess) {
-            onRegisterSuccess()
+            onLoginSuccess()
         }
     }
-
     if (uiState.errorMessage != null) {
         AlertDialog(
             onDismissRequest = { viewModel.onErrorDismissed() },
@@ -45,7 +44,6 @@ fun RegisterScreen(
             }
         )
     }
-
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -55,21 +53,13 @@ fun RegisterScreen(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
+        ){
             Text(
-                text = "Register",
+                text = "Login",
                 style = MaterialTheme.typography.headlineLarge
             )
 
             Spacer(modifier = Modifier.height(32.dp))
-
-            OutlinedTextField(
-                value = uiState.name,
-                onValueChange = { viewModel.onNameChange(it) },
-                label = { Text("Name") },
-                singleLine = true,
-                modifier = Modifier.fillMaxWidth()
-            )
 
             OutlinedTextField(
                 value = uiState.email,
@@ -106,41 +96,28 @@ fun RegisterScreen(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            OutlinedTextField(
-                value = uiState.confirmPassword,
-                onValueChange = { viewModel.onConfirmPasswordChange(it) },
-                label = { Text("Confirm Password") },
-                singleLine = true,
-                visualTransformation = if (uiState.isPasswordVisible) {
-                    VisualTransformation.None
-                } else {
-                    PasswordVisualTransformation()
-                },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                modifier = Modifier.fillMaxWidth()
-            )
-
             Spacer(modifier = Modifier.height(16.dp))
 
+
             Button(
-                onClick = { viewModel.onRegisterClick() },
+                onClick = { viewModel.onLoginClick() },
                 enabled = !uiState.isLoading,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp)
-            ) {
+            ){
                 if (uiState.isLoading) {
                     CircularProgressIndicator(
                         modifier = Modifier.size(24.dp),
                         color = MaterialTheme.colorScheme.onPrimary
                     )
                 } else {
-                    Text("Register")
+                    Text("Login")
                 }
             }
 
-            TextButton(onClick = onNavigateToLogin) {
-                Text("Already have an account? Login")
+            TextButton(onClick = onNavigateToRegister) {
+                Text("Don't have an account? Register")
             }
         }
     }
