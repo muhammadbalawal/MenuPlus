@@ -50,7 +50,7 @@ android {
 
     buildFeatures {
         compose = true
-        buildConfig = true // <-- enables BuildConfig generation for custom fields
+        buildConfig = true   // <-- enables BuildConfig generation for custom fields
     }
 
     composeOptions { kotlinCompilerExtensionVersion = "1.5.15" }
@@ -61,7 +61,7 @@ android {
 }
 
 dependencies {
-
+    
     implementation("io.coil-kt:coil-compose:2.6.0")
 
 

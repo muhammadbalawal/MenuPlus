@@ -50,7 +50,7 @@ android {
 
     buildFeatures {
         compose = true
-        buildConfig = true // <-- enables BuildConfig generation for custom fields
+        buildConfig = true   // <-- enables BuildConfig generation for custom fields
     }
 
     composeOptions { kotlinCompilerExtensionVersion = "1.5.15" }
@@ -61,14 +61,6 @@ android {
 }
 
 dependencies {
-
-    implementation("io.coil-kt:coil-compose:2.6.0")
-
-
-    implementation("com.squareup.retrofit2:retrofit:2.11.0")
-    implementation("com.squareup.retrofit2:converter-moshi:2.11.0")
-    implementation("com.squareup.okhttp3:okhttp:4.12.0")
-
     // Core Android
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
