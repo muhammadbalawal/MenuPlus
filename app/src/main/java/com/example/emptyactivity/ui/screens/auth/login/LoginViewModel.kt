@@ -13,45 +13,49 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(
-    private val loginUseCase: LoginUseCase
-) : ViewModel() {
-    
-    private val _uiState = MutableStateFlow(LoginUiState())
-    val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
+class LoginViewModel
+    @Inject
+    constructor(
+        private val loginUseCase: LoginUseCase,
+    ) : ViewModel() {
+        private val _uiState = MutableStateFlow(LoginUiState())
+        val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
 
-    fun onEmailChange(email: String) {
-        _uiState.update { it.copy(email = email, errorMessage = null) }
-    }
-    fun onPasswordChange(password: String) {
-        _uiState.update { it.copy(password = password, errorMessage = null) }
-    }
+        fun onEmailChange(email: String) {
+            _uiState.update { it.copy(email = email, errorMessage = null) }
+        }
 
-    fun onTogglePasswordVisibility() {
-        _uiState.update { it.copy(isPasswordVisible = !it.isPasswordVisible) }
-    }
+        fun onPasswordChange(password: String) {
+            _uiState.update { it.copy(password = password, errorMessage = null) }
+        }
 
-    fun onErrorDismissed() {
-        _uiState.update { it.copy(errorMessage = null) }
-    }fun onLoginClick() {
-        viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true, errorMessage = null) }
+        fun onTogglePasswordVisibility() {
+            _uiState.update { it.copy(isPasswordVisible = !it.isPasswordVisible) }
+        }
 
-            when (val result = loginUseCase(uiState.value.email, uiState.value.password)) {
-                is Result.Success -> {
-                    _uiState.update {
-                        it.copy(isLoading = false, isSuccess = true)
+        fun onErrorDismissed() {
+            _uiState.update { it.copy(errorMessage = null) }
+        }
+
+        fun onLoginClick() {
+            viewModelScope.launch {
+                _uiState.update { it.copy(isLoading = true, errorMessage = null) }
+
+                when (val result = loginUseCase(uiState.value.email, uiState.value.password)) {
+                    is Result.Success -> {
+                        _uiState.update {
+                            it.copy(isLoading = false, isSuccess = true)
+                        }
                     }
-                }
-                is Result.Error -> {
-                    _uiState.update {
-                        it.copy(isLoading = false, errorMessage = result.message)
+                    is Result.Error -> {
+                        _uiState.update {
+                            it.copy(isLoading = false, errorMessage = result.message)
+                        }
                     }
-                }
-                is Result.Loading -> {
-                    _uiState.update { it.copy(isLoading = true) }
+                    is Result.Loading -> {
+                        _uiState.update { it.copy(isLoading = true) }
+                    }
                 }
             }
         }
     }
-}

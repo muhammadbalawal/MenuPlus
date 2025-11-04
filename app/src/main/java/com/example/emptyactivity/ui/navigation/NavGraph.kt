@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -24,12 +23,14 @@ import com.example.emptyactivity.ui.screens.auth.login.LoginScreen
 import com.example.emptyactivity.ui.screens.auth.register.RegisterScreen
 import com.example.emptyactivity.ui.screens.importmenu.ImportMenuScreen
 import com.example.emptyactivity.ui.screens.landing.LandingScreen
+import com.example.emptyactivity.ui.screens.onboarding.OnboardingScreen
 import com.example.emptyactivity.ui.screens.profile.ProfileScreen
 import com.example.emptyactivity.ui.screens.savedmenu.SavedMenuScreen
 
+
 @Composable
 fun MenuPlusApp(
-    appViewModel: MenuPlusAppViewModel = hiltViewModel()
+    appViewModel: MenuPlusAppViewModel = hiltViewModel(),
 ) {
     val appUiState by appViewModel.uiState.collectAsStateWithLifecycle()
 
@@ -43,12 +44,11 @@ fun MenuPlusApp(
         }
 
         is MenuPlusAppUiState.NeedsOnboarding -> {
-            // TODO: OnboardingNavGraph()
             Box(
                 modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.Center,
             ) {
-                Text("Onboarding Screen - Coming Soon")
+                OnboardingScreen()
             }
         }
 
@@ -62,7 +62,7 @@ fun MenuPlusApp(
 private fun LoadingScreen() {
     Box(
         modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         CircularProgressIndicator()
     }
@@ -74,25 +74,25 @@ private fun UnauthenticatedNavGraph() {
 
     NavHost(
         navController = navController,
-        startDestination = Route.Landing
+        startDestination = Route.Landing,
     ) {
         composable<Route.Landing> {
             LandingScreen(
-                onContinue = { navController.navigate(Route.Login) }
+                onContinue = { navController.navigate(Route.Login) },
             )
         }
 
         composable<Route.Login> {
             LoginScreen(
                 onNavigateToRegister = { navController.navigate(Route.Register) },
-                onLoginSuccess = { /* Auth state handles navigation */ }
+                onLoginSuccess = { /* Auth state handles navigation */ },
             )
         }
 
         composable<Route.Register> {
             RegisterScreen(
                 onNavigateToLogin = { navController.navigateUp() },
-                onRegisterSuccess = { /* Auth state handles navigation */ }
+                onRegisterSuccess = { /* Auth state handles navigation */ },
             )
         }
     }
@@ -108,12 +108,12 @@ private fun AuthenticatedNavGraph() {
             if (shouldShowBottomBar(navController)) {
                 BottomNavigationBar(navController)
             }
-        }
+        },
     ) { paddingValues ->
         NavHost(
             navController = navController,
             startDestination = Route.SavedMenu,
-            modifier = Modifier.padding(paddingValues)
+            modifier = Modifier.padding(paddingValues),
         ) {
             composable<Route.SavedMenu> {
                 SavedMenuScreen()
@@ -126,7 +126,6 @@ private fun AuthenticatedNavGraph() {
             composable<Route.Profile> {
                 ProfileScreen()
             }
-
         }
     }
 }
@@ -136,9 +135,10 @@ private fun shouldShowBottomBar(navController: NavHostController): Boolean {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-    return currentRoute in listOf(
-        Route.SavedMenu::class.qualifiedName,
-        Route.ImportMenu::class.qualifiedName,
-        Route.Profile::class.qualifiedName
-    )
+    return currentRoute in
+        listOf(
+            Route.SavedMenu::class.qualifiedName,
+            Route.ImportMenu::class.qualifiedName,
+            Route.Profile::class.qualifiedName,
+        )
 }

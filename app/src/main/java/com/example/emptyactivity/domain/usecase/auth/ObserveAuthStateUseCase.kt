@@ -5,10 +5,10 @@ import com.example.emptyactivity.domain.model.User
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class ObserveAuthStateUseCase @Inject constructor(
-    private val authRepository: AuthRepository
-) {
-    operator fun invoke(): Flow<User?> {
-        return authRepository.observeAuthState()
+class ObserveAuthStateUseCase
+    @Inject
+    constructor(
+        private val authRepository: AuthRepository,
+    ) {
+        operator fun invoke(): Flow<User?> = authRepository.observeAuthState()
     }
-}
