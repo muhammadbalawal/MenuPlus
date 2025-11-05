@@ -16,7 +16,7 @@ class GeminiClient @Inject constructor() {
 
     private val generativeModel = GenerativeModel(
         modelName = MODEL_NAME,
-        apiKey = "AIzaSyDoLKpEPenio0xRjLhRhTFxSeJ-sW-1MMk",
+        apiKey = "",
         generationConfig = generationConfig {
             temperature = 0.7f
             topK = 40

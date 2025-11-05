@@ -92,14 +92,19 @@ dependencies {
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
     // Supabase
-    implementation("io.github.jan-tennert.supabase:postgrest-kt:3.0.2")
-    implementation("io.github.jan-tennert.supabase:auth-kt:3.0.2")
-    implementation("io.github.jan-tennert.supabase:storage-kt:3.0.2")
+// Supabase
+    implementation("io.github.jan-tennert.supabase:postgrest-kt:2.3.0")
+    implementation("io.github.jan-tennert.supabase:auth-kt:2.3.0")
+    implementation("io.github.jan-tennert.supabase:storage-kt:2.3.0")
 
-    // Ktor (required by Supabase)
-    implementation("io.ktor:ktor-client-android:3.0.1")
-    implementation("io.ktor:ktor-client-core:3.0.1")
-    implementation("io.ktor:ktor-utils:3.0.1")
+
+    // Ktor (required by Supabase & Gemini) - Aligned to a compatible version
+    implementation("io.ktor:ktor-client-android:2.3.11")
+    implementation("io.ktor:ktor-client-core:2.3.11")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.11") // Good to have for JSON
+    implementation("io.ktor:ktor-client-content-negotiation:2.3.11") // Good to have for plugins
+
+
 
     // Gemini AI
     implementation("com.google.ai.client.generativeai:generativeai:0.9.0")

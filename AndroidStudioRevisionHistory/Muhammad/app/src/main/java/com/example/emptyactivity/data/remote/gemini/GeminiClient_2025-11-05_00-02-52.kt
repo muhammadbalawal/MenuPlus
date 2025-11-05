@@ -16,7 +16,7 @@ class GeminiClient @Inject constructor() {
 
     private val generativeModel = GenerativeModel(
         modelName = MODEL_NAME,
-        apiKey = "AIzaSyDoLKpEPenio0xRjLhRhTFxSeJ-sW-1MMk",
+        apiKey = "",
         generationConfig = generationConfig {
             temperature = 0.7f
             topK = 40
@@ -27,7 +27,7 @@ class GeminiClient @Inject constructor() {
 
     suspend fun analyzeMenu(
         menuText: String,
-        userLanguage: String?,
+        userLanguage: String,
         userAllergies: List<String>,
         userDietaryRestrictions: List<String>,
         userDislikes: List<String>,
@@ -59,7 +59,7 @@ class GeminiClient @Inject constructor() {
 
     private fun buildMenuAnalysisPrompt(
         menuText: String,
-        userLanguage: String?,
+        userLanguage: String,
         allergies: List<String>,
         dietaryRestrictions: List<String>,
         dislikes: List<String>,

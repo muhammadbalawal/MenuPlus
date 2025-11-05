@@ -101,6 +101,10 @@ dependencies {
     implementation("io.ktor:ktor-client-core:3.0.1")
     implementation("io.ktor:ktor-utils:3.0.1")
 
+    implementation("io.ktor:ktor-client-okhttp:3.0.1")  // OkHttp engine (needed by Gemini)
+    implementation("io.ktor:ktor-client-content-negotiation:3.0.1")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:3.0.1")
+
     // Gemini AI
     implementation("com.google.ai.client.generativeai:generativeai:0.9.0")
 

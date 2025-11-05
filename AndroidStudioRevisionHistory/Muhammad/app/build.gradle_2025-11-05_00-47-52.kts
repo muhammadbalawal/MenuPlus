@@ -96,10 +96,14 @@ dependencies {
     implementation("io.github.jan-tennert.supabase:auth-kt:3.0.2")
     implementation("io.github.jan-tennert.supabase:storage-kt:3.0.2")
 
-    // Ktor (required by Supabase)
+    // Ktor Client (required by Supabase and Gemini)
     implementation("io.ktor:ktor-client-android:3.0.1")
     implementation("io.ktor:ktor-client-core:3.0.1")
+    implementation("io.ktor:ktor-client-okhttp:3.0.1")
     implementation("io.ktor:ktor-utils:3.0.1")
+    implementation("io.ktor:ktor-client-content-negotiation:3.0.1")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:3.0.1")
+    implementation("io.ktor:ktor-client-logging:3.0.1")
 
     // Gemini AI
     implementation("com.google.ai.client.generativeai:generativeai:0.9.0")
@@ -112,8 +116,6 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 }
-
-
 
 kapt {
     correctErrorTypes = true

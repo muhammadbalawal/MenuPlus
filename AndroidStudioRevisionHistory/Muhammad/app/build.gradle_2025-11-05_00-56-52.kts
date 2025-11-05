@@ -91,18 +91,19 @@ dependencies {
     kapt("com.google.dagger:hilt-android-compiler:2.57.2")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
-    // Supabase
-    implementation("io.github.jan-tennert.supabase:postgrest-kt:3.0.2")
-    implementation("io.github.jan-tennert.supabase:auth-kt:3.0.2")
-    implementation("io.github.jan-tennert.supabase:storage-kt:3.0.2")
+// Supabase (compatible with Gemini)
+    implementation("io.github.jan-tennert.supabase:postgrest-kt:2.5.3")
+    implementation("io.github.jan-tennert.supabase:auth-kt:2.5.3")
+    implementation("io.github.jan-tennert.supabase:storage-kt:2.5.3")
 
-    // Ktor (required by Supabase)
-    implementation("io.ktor:ktor-client-android:3.0.1")
-    implementation("io.ktor:ktor-client-core:3.0.1")
-    implementation("io.ktor:ktor-utils:3.0.1")
+// Ktor (for both Supabase & Gemini)
+    implementation("io.ktor:ktor-client-android:2.3.12")
+    implementation("io.ktor:ktor-client-core:2.3.12")
+    implementation("io.ktor:ktor-utils:2.3.12")
 
-    // Gemini AI
+// Gemini AI
     implementation("com.google.ai.client.generativeai:generativeai:0.9.0")
+
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
@@ -112,8 +113,6 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 }
-
-
 
 kapt {
     correctErrorTypes = true

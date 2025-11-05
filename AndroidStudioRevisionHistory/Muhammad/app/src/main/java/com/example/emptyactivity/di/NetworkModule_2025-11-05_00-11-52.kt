@@ -19,5 +19,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideGeminiClient(): GeminiClient = GeminiClient()
+    fun provideGeminiClient(): GeminiClient {
+        return GeminiClient()
+    }
 }

@@ -100,9 +100,10 @@ dependencies {
     implementation("io.ktor:ktor-client-android:3.0.1")
     implementation("io.ktor:ktor-client-core:3.0.1")
     implementation("io.ktor:ktor-utils:3.0.1")
+    
 
     // Gemini AI
-    implementation("com.google.ai.client.generativeai:generativeai:0.9.0")
+    implementation("dev.shreyaspatil.generativeai:generativeai-google:0.9.0-1.1.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
@@ -112,8 +113,6 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 }
-
-
 
 kapt {
     correctErrorTypes = true

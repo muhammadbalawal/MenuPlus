@@ -19,7 +19,6 @@ import com.example.emptyactivity.domain.model.User
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ImportMenuScreen(
-    user: User,
     viewModel: ImportMenuViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -71,7 +70,7 @@ fun ImportMenuScreen(
             }
         }
         Button(
-            onClick = { viewModel.onAnalyzeMenu(user) },
+            onClick = { viewModel.onAnalyzeMenu() },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),

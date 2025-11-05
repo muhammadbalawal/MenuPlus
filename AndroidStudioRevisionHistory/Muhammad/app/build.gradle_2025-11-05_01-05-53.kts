@@ -96,10 +96,12 @@ dependencies {
     implementation("io.github.jan-tennert.supabase:auth-kt:3.0.2")
     implementation("io.github.jan-tennert.supabase:storage-kt:3.0.2")
 
-    // Ktor (required by Supabase)
-    implementation("io.ktor:ktor-client-android:3.0.1")
-    implementation("io.ktor:ktor-client-core:3.0.1")
-    implementation("io.ktor:ktor-utils:3.0.1")
+    // Ktor (required by Supabase & Gemini) - Aligned to a compatible version
+    implementation("io.ktor:ktor-client-android:2.3.2")
+    implementation("io.ktor:ktor-client-core:2.3.2")
+    implementation("io.ktor:ktor-utils:2.3.2")
+
+    
 
     // Gemini AI
     implementation("com.google.ai.client.generativeai:generativeai:0.9.0")
@@ -113,6 +115,15 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 }
 
+// Add this block at the end of your build.gradle.kts file
+// This forces all Ktor dependencies to use the version required by the Gemini AI library
+configurations.all {
+    resolutionStrategy.force("io.ktor:ktor-client-core:2.3.2")    resolutionStrategy.force("io.ktor:ktor-client-okhttp:2.3.2")
+    resolutionStrategy.force("io.ktor:ktor-client-android:2.3.2")
+    resolutionStrategy.force("io.ktor:ktor-client-content-negotiation:2.3.2")
+    resolutionStrategy.force("io.ktor:ktor-serialization-kotlinx-json:2.3.2")
+    resolutionStrategy.force("io.ktor:ktor-utils:2.3.2")
+}
 
 
 kapt {

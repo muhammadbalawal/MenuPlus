@@ -16,7 +16,7 @@ class GeminiClient @Inject constructor() {
 
     private val generativeModel = GenerativeModel(
         modelName = MODEL_NAME,
-        apiKey = "AIzaSyDoLKpEPenio0xRjLhRhTFxSeJ-sW-1MMk",
+        apiKey = "",
         generationConfig = generationConfig {
             temperature = 0.7f
             topK = 40
@@ -27,7 +27,7 @@ class GeminiClient @Inject constructor() {
 
     suspend fun analyzeMenu(
         menuText: String,
-        userLanguage: String?,
+        userLanguage: String,
         userAllergies: List<String>,
         userDietaryRestrictions: List<String>,
         userDislikes: List<String>,
@@ -59,7 +59,7 @@ class GeminiClient @Inject constructor() {
 
     private fun buildMenuAnalysisPrompt(
         menuText: String,
-        userLanguage: String?,
+        userLanguage: String,
         allergies: List<String>,
         dietaryRestrictions: List<String>,
         dislikes: List<String>,
@@ -73,18 +73,17 @@ class GeminiClient @Inject constructor() {
             - Dietary Restrictions (must avoid): ${dietaryRestrictions.joinToString(", ").ifEmpty { "None" }}
             - Dislikes (prefers not to eat): ${dislikes.joinToString(", ").ifEmpty { "None" }}
             - Preferences (enjoys eating): ${preferences.joinToString(", ").ifEmpty { "None" }}
-            - Language: $userLanguage
             
             MENU:
             $menuText
             
             INSTRUCTIONS:
-            1. Convert the menu into user language.
-            2. Analyze each menu item for safety based on the user's profile
-            3. Classify items into three categories:
-               - RED (Dangerous): Contains allergies or violates Dietary restrictions
-               - YELLOW (Caution): Contains dislikes or minor concerns
-               - GREEN (Safe): No concerns, good choice
+            1. Convert the menu 
+            1. Analyze each menu item for safety based on the user's profile
+            2. Classify items into three categories:
+               - 🔴 RED (Dangerous): Contains allergies or violates critical restrictions
+               - 🟡 YELLOW (Caution): Contains dislikes or minor concerns
+               - 🟢 GREEN (Safe): No concerns, good choice
             
             3. For each item, provide:
                - Safety rating (RED/YELLOW/GREEN)
@@ -98,7 +97,7 @@ class GeminiClient @Inject constructor() {
                - Recommended dishes based on user preferences
             
             FORMAT:
-            Please structure your response clearly with easy-to-read formatting.
+            Please structure your response clearly with emoji indicators and easy-to-read formatting.
         """.trimIndent()
     }
 
