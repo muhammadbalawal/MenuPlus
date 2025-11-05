@@ -4,10 +4,10 @@ import com.example.emptyactivity.data.repository.auth.AuthRepository
 import com.example.emptyactivity.util.Result
 import javax.inject.Inject
 
-class LogoutUseCase @Inject constructor(
-    private val authRepository: AuthRepository
-) {
-    suspend operator fun invoke(): Result<Unit> {
-        return authRepository.logout()
+class LogoutUseCase
+    @Inject
+    constructor(
+        private val authRepository: AuthRepository,
+    ) {
+        suspend operator fun invoke(): Result<Unit> = authRepository.logout()
     }
-}
