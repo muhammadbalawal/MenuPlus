@@ -1,8 +1,9 @@
 package com.example.emptyactivity.data.remote.gemini
 
 import android.util.Log
-import com.google.ai.client.generativeai.GenerativeModel
-import com.google.ai.client.generativeai.type.generationConfig
+import com.google.firebase.Firebase
+import com.google.firebase.ai.GenerativeBackend
+import com.google.firebase.ai.ai
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -11,19 +12,11 @@ class GeminiClient @Inject constructor() {
 
     companion object {
         private const val TAG = "GeminiClient"
-        private const val MODEL_NAME = "gemini-1.5-flash"
+        private const val MODEL_NAME = "gemini-2.5-flash"
     }
 
-    private val generativeModel = GenerativeModel(
-        modelName = MODEL_NAME,
-        apiKey = "AIzaSyDoLKpEPenio0xRjLhRhTFxSeJ-sW-1MMk",
-        generationConfig = generationConfig {
-            temperature = 0.7f
-            topK = 40
-            topP = 0.95f
-            maxOutputTokens = 8192
-        }
-    )
+    private val model = Firebase.ai(backend = GenerativeBackend.googleAI())
+        .generativeModel(MODEL_NAME)
 
     suspend fun analyzeMenu(
         menuText: String,
@@ -32,9 +25,8 @@ class GeminiClient @Inject constructor() {
         userDietaryRestrictions: List<String>,
         userDislikes: List<String>,
         userPreferences: List<String>,
-    ) : String {
+    ): String {
         return try {
-
             val prompt = buildMenuAnalysisPrompt(
                 menuText = menuText,
                 userLanguage = userLanguage,
@@ -45,7 +37,7 @@ class GeminiClient @Inject constructor() {
             )
 
             Log.d(TAG, "Sending prompt to Gemini")
-            val response = generativeModel.generateContent(prompt)
+            val response = model.generateContent(prompt)
 
             val result = response.text ?: "No response from AI"
             Log.d(TAG, "Received response from Gemini: ${result.length} characters")
@@ -101,5 +93,4 @@ class GeminiClient @Inject constructor() {
             Please structure your response clearly with easy-to-read formatting.
         """.trimIndent()
     }
-
 }

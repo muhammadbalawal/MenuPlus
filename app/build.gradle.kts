@@ -13,6 +13,9 @@ plugins {
 
     id("com.google.dagger.hilt.android")
     kotlin("kapt")
+
+    id("com.google.gms.google-services")
+    
 }
 
 android {
@@ -102,7 +105,14 @@ dependencies {
     implementation("io.ktor:ktor-utils:3.0.1")
 
     // Gemini AI
-    implementation("com.google.ai.client.generativeai:generativeai:0.9.0")
+    // implementation("com.google.ai.client.generativeai:generativeai:0.9.0")
+
+    // Firebase AI
+    implementation(platform("com.google.firebase:firebase-bom:34.5.0"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-ai")
+
+
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
