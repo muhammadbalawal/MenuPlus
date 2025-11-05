@@ -52,90 +52,90 @@ fun ImportMenuScreen(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-        }
-
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surfaceVariant
-            )
-        ) {
-            Column(
-                modifier = Modifier.padding(16.dp)
-            ) {
-                Text(
-                    text = uiState.menuText,
-                    style = MaterialTheme.typography.bodySmall,
-                    modifier = Modifier.heightIn(max = 200.dp)
-                )
-            }
-        }
-        Button(
-            onClick = { viewModel.onAnalyzeMenu(user) },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp),
-            enabled = !uiState.isAnalyzing && uiState.menuText.isNotBlank()
-        ) {
-            if (uiState.isAnalyzing) {
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(24.dp),
-                        color = MaterialTheme.colorScheme.onPrimary
-                    )
-                    Text("Analyzing with AI...")
-                }
-            } else {
-                Text("🤖 Analyze Menu with AI")
-            }
-        }
-        if (uiState.analysisResult != null) {
-            Spacer(modifier = Modifier.height(8.dp))
-
+            // 🧾 MENU TEXT CARD
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.tertiaryContainer
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant
                 )
             ) {
                 Column(
                     modifier = Modifier.padding(16.dp)
                 ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = "AI Analysis Result",
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold
-                        )
-                        IconButton(
-                            onClick = { viewModel.onClearResult() }
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Close,
-                                contentDescription = "Clear"
-                            )
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    Divider()
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
                     Text(
-                        text = uiState.analysisResult ?: "",
-                        style = MaterialTheme.typography.bodyMedium
+                        text = uiState.menuText,
+                        style = MaterialTheme.typography.bodySmall,
+                        modifier = Modifier.heightIn(max = 200.dp)
                     )
                 }
             }
-        }
+
+            // 🤖 ANALYZE BUTTON
+            Button(
+                onClick = { viewModel.onAnalyzeMenu(user) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp),
+                enabled = !uiState.isAnalyzing && uiState.menuText.isNotBlank()
+            ) {
+                if (uiState.isAnalyzing) {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(24.dp),
+                            color = MaterialTheme.colorScheme.onPrimary
+                        )
+                        Text("Analyzing with AI...")
+                    }
+                } else {
+                    Text("🤖 Analyze Menu with AI")
+                }
+            }
+
+            // 📊 ANALYSIS RESULT
+            if (uiState.analysisResult != null) {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.tertiaryContainer
+                    )
+                ) {
+                    Column(
+                        modifier = Modifier.padding(16.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = "AI Analysis Result",
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Bold
+                            )
+                            IconButton(
+                                onClick = { viewModel.onClearResult() }
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Close,
+                                    contentDescription = "Clear"
+                                )
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Divider()
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        Text(
+                            text = uiState.analysisResult ?: "",
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
+                }
+            }
         }
     }
+}
