@@ -103,6 +103,10 @@ dependencies {
     implementation("io.ktor:ktor-client-core:3.0.1")
     implementation("io.ktor:ktor-utils:3.0.1")
 
+    // Moshi
+    implementation("com.squareup.moshi:moshi:1.15.1")
+    implementation("com.squareup.moshi:moshi-kotlin:1.15.1")
+
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

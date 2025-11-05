@@ -20,6 +20,8 @@ sealed interface Route {
 
     @Serializable data object Scanning : Route
 
+    @Serializable data object Ocr : Route
+
     @Serializable data class DetailedMenu(
         val menuId: String,
     ) : Route

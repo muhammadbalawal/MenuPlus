@@ -23,6 +23,7 @@ import com.example.emptyactivity.ui.screens.auth.login.LoginScreen
 import com.example.emptyactivity.ui.screens.auth.register.RegisterScreen
 import com.example.emptyactivity.ui.screens.importmenu.ImportMenuScreen
 import com.example.emptyactivity.ui.screens.landing.LandingScreen
+import com.example.emptyactivity.ui.screens.ocr.OcrScreen
 import com.example.emptyactivity.ui.screens.onboarding.OnboardingScreen
 import com.example.emptyactivity.ui.screens.profile.ProfileScreen
 import com.example.emptyactivity.ui.screens.savedmenu.SavedMenuScreen
@@ -119,8 +120,8 @@ private fun AuthenticatedNavGraph() {
                 SavedMenuScreen()
             }
 
-            composable<Route.ImportMenu> {
-                ImportMenuScreen()
+            composable<Route.Ocr> {
+                OcrScreen()
             }
 
             composable<Route.Profile> {

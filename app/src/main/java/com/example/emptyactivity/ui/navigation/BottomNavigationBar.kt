@@ -59,7 +59,7 @@ private val bottomNavItems =
             icon = Icons.Default.Restaurant,
         ),
         BottomNavItem(
-            route = Route.Scanning,
+            route = Route.Ocr,
             label = "Scan",
             icon = Icons.Default.QrCodeScanner,
         ),

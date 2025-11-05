@@ -24,7 +24,8 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideVisionApi(): VisionApi {
-        val key = BuildConfig.GCP_VISION_KEY
+        val key = "AIzaSyCdzFMUclnND1fZzBCe93IpOMqdyBQIjw0"
+
         require(key.isNotBlank()) {
             "GCP_VISION_KEY is missing. Make sure local.properties contains GCP_VISION_KEY=YOUR_KEY and buildFeatures.buildConfig=true."
         }
