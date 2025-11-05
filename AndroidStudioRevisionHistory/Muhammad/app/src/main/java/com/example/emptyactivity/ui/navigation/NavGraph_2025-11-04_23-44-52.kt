@@ -119,7 +119,7 @@ private fun AuthenticatedNavGraph(user: User) {
                 SavedMenuScreen()
             }
 
-
+            
 
             composable<Route.ImportMenu> {
                 ImportMenuScreen()

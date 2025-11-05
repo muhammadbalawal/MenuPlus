@@ -46,7 +46,8 @@ fun MenuPlusApp(
 
         is MenuPlusAppUiState.NeedsOnboarding -> {
             OnboardingNavGraph(
-                user = (appUiState as MenuPlusAppUiState.NeedsOnboarding).user
+                user = (appUiState as MenuPlusAppUiState.NeedsOnboarding).user,
+                onOnboardingComplete = { appViewModel.onboardingCompleted() } 
             )
         }
 
@@ -116,10 +117,10 @@ private fun AuthenticatedNavGraph(user: User) {
             modifier = Modifier.padding(paddingValues),
         ) {
             composable<Route.SavedMenu> {
-                SavedMenuScreen()
+                SavedMenuScreen(
+
+                )
             }
-
-
 
             composable<Route.ImportMenu> {
                 ImportMenuScreen()
@@ -135,6 +136,7 @@ private fun AuthenticatedNavGraph(user: User) {
 @Composable
 fun OnboardingNavGraph(
     user: User,
+    onOnboardingComplete: () -> Unit
 ) {
     val navController = rememberNavController()
     
@@ -147,6 +149,7 @@ fun OnboardingNavGraph(
             OnboardingScreen(
                 user = user,
                 onComplete = {
+                    onOnboardingComplete()
                 }
             )
         }

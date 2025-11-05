@@ -116,10 +116,10 @@ private fun AuthenticatedNavGraph(user: User) {
             modifier = Modifier.padding(paddingValues),
         ) {
             composable<Route.SavedMenu> {
-                SavedMenuScreen()
+                SavedMenuScreen(
+
+                )
             }
-
-
 
             composable<Route.ImportMenu> {
                 ImportMenuScreen()
@@ -133,11 +133,8 @@ private fun AuthenticatedNavGraph(user: User) {
 }
 
 @Composable
-fun OnboardingNavGraph(
-    user: User,
-) {
+fun OnboardingNavGraph(user: User) {
     val navController = rememberNavController()
-    
 
     NavHost(
         navController = navController,

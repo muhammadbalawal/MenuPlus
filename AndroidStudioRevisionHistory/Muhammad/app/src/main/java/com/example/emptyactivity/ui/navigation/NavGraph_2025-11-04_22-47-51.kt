@@ -51,9 +51,7 @@ fun MenuPlusApp(
         }
 
         is MenuPlusAppUiState.Authenticated -> {
-            AuthenticatedNavGraph(
-                user = (appUiState as MenuPlusAppUiState.Authenticated).user
-            )
+            AuthenticatedNavGraph()
         }
     }
 }
@@ -100,7 +98,7 @@ private fun UnauthenticatedNavGraph() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun AuthenticatedNavGraph(user: User) {
+private fun AuthenticatedNavGraph() {
     val navController = rememberNavController()
 
     Scaffold(
@@ -119,8 +117,6 @@ private fun AuthenticatedNavGraph(user: User) {
                 SavedMenuScreen()
             }
 
-
-
             composable<Route.ImportMenu> {
                 ImportMenuScreen()
             }
@@ -133,11 +129,8 @@ private fun AuthenticatedNavGraph(user: User) {
 }
 
 @Composable
-fun OnboardingNavGraph(
-    user: User,
-) {
+fun OnboardingNavGraph(user: User) {
     val navController = rememberNavController()
-    
 
     NavHost(
         navController = navController,

@@ -17,7 +17,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.emptyactivity.domain.model.User
 import com.example.emptyactivity.ui.MenuPlusAppUiState
 import com.example.emptyactivity.ui.MenuPlusAppViewModel
 import com.example.emptyactivity.ui.screens.auth.login.LoginScreen
@@ -51,9 +50,7 @@ fun MenuPlusApp(
         }
 
         is MenuPlusAppUiState.Authenticated -> {
-            AuthenticatedNavGraph(
-                user = (appUiState as MenuPlusAppUiState.Authenticated).user
-            )
+            AuthenticatedNavGraph()
         }
     }
 }
@@ -100,7 +97,7 @@ private fun UnauthenticatedNavGraph() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun AuthenticatedNavGraph(user: User) {
+private fun AuthenticatedNavGraph() {
     val navController = rememberNavController()
 
     Scaffold(
@@ -119,8 +116,6 @@ private fun AuthenticatedNavGraph(user: User) {
                 SavedMenuScreen()
             }
 
-
-
             composable<Route.ImportMenu> {
                 ImportMenuScreen()
             }
@@ -132,26 +127,6 @@ private fun AuthenticatedNavGraph(user: User) {
     }
 }
 
-@Composable
-fun OnboardingNavGraph(
-    user: User,
-) {
-    val navController = rememberNavController()
-    
-
-    NavHost(
-        navController = navController,
-        startDestination = Route.Onboarding
-    ) {
-        composable<Route.Onboarding> {
-            OnboardingScreen(
-                user = user,
-                onComplete = {
-                }
-            )
-        }
-    }
-}
 @Composable
 private fun shouldShowBottomBar(navController: NavHostController): Boolean {
     val navBackStackEntry by navController.currentBackStackEntryAsState()

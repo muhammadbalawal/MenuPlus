@@ -116,10 +116,10 @@ private fun AuthenticatedNavGraph(user: User) {
             modifier = Modifier.padding(paddingValues),
         ) {
             composable<Route.SavedMenu> {
-                SavedMenuScreen()
+                SavedMenuScreen(
+
+                )
             }
-
-
 
             composable<Route.ImportMenu> {
                 ImportMenuScreen()
