@@ -1,9 +1,9 @@
 package com.example.emptyactivity.di
 
-import com.example.emptyactivity.BuildConfig
 import com.example.emptyactivity.data.remote.supabase.SupabaseClientProvider
 import com.example.emptyactivity.data.remote.vision.VisionApi
 import com.example.emptyactivity.data.remote.vision.VisionClient
+import com.example.emptyactivity.BuildConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,6 +14,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
+
     // --- Supabase client ---
     @Provides
     @Singleton
