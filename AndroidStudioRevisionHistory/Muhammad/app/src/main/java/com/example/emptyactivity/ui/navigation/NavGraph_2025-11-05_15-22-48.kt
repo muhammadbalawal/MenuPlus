@@ -28,7 +28,6 @@ import com.example.emptyactivity.ui.screens.landing.LandingScreen
 import com.example.emptyactivity.ui.screens.onboarding.OnboardingScreen
 import com.example.emptyactivity.ui.screens.profile.ProfileScreen
 import com.example.emptyactivity.ui.screens.savedmenu.SavedMenuScreen
-import com.example.emptyactivity.ui.screens.settings.SettingsScreen
 
 
 @Composable
@@ -106,15 +105,6 @@ private fun AuthenticatedNavGraph(user: User) {
     val navController = rememberNavController()
 
     Scaffold(
-        topBar = {
-            if (shouldShowTopBar(navController)) {
-                TopBar(
-                    onSettingsClick = {
-                        navController.navigate(Route.Settings)
-                    }
-                )
-            }
-        },
         bottomBar = {
             if (shouldShowBottomBar(navController)) {
                 BottomNavigationBar(navController)
@@ -136,14 +126,6 @@ private fun AuthenticatedNavGraph(user: User) {
 
             composable<Route.Profile> {
                 ProfileScreen()
-            }
-
-            composable<Route.Settings> {
-                SettingsScreen(
-                    user = user,
-                    onNavigateBack = { navController.navigateUp()},
-                    onLogout = {}
-                )
             }
         }
     }

@@ -20,7 +20,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.emptyactivity.domain.model.User
 import com.example.emptyactivity.ui.MenuPlusAppUiState
 import com.example.emptyactivity.ui.MenuPlusAppViewModel
-import com.example.emptyactivity.ui.components.TopBar
 import com.example.emptyactivity.ui.screens.auth.login.LoginScreen
 import com.example.emptyactivity.ui.screens.auth.register.RegisterScreen
 import com.example.emptyactivity.ui.screens.importmenu.ImportMenuScreen
@@ -28,7 +27,6 @@ import com.example.emptyactivity.ui.screens.landing.LandingScreen
 import com.example.emptyactivity.ui.screens.onboarding.OnboardingScreen
 import com.example.emptyactivity.ui.screens.profile.ProfileScreen
 import com.example.emptyactivity.ui.screens.savedmenu.SavedMenuScreen
-import com.example.emptyactivity.ui.screens.settings.SettingsScreen
 
 
 @Composable
@@ -106,15 +104,6 @@ private fun AuthenticatedNavGraph(user: User) {
     val navController = rememberNavController()
 
     Scaffold(
-        topBar = {
-            if (shouldShowTopBar(navController)) {
-                TopBar(
-                    onSettingsClick = {
-                        navController.navigate(Route.Settings)
-                    }
-                )
-            }
-        },
         bottomBar = {
             if (shouldShowBottomBar(navController)) {
                 BottomNavigationBar(navController)
@@ -136,14 +125,6 @@ private fun AuthenticatedNavGraph(user: User) {
 
             composable<Route.Profile> {
                 ProfileScreen()
-            }
-
-            composable<Route.Settings> {
-                SettingsScreen(
-                    user = user,
-                    onNavigateBack = { navController.navigateUp()},
-                    onLogout = {}
-                )
             }
         }
     }
@@ -183,10 +164,7 @@ private fun shouldShowBottomBar(navController: NavHostController): Boolean {
 }
 
 @Composable
-private fun shouldShowTopBar(navController: NavHostController): Boolean {
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = navBackStackEntry?.destination?.route
-
+private fun shouldShowTopBar(): Boolean {
     return currentRoute in
             listOf(
                 Route.SavedMenu::class.qualifiedName,
@@ -194,5 +172,3 @@ private fun shouldShowTopBar(navController: NavHostController): Boolean {
                 Route.Profile::class.qualifiedName,
             )
 }
-
-
