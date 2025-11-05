@@ -15,6 +15,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class RepositoryModule {
+
     // Existing Auth binding (Binds = abstract)
     @Binds
     @Singleton
@@ -23,7 +24,7 @@ abstract class RepositoryModule {
     ): AuthRepository
 
     companion object {
-        // New OCR provider (Provides = concrete)
+        //New OCR provider (Provides = concrete)
         @Provides
         @Singleton
         fun provideOcrRepository(api: VisionApi): OcrRepository =
