@@ -1,6 +1,5 @@
 package com.example.emptyactivity.ui.screens.ocr
 
-
 import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.ViewModel
@@ -13,6 +12,18 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * ViewModel for the OCR screen.
+ *
+ * This ViewModel manages the OCR workflow: image selection, encoding, text extraction,
+ * and state management. It coordinates between the UI layer and the OCR repository to
+ * extract text from user-selected images.
+ *
+ * The ViewModel exposes reactive StateFlows that the UI can observe to update automatically
+ * when the OCR state changes (loading, success, error).
+ *
+ * @param repo The OCR repository used to extract text from images. Injected via Hilt.
+ */
 @HiltViewModel
 class OcrViewModel
     @Inject
@@ -23,7 +34,6 @@ class OcrViewModel
         val imageUri: StateFlow<Uri?> = _imageUri
 
         private val _lines = MutableStateFlow<List<String>>(emptyList())
-
         val lines: StateFlow<List<String>> = _lines
 
         private val _loading = MutableStateFlow(false)
@@ -33,10 +43,32 @@ class OcrViewModel
         val error: StateFlow<String?> = _error
 
         /**
-         * Get the extracted text as a single string (all lines joined with newlines)
+         * Combines all extracted text lines into a single string.
+         *
+         * This method joins all the extracted text lines with newline characters,
+         * creating a complete text document that can be passed to the Gemini analysis screen.
+         *
+         * @return A single string containing all extracted text lines, separated by newlines.
+         *         Returns an empty string if no text has been extracted yet.
          */
         fun getExtractedText(): String = lines.value.joinToString("\n")
 
+        /**
+         * Initiates OCR extraction when a user selects an image.
+         *
+         * This method handles the complete OCR workflow:
+         * 1. Stores the selected image URI
+         * 2. Sets loading state to true
+         * 3. Converts the image URI to base64 encoding
+         * 4. Calls the OCR repository to extract text
+         * 5. Updates the UI state with results or errors
+         *
+         * The operation runs in a coroutine to avoid blocking the UI thread. Any errors
+         * during the process are caught and stored in the error state.
+         *
+         * @param uri The Android URI of the selected image. If null, the method returns early.
+         * @param context Android context needed to read the image file from the URI.
+         */
         fun onImagePicked(uri: Uri?, context: Context) {
             if (uri == null) return
             _imageUri.value = uri
@@ -56,6 +88,12 @@ class OcrViewModel
             }
         }
 
+        /**
+         * Resets all OCR state to initial values.
+         *
+         * Clears the selected image, extracted text lines, and any error messages.
+         * This is typically called when the user wants to start over with a new image.
+         */
         fun clearUi() {
             _imageUri.value = null
             _lines.value = emptyList()

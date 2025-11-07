@@ -7,7 +7,31 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
+/**
+ * Factory object for creating a configured VisionApi client.
+ *
+ * This object handles the setup and configuration of the Retrofit client for Google Cloud Vision API.
+ * It configures:
+ * - API key authentication via query parameter interceptor
+ * - JSON serialization/deserialization using Moshi
+ * - Base URL for Google Vision API endpoints
+ *
+ * The created client automatically adds the API key to all requests and handles JSON conversion
+ * between Kotlin data classes and the API's JSON format.
+ */
 object VisionClient {
+    /**
+     * Creates and configures a VisionApi client instance.
+     *
+     * This method sets up a complete Retrofit client with:
+     * 1. An OkHttp interceptor that automatically adds the API key as a query parameter
+     * 2. Moshi JSON converter for automatic serialization of Kotlin data classes
+     * 3. Base URL pointing to Google Cloud Vision API
+     *
+     * @param apiKey The Google Cloud Vision API key. This will be automatically added to all
+     *               requests as a query parameter (?key=YOUR_KEY).
+     * @return A configured VisionApi instance ready to make OCR requests to Google Vision API.
+     */
     fun create(apiKey: String): VisionApi {
         val keyInterceptor =
             Interceptor { chain ->

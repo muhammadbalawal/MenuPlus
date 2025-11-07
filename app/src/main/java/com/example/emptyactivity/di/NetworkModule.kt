@@ -11,16 +11,49 @@ import dagger.hilt.components.SingletonComponent
 import io.github.jan.supabase.SupabaseClient
 import javax.inject.Singleton
 
+/**
+ * Hilt module for providing network-related dependencies.
+ *
+ * This module configures and provides all external API clients used by the application:
+ * - Supabase client for authentication and database operations
+ * - Google Cloud Vision API client for OCR text extraction
+ * - Gemini AI client for menu analysis
+ *
+ * All clients are provided as singletons, meaning a single instance is shared across
+ * the entire application lifecycle. This is efficient and ensures consistent configuration.
+ */
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-    // --- Supabase client ---
+    /**
+     * Provides the Supabase client singleton.
+     *
+     * Supabase is used for:
+     * - User authentication (login, register, logout)
+     * - User profile storage (dietary preferences, allergies, etc.)
+     * - Language data storage
+     *
+     * @return Configured SupabaseClient instance with authentication, Postgres, and Storage enabled.
+     */
     @Provides
     @Singleton
     fun provideSupabaseClient(): SupabaseClient =
         SupabaseClientProvider.client
 
-    // --- Vision API client (Google Cloud Vision for OCR) ---
+    /**
+     * Provides the Google Cloud Vision API client for OCR operations.
+     *
+     * This client is configured with:
+     * - API key authentication (added automatically via interceptor)
+     * - Base URL pointing to Google Vision API
+     * - JSON serialization using Moshi
+     *
+     * Note: The API key is currently hardcoded. In production, this should be stored
+     * securely (e.g., in local.properties or a secure configuration service).
+     *
+     * @return Configured VisionApi instance ready to perform OCR on images.
+     * @throws IllegalArgumentException If the API key is blank or missing.
+     */
     @Provides
     @Singleton
     fun provideVisionApi(): VisionApi {
@@ -32,7 +65,15 @@ object NetworkModule {
         return VisionClient.create(key)
     }
 
-    // --- Gemini AI client (for menu analysis) ---
+    /**
+     * Provides the Gemini AI client for menu analysis.
+     *
+     * Gemini AI is used to analyze menu text and provide personalized recommendations
+     * based on user dietary profiles. The client uses Firebase AI SDK to interact with
+     * Google's Gemini model.
+     *
+     * @return Configured GeminiClient instance ready to analyze menu text.
+     */
     @Provides
     @Singleton
     fun provideGeminiClient(): GeminiClient = GeminiClient()

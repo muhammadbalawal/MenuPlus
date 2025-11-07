@@ -17,6 +17,37 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.emptyactivity.domain.model.User
 
+/**
+ * ImportMenu screen composable for analyzing menu text with Gemini AI.
+ *
+ * This screen displays OCR-extracted menu text and allows users to get personalized
+ * menu analysis using Gemini AI. The analysis considers the user's dietary profile:
+ * - Allergies (critical safety warnings)
+ * - Dietary restrictions (vegan, halal, kosher, etc.)
+ * - Dislikes (preferences to avoid)
+ * - Preferences (foods they enjoy)
+ * - Preferred language (for menu translation)
+ *
+ * The screen workflow:
+ * 1. Receives menu text from OCR screen via navigation parameter
+ * 2. Displays the extracted menu text (read-only)
+ * 3. User clicks "Analyze Menu with AI" button
+ * 4. Shows loading state while Gemini processes the menu
+ * 5. Displays personalized analysis with safety ratings and recommendations
+ *
+ * The screen handles various states:
+ * - No text: Shows error message directing user to OCR screen
+ * - Has text: Displays menu text and analysis button
+ * - Analyzing: Shows loading indicator
+ * - Success: Displays detailed AI analysis result
+ * - Error: Shows error dialog with message
+ *
+ * @param user The current authenticated user. Required to fetch their dietary profile
+ *             for personalized analysis.
+ * @param initialMenuText The menu text extracted from OCR, passed via navigation route.
+ *                        Empty string if navigating directly (shouldn't happen in normal flow).
+ * @param viewModel The ViewModel managing menu analysis state and business logic. Injected via Hilt.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ImportMenuScreen(

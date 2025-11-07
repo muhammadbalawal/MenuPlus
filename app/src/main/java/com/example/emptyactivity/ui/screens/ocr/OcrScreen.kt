@@ -34,7 +34,24 @@ import coil.compose.AsyncImage
 import com.example.emptyactivity.ui.navigation.Route
 
 /**
- * Composable-only screen. Uses the existing OcrViewModel (declared in a separate file).
+ * OCR screen composable for extracting text from menu images.
+ *
+ * This screen provides the user interface for the OCR workflow:
+ * 1. User selects an image from their device (gallery or camera)
+ * 2. Image is displayed and sent to Google Cloud Vision API for text extraction
+ * 3. Extracted text lines are displayed to the user
+ * 4. User can navigate to the analysis screen with the extracted text
+ *
+ * The screen handles various states:
+ * - Initial state: Shows prompt to pick an image
+ * - Loading state: Shows progress indicator while OCR is processing
+ * - Success state: Displays extracted text lines and "Analyze with AI" button
+ * - Error state: Shows error message with retry option
+ * - Empty result: Shows message if no text is detected
+ *
+ * @param navController Navigation controller for navigating to the ImportMenu screen
+ *                      with extracted text when user clicks "Analyze with AI".
+ * @param vm The ViewModel managing OCR state and business logic. Injected via Hilt.
  */
 @Composable
 fun OcrScreen(

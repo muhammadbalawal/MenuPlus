@@ -33,6 +33,19 @@ import com.example.emptyactivity.ui.screens.savedmenu.SavedMenuScreen
 import com.example.emptyactivity.ui.screens.settings.SettingsScreen
 
 
+/**
+ * Root composable that manages the main navigation structure based on authentication state.
+ *
+ * This composable observes the app's authentication state and displays the appropriate
+ * navigation graph:
+ * - Loading: Shows loading indicator while checking auth state
+ * - NotAuthenticated: Shows unauthenticated navigation (Landing, Login, Register)
+ * - NeedsOnboarding: Shows onboarding flow for new users
+ * - Authenticated: Shows main app navigation with bottom bar
+ *
+ * @param appViewModel The ViewModel managing app-level state (authentication, user data).
+ *                     Injected via Hilt.
+ */
 @Composable
 fun MenuPlusApp(
     appViewModel: MenuPlusAppViewModel = hiltViewModel(),
@@ -62,6 +75,12 @@ fun MenuPlusApp(
     }
 }
 
+/**
+ * Loading screen shown while checking authentication state.
+ *
+ * Displays a centered circular progress indicator while the app determines
+ * whether the user is authenticated and needs onboarding.
+ */
 @Composable
 private fun LoadingScreen() {
     Box(
@@ -72,6 +91,17 @@ private fun LoadingScreen() {
     }
 }
 
+/**
+ * Navigation graph for unauthenticated users.
+ *
+ * This graph handles the authentication flow:
+ * - Landing screen (entry point)
+ * - Login screen
+ * - Register screen
+ *
+ * Users can navigate between login and register, but cannot access the main app
+ * until they successfully authenticate.
+ */
 @Composable
 private fun UnauthenticatedNavGraph() {
     val navController = rememberNavController()
@@ -102,6 +132,21 @@ private fun UnauthenticatedNavGraph() {
     }
 }
 
+/**
+ * Main navigation graph for authenticated users.
+ *
+ * This graph provides the core app functionality with a bottom navigation bar:
+ * - SavedMenu: List of previously analyzed menus
+ * - Ocr: Screen for extracting text from menu images
+ * - ImportMenu: Screen for analyzing menu text with Gemini AI
+ * - Profile: User profile and dietary preferences
+ * - Settings: App settings and account management
+ *
+ * The graph includes a top bar (with settings button) and bottom navigation bar
+ * that are conditionally shown based on the current route.
+ *
+ * @param user The authenticated user. Required for user-specific screens and operations.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun AuthenticatedNavGraph(user: User) {
@@ -159,6 +204,21 @@ private fun AuthenticatedNavGraph(user: User) {
     }
 }
 
+/**
+ * Navigation graph for the onboarding flow.
+ *
+ * This graph is shown to newly registered users who haven't completed their
+ * dietary profile setup. The onboarding screen collects:
+ * - Preferred language
+ * - Allergies
+ * - Dietary restrictions
+ * - Food dislikes
+ * - Food preferences
+ *
+ * Once completed, the user is automatically moved to the authenticated navigation graph.
+ *
+ * @param user The newly registered user who needs to complete onboarding.
+ */
 @Composable
 fun OnboardingNavGraph(
     user: User,
@@ -180,6 +240,15 @@ fun OnboardingNavGraph(
     }
 }
 
+/**
+ * Determines whether the bottom navigation bar should be displayed.
+ *
+ * The bottom bar is shown on main app screens (SavedMenu, Ocr, ImportMenu, Profile)
+ * but hidden on secondary screens like Settings to provide a cleaner, focused experience.
+ *
+ * @param navController Navigation controller to access the current route.
+ * @return True if the bottom bar should be shown, false otherwise.
+ */
 @Composable
 private fun shouldShowBottomBar(navController: NavHostController): Boolean {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -194,6 +263,15 @@ private fun shouldShowBottomBar(navController: NavHostController): Boolean {
         )
 }
 
+/**
+ * Determines whether the top app bar should be displayed.
+ *
+ * The top bar (with settings button) is shown on main app screens to provide
+ * quick access to settings. It's hidden on secondary screens for a cleaner UI.
+ *
+ * @param navController Navigation controller to access the current route.
+ * @return True if the top bar should be shown, false otherwise.
+ */
 @Composable
 private fun shouldShowTopBar(navController: NavHostController): Boolean {
     val navBackStackEntry by navController.currentBackStackEntryAsState()

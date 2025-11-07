@@ -7,6 +7,20 @@ import com.google.firebase.ai.type.GenerativeBackend
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/**
+ * Client for interacting with Google's Gemini AI model via Firebase AI SDK.
+ *
+ * This client handles menu analysis by sending menu text and user dietary profile
+ * to Gemini AI and receiving personalized recommendations. The analysis includes:
+ * - Safety ratings (RED/YELLOW/GREEN) for each menu item
+ * - Allergy warnings and ingredient concerns
+ * - Dietary restriction violations
+ * - Personalized recommendations based on preferences
+ * - Menu translation to user's preferred language
+ *
+ * The client uses Firebase AI SDK which provides a unified interface to Google's
+ * generative AI models. It's configured as a singleton to ensure efficient resource usage.
+ */
 @Singleton
 class GeminiClient
     @Inject
@@ -21,6 +35,22 @@ class GeminiClient
                 .ai(backend = GenerativeBackend.googleAI())
                 .generativeModel(MODEL_NAME)
 
+        /**
+         * Analyzes a menu using Gemini AI based on the user's dietary profile.
+         *
+         * This method builds a comprehensive prompt that includes the menu text and
+         * all user dietary information, then sends it to Gemini for analysis. The AI
+         * returns a formatted analysis with safety ratings and recommendations.
+         *
+         * @param menuText The complete menu text extracted from OCR, typically a multi-line string.
+         * @param userLanguage The user's preferred language for menu translation (e.g., "English", "French").
+         * @param userAllergies List of allergens the user must avoid (critical safety information).
+         * @param userDietaryRestrictions List of dietary restrictions (vegan, halal, kosher, etc.).
+         * @param userDislikes List of foods the user prefers not to eat.
+         * @param userPreferences List of foods the user enjoys.
+         * @return Formatted analysis string with safety ratings, warnings, and recommendations.
+         *         Returns an error message string if the analysis fails.
+         */
         suspend fun analyzeMenu(
             menuText: String,
             userLanguage: String?,
@@ -52,6 +82,24 @@ class GeminiClient
                 "Error analyzing menu: ${e.message}"
             }
 
+        /**
+         * Builds the prompt sent to Gemini AI for menu analysis.
+         *
+         * This method constructs a detailed prompt that instructs Gemini on how to analyze
+         * the menu. The prompt includes:
+         * - User's complete dietary profile
+         * - The menu text to analyze
+         * - Detailed instructions on how to categorize items (RED/YELLOW/GREEN)
+         * - Formatting requirements for the response
+         *
+         * @param menuText The menu text to analyze.
+         * @param userLanguage User's preferred language for translation.
+         * @param allergies List of user allergies.
+         * @param dietaryRestrictions List of dietary restrictions.
+         * @param dislikes List of food dislikes.
+         * @param preferences List of food preferences.
+         * @return Complete prompt string ready to send to Gemini AI.
+         */
         private fun buildMenuAnalysisPrompt(
             menuText: String,
             userLanguage: String?,
