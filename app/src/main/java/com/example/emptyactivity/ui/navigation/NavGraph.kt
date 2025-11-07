@@ -17,8 +17,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.emptyactivity.domain.model.User
 import com.example.emptyactivity.ui.MenuPlusAppUiState
 import com.example.emptyactivity.ui.MenuPlusAppViewModel
+import com.example.emptyactivity.ui.components.TopBar
 import com.example.emptyactivity.ui.screens.auth.login.LoginScreen
 import com.example.emptyactivity.ui.screens.auth.register.RegisterScreen
 import com.example.emptyactivity.ui.screens.importmenu.ImportMenuScreen
@@ -27,6 +29,7 @@ import com.example.emptyactivity.ui.screens.ocr.OcrScreen
 import com.example.emptyactivity.ui.screens.onboarding.OnboardingScreen
 import com.example.emptyactivity.ui.screens.profile.ProfileScreen
 import com.example.emptyactivity.ui.screens.savedmenu.SavedMenuScreen
+import com.example.emptyactivity.ui.screens.settings.SettingsScreen
 
 
 @Composable
@@ -45,16 +48,15 @@ fun MenuPlusApp(
         }
 
         is MenuPlusAppUiState.NeedsOnboarding -> {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center,
-            ) {
-                OnboardingScreen()
-            }
+            OnboardingNavGraph(
+                user = (appUiState as MenuPlusAppUiState.NeedsOnboarding).user,
+            )
         }
 
         is MenuPlusAppUiState.Authenticated -> {
-            AuthenticatedNavGraph()
+            AuthenticatedNavGraph(
+                user = (appUiState as MenuPlusAppUiState.Authenticated).user,
+            )
         }
     }
 }
@@ -101,10 +103,19 @@ private fun UnauthenticatedNavGraph() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun AuthenticatedNavGraph() {
+private fun AuthenticatedNavGraph(user: User) {
     val navController = rememberNavController()
 
     Scaffold(
+        topBar = {
+            if (shouldShowTopBar(navController)) {
+                TopBar(
+                    onSettingsClick = {
+                        navController.navigate(Route.Settings)
+                    },
+                )
+            }
+        },
         bottomBar = {
             if (shouldShowBottomBar(navController)) {
                 BottomNavigationBar(navController)
@@ -124,9 +135,42 @@ private fun AuthenticatedNavGraph() {
                 OcrScreen()
             }
 
+            composable<Route.ImportMenu> {
+                ImportMenuScreen(user = user)
+            }
+
             composable<Route.Profile> {
                 ProfileScreen()
             }
+
+            composable<Route.Settings> {
+                SettingsScreen(
+                    user = user,
+                    onNavigateBack = { navController.navigateUp() },
+                    onLogout = {},
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun OnboardingNavGraph(
+    user: User,
+) {
+    val navController = rememberNavController()
+    
+
+    NavHost(
+        navController = navController,
+        startDestination = Route.Onboarding,
+    ) {
+        composable<Route.Onboarding> {
+            OnboardingScreen(
+                user = user,
+                onComplete = {
+                },
+            )
         }
     }
 }
@@ -139,7 +183,24 @@ private fun shouldShowBottomBar(navController: NavHostController): Boolean {
     return currentRoute in
         listOf(
             Route.SavedMenu::class.qualifiedName,
+            Route.Ocr::class.qualifiedName,
             Route.ImportMenu::class.qualifiedName,
             Route.Profile::class.qualifiedName,
         )
 }
+
+@Composable
+private fun shouldShowTopBar(navController: NavHostController): Boolean {
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+
+    return currentRoute in
+        listOf(
+            Route.SavedMenu::class.qualifiedName,
+            Route.Ocr::class.qualifiedName,
+            Route.ImportMenu::class.qualifiedName,
+            Route.Profile::class.qualifiedName,
+        )
+}
+
+

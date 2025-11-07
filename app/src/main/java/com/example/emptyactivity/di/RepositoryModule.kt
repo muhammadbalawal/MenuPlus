@@ -5,6 +5,8 @@ import com.example.emptyactivity.data.repository.auth.AuthRepository
 import com.example.emptyactivity.data.repository.auth.AuthRepositoryImpl
 import com.example.emptyactivity.data.repository.ocr.OcrRepository
 import com.example.emptyactivity.data.repository.ocr.OcrRepositoryImpl
+import com.example.emptyactivity.data.repository.profile.UserProfileRepository
+import com.example.emptyactivity.data.repository.profile.UserProfileRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -15,15 +17,22 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class RepositoryModule {
-    // Existing Auth binding (Binds = abstract)
+    // Auth repository binding
     @Binds
     @Singleton
     abstract fun bindAuthRepository(
         impl: AuthRepositoryImpl,
     ): AuthRepository
 
+    // User profile repository binding
+    @Binds
+    @Singleton
+    abstract fun bindUserProfileRepository(
+        impl: UserProfileRepositoryImpl,
+    ): UserProfileRepository
+
     companion object {
-        // New OCR provider (Provides = concrete)
+        // OCR repository provider (needs VisionApi dependency)
         @Provides
         @Singleton
         fun provideOcrRepository(api: VisionApi): OcrRepository =

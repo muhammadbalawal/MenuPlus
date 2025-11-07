@@ -1,6 +1,7 @@
 package com.example.emptyactivity.di
 
 import com.example.emptyactivity.BuildConfig
+import com.example.emptyactivity.data.remote.gemini.GeminiClient
 import com.example.emptyactivity.data.remote.supabase.SupabaseClientProvider
 import com.example.emptyactivity.data.remote.vision.VisionApi
 import com.example.emptyactivity.data.remote.vision.VisionClient
@@ -20,7 +21,7 @@ object NetworkModule {
     fun provideSupabaseClient(): SupabaseClient =
         SupabaseClientProvider.client
 
-    // --- Vision API client (Google Cloud Vision / Gemini OCR) ---
+    // --- Vision API client (Google Cloud Vision for OCR) ---
     @Provides
     @Singleton
     fun provideVisionApi(): VisionApi {
@@ -31,4 +32,9 @@ object NetworkModule {
         }
         return VisionClient.create(key)
     }
+
+    // --- Gemini AI client (for menu analysis) ---
+    @Provides
+    @Singleton
+    fun provideGeminiClient(): GeminiClient = GeminiClient()
 }

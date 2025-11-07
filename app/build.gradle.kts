@@ -9,6 +9,8 @@ plugins {
     id("org.jetbrains.kotlin.plugin.serialization")
     id("com.google.dagger.hilt.android")
     kotlin("kapt")
+
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -103,9 +105,14 @@ dependencies {
     implementation("io.ktor:ktor-client-core:3.0.1")
     implementation("io.ktor:ktor-utils:3.0.1")
 
-    // Moshi
+    // Moshi (for Vision API/OCR)
     implementation("com.squareup.moshi:moshi:1.15.1")
     implementation("com.squareup.moshi:moshi-kotlin:1.15.1")
+
+    // Firebase AI (for Gemini)
+    implementation(platform("com.google.firebase:firebase-bom:34.5.0"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-ai")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
@@ -116,7 +123,9 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 }
 
-kapt { correctErrorTypes = true }
+kapt {
+    correctErrorTypes = true
+}
 
 ktlint {
     android.set(true)

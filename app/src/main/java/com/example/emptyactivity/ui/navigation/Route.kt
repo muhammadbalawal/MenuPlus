@@ -25,4 +25,6 @@ sealed interface Route {
     @Serializable data class DetailedMenu(
         val menuId: String,
     ) : Route
+
+    @Serializable data object Settings : Route
 }
