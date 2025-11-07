@@ -29,13 +29,16 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import com.example.emptyactivity.ui.navigation.Route
 
 /**
  * Composable-only screen. Uses the existing OcrViewModel (declared in a separate file).
  */
 @Composable
 fun OcrScreen(
+    navController: NavHostController,
     vm: OcrViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
@@ -157,6 +160,17 @@ fun OcrScreen(
                     itemsIndexed(lines) { idx, line ->
                         Text(text = "${idx + 1}. $line")
                     }
+                }
+                
+                // Button to analyze with AI
+                Button(
+                    onClick = {
+                        val extractedText = vm.getExtractedText()
+                        navController.navigate(Route.ImportMenu(menuText = extractedText))
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Text("🤖 Analyze with AI")
                 }
             } else if (!loading && imageUri != null && error == null) {
                 Text(

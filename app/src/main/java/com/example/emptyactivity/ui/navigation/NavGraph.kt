@@ -17,6 +17,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.example.emptyactivity.domain.model.User
 import com.example.emptyactivity.ui.MenuPlusAppUiState
 import com.example.emptyactivity.ui.MenuPlusAppViewModel
@@ -132,11 +133,15 @@ private fun AuthenticatedNavGraph(user: User) {
             }
 
             composable<Route.Ocr> {
-                OcrScreen()
+                OcrScreen(navController = navController)
             }
 
-            composable<Route.ImportMenu> {
-                ImportMenuScreen(user = user)
+            composable<Route.ImportMenu> { backStackEntry ->
+                val route = backStackEntry.toRoute<Route.ImportMenu>()
+                ImportMenuScreen(
+                    user = user,
+                    initialMenuText = route.menuText,
+                )
             }
 
             composable<Route.Profile> {

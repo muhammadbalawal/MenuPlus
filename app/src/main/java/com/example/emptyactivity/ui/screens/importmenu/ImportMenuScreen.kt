@@ -7,6 +7,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,9 +21,17 @@ import com.example.emptyactivity.domain.model.User
 @Composable
 fun ImportMenuScreen(
     user: User,
+    initialMenuText: String = "",
     viewModel: ImportMenuViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    // Initialize menu text if provided (from OCR)
+    LaunchedEffect(initialMenuText) {
+        if (initialMenuText.isNotBlank()) {
+            viewModel.initializeMenuText(initialMenuText)
+        }
+    }
 
     if (uiState.errorMessage != null) {
         AlertDialog(

@@ -31,6 +31,11 @@ class OcrViewModel
         private val _error = MutableStateFlow<String?>(null)
         val error: StateFlow<String?> = _error
 
+        /**
+         * Get the extracted text as a single string (all lines joined with newlines)
+         */
+        fun getExtractedText(): String = lines.value.joinToString("\n")
+
         fun onImagePicked(uri: Uri?, context: Context) {
             if (uri == null) return
             _imageUri.value = uri

@@ -14,7 +14,9 @@ sealed interface Route {
 
     @Serializable data object SavedMenu : Route
 
-    @Serializable data object ImportMenu : Route
+    @Serializable data class ImportMenu(
+        val menuText: String = "",
+    ) : Route
 
     @Serializable data object Profile : Route
 
