@@ -26,10 +26,14 @@ fun ImportMenuScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    // Initialize menu text if provided (from OCR)
+    // Initialize menu text immediately if provided (from OCR)
+    // Use initialMenuText as key so it re-runs when text changes
     LaunchedEffect(initialMenuText) {
         if (initialMenuText.isNotBlank()) {
             viewModel.initializeMenuText(initialMenuText)
+        } else if (uiState.menuText.isBlank()) {
+            // If no text provided and state is blank, this shouldn't happen
+            // User should come from OCR screen
         }
     }
 
@@ -62,22 +66,55 @@ fun ImportMenuScreen(
                     .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            // 🧾 MENU TEXT CARD
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors =
-                    CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                    ),
-            ) {
-                Column(
-                    modifier = Modifier.padding(16.dp),
+            // 🧾 MENU TEXT DISPLAY (from OCR)
+            if (uiState.menuText.isNotBlank()) {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors =
+                        CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                        ),
                 ) {
-                    Text(
-                        text = uiState.menuText,
-                        style = MaterialTheme.typography.bodySmall,
-                        modifier = Modifier.heightIn(max = 200.dp),
-                    )
+                    Column(
+                        modifier = Modifier.padding(16.dp),
+                    ) {
+                        Text(
+                            text = "Extracted Menu Text:",
+                            style = MaterialTheme.typography.labelMedium,
+                            fontWeight = FontWeight.SemiBold,
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = uiState.menuText,
+                            style = MaterialTheme.typography.bodySmall,
+                            modifier = Modifier.heightIn(max = 200.dp),
+                        )
+                    }
+                }
+            } else {
+                // Show message if no text (shouldn't happen if coming from OCR)
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors =
+                        CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.errorContainer,
+                        ),
+                ) {
+                    Column(
+                        modifier = Modifier.padding(16.dp),
+                    ) {
+                        Text(
+                            text = "No menu text available",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onErrorContainer,
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = "Please scan a menu image from the OCR screen first.",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onErrorContainer,
+                        )
+                    }
                 }
             }
 

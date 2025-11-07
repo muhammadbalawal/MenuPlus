@@ -1,6 +1,5 @@
 package com.example.emptyactivity.di
 
-import com.example.emptyactivity.BuildConfig
 import com.example.emptyactivity.data.remote.gemini.GeminiClient
 import com.example.emptyactivity.data.remote.supabase.SupabaseClientProvider
 import com.example.emptyactivity.data.remote.vision.VisionApi

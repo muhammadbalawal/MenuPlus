@@ -23,6 +23,7 @@ class OcrViewModel
         val imageUri: StateFlow<Uri?> = _imageUri
 
         private val _lines = MutableStateFlow<List<String>>(emptyList())
+
         val lines: StateFlow<List<String>> = _lines
 
         private val _loading = MutableStateFlow(false)

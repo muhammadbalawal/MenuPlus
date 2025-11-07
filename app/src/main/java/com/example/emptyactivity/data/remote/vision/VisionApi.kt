@@ -6,5 +6,7 @@ import retrofit2.http.POST
 
 interface VisionApi {
     @POST("v1/images:annotate")
-    suspend fun annotate(@Body request: VisionRequest): VisionResponse
+    suspend fun annotate(
+        @Body request: VisionRequest,
+    ): VisionResponse
 }
