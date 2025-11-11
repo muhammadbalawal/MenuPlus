@@ -3,18 +3,6 @@ package com.example.emptyactivity.data.remote.vision
 import com.squareup.moshi.Json
 
 /**
- * Data Transfer Objects (DTOs) for Google Cloud Vision API requests and responses.
- *
- * These data classes represent the JSON structure expected by and returned from the Vision API.
- * They are automatically serialized/deserialized by Moshi when making API calls.
- *
- * Note: Only the fields we actually use are included here. The Vision API returns much more
- * detailed information (bounding boxes, confidence scores, etc.), but we only need the raw text.
- */
-
-// ---- Request DTOs ----
-
-/**
  * Top-level request wrapper for Vision API.
  *
  * The Vision API expects requests to be wrapped in a "requests" array, allowing batch processing
