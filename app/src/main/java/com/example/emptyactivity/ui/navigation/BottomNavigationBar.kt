@@ -59,12 +59,24 @@ fun BottomNavigationBar(navController: NavHostController) {
     }
 }
 
+/**
+ * Data class representing an item in the bottom navigation bar.
+ *
+ * @param route The route to navigate to when this item is clicked.
+ * @param label The text label displayed for this navigation item.
+ * @param icon The icon displayed for this navigation item.
+ */
 private data class BottomNavItem(
     val route: Route,
     val label: String,
     val icon: ImageVector,
 )
 
+/**
+ * List of navigation items displayed in the bottom navigation bar.
+ *
+ * This list defines the main navigation destinations available to authenticated users.
+ */
 private val bottomNavItems =
     listOf(
         BottomNavItem(
