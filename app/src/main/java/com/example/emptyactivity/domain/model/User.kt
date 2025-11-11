@@ -1,17 +1,17 @@
 package com.example.emptyactivity.domain.model
 
 /**
- * Domain model representing a user in the application.
+ * Domain model representing an authenticated user.
  *
- * This data class represents the core user entity with authentication and profile information.
- * It is used throughout the application to represent the current user's state and is derived
- * from Supabase authentication data.
+ * This model contains the core user information needed throughout the application.
+ * It's used to identify the current user and determine navigation flow (onboarding vs. main app).
  *
- * @param id The unique identifier for the user (from Supabase).
- * @param email The user's email address used for authentication.
- * @param name The user's display name, nullable if not set.
- * @param hasCompletedOnboarding Whether the user has completed the onboarding flow.
- * @param createdAt Timestamp of when the user account was created (in milliseconds since epoch).
+ * @param id Unique identifier for the user, typically from Supabase Auth.
+ * @param email User's email address used for authentication.
+ * @param name Optional display name for the user. May be null if not set.
+ * @param hasCompletedOnboarding True if the user has completed the dietary profile setup,
+ *                               false if they need to go through onboarding.
+ * @param createdAt Timestamp of when the user account was created (milliseconds since epoch).
  */
 data class User(
     val id: String,

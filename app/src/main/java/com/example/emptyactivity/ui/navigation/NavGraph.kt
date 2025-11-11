@@ -17,24 +17,34 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
+import com.example.emptyactivity.domain.model.User
 import com.example.emptyactivity.ui.MenuPlusAppUiState
 import com.example.emptyactivity.ui.MenuPlusAppViewModel
+import com.example.emptyactivity.ui.components.TopBar
 import com.example.emptyactivity.ui.screens.auth.login.LoginScreen
 import com.example.emptyactivity.ui.screens.auth.register.RegisterScreen
 import com.example.emptyactivity.ui.screens.importmenu.ImportMenuScreen
 import com.example.emptyactivity.ui.screens.landing.LandingScreen
+import com.example.emptyactivity.ui.screens.ocr.OcrScreen
 import com.example.emptyactivity.ui.screens.onboarding.OnboardingScreen
 import com.example.emptyactivity.ui.screens.profile.ProfileScreen
 import com.example.emptyactivity.ui.screens.savedmenu.SavedMenuScreen
+import com.example.emptyactivity.ui.screens.settings.SettingsScreen
+
 
 /**
- * Root composable for the MenuPlus application navigation.
+ * Root composable that manages the main navigation structure based on authentication state.
  *
- * This composable observes the application UI state and displays the appropriate
- * navigation graph based on authentication and onboarding status. It serves as the
- * entry point for all navigation in the app.
+ * This composable observes the app's authentication state and displays the appropriate
+ * navigation graph:
+ * - Loading: Shows loading indicator while checking auth state
+ * - NotAuthenticated: Shows unauthenticated navigation (Landing, Login, Register)
+ * - NeedsOnboarding: Shows onboarding flow for new users
+ * - Authenticated: Shows main app navigation with bottom bar
  *
- * @param appViewModel The ViewModel managing application-level UI state.
+ * @param appViewModel The ViewModel managing app-level state (authentication, user data).
+ *                     Injected via Hilt.
  */
 @Composable
 fun MenuPlusApp(
@@ -52,24 +62,24 @@ fun MenuPlusApp(
         }
 
         is MenuPlusAppUiState.NeedsOnboarding -> {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center,
-            ) {
-                OnboardingScreen()
-            }
+            OnboardingNavGraph(
+                user = (appUiState as MenuPlusAppUiState.NeedsOnboarding).user,
+            )
         }
 
         is MenuPlusAppUiState.Authenticated -> {
-            AuthenticatedNavGraph()
+            AuthenticatedNavGraph(
+                user = (appUiState as MenuPlusAppUiState.Authenticated).user,
+            )
         }
     }
 }
 
 /**
- * Loading screen shown while checking authentication status.
+ * Loading screen shown while checking authentication state.
  *
- * Displays a circular progress indicator centered on the screen.
+ * Displays a centered circular progress indicator while the app determines
+ * whether the user is authenticated and needs onboarding.
  */
 @Composable
 private fun LoadingScreen() {
@@ -84,10 +94,13 @@ private fun LoadingScreen() {
 /**
  * Navigation graph for unauthenticated users.
  *
- * This graph contains routes accessible to users who are not logged in:
- * - Landing: Initial welcome screen
- * - Login: User authentication screen
- * - Register: User registration screen
+ * This graph handles the authentication flow:
+ * - Landing screen (entry point)
+ * - Login screen
+ * - Register screen
+ *
+ * Users can navigate between login and register, but cannot access the main app
+ * until they successfully authenticate.
  */
 @Composable
 private fun UnauthenticatedNavGraph() {
@@ -120,21 +133,35 @@ private fun UnauthenticatedNavGraph() {
 }
 
 /**
- * Navigation graph for authenticated users.
+ * Main navigation graph for authenticated users.
  *
- * This graph contains routes accessible to users who are logged in and have completed onboarding:
- * - SavedMenu: List of saved restaurant menus
- * - ImportMenu: Screen for importing new menus
- * - Profile: User profile and settings
+ * This graph provides the core app functionality with a bottom navigation bar:
+ * - SavedMenu: List of previously analyzed menus
+ * - Ocr: Screen for extracting text from menu images
+ * - ImportMenu: Screen for analyzing menu text with Gemini AI
+ * - Profile: User profile and dietary preferences
+ * - Settings: App settings and account management
  *
- * The graph includes a bottom navigation bar for easy navigation between main screens.
+ * The graph includes a top bar (with settings button) and bottom navigation bar
+ * that are conditionally shown based on the current route.
+ *
+ * @param user The authenticated user. Required for user-specific screens and operations.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun AuthenticatedNavGraph() {
+private fun AuthenticatedNavGraph(user: User) {
     val navController = rememberNavController()
 
     Scaffold(
+        topBar = {
+            if (shouldShowTopBar(navController)) {
+                TopBar(
+                    onSettingsClick = {
+                        navController.navigate(Route.Settings)
+                    },
+                )
+            }
+        },
         bottomBar = {
             if (shouldShowBottomBar(navController)) {
                 BottomNavigationBar(navController)
@@ -150,13 +177,65 @@ private fun AuthenticatedNavGraph() {
                 SavedMenuScreen()
             }
 
-            composable<Route.ImportMenu> {
-                ImportMenuScreen()
+            composable<Route.Ocr> {
+                OcrScreen(navController = navController)
+            }
+
+            composable<Route.ImportMenu> { backStackEntry ->
+                val route = backStackEntry.toRoute<Route.ImportMenu>()
+                ImportMenuScreen(
+                    user = user,
+                    initialMenuText = route.menuText,
+                )
             }
 
             composable<Route.Profile> {
                 ProfileScreen()
             }
+
+            composable<Route.Settings> {
+                SettingsScreen(
+                    user = user,
+                    onNavigateBack = { navController.navigateUp() },
+                    onLogout = {},
+                )
+            }
+        }
+    }
+}
+
+/**
+ * Navigation graph for the onboarding flow.
+ *
+ * This graph is shown to newly registered users who haven't completed their
+ * dietary profile setup. The onboarding screen collects:
+ * - Preferred language
+ * - Allergies
+ * - Dietary restrictions
+ * - Food dislikes
+ * - Food preferences
+ *
+ * Once completed, the user is automatically moved to the authenticated navigation graph.
+ *
+ * @param user The newly registered user who needs to complete onboarding.
+ */
+@Composable
+fun OnboardingNavGraph(
+    user: User,
+) {
+    val navController = rememberNavController()
+    
+
+    NavHost(
+        navController = navController,
+        startDestination = Route.Onboarding,
+    ) {
+        composable<Route.Onboarding> {
+            OnboardingScreen(
+                user = user,
+                onComplete = {
+                },
+            )
         }
     }
 }
@@ -164,11 +243,11 @@ private fun AuthenticatedNavGraph() {
 /**
  * Determines whether the bottom navigation bar should be displayed.
  *
- * The bottom bar is only shown on main authenticated screens (SavedMenu, ImportMenu, Profile).
- * It is hidden on other screens like DetailedMenu or during navigation transitions.
+ * The bottom bar is shown on main app screens (SavedMenu, Ocr, ImportMenu, Profile)
+ * but hidden on secondary screens like Settings to provide a cleaner, focused experience.
  *
- * @param navController The navigation controller to check the current route.
- * @return true if the bottom bar should be shown, false otherwise.
+ * @param navController Navigation controller to access the current route.
+ * @return True if the bottom bar should be shown, false otherwise.
  */
 @Composable
 private fun shouldShowBottomBar(navController: NavHostController): Boolean {
@@ -178,7 +257,33 @@ private fun shouldShowBottomBar(navController: NavHostController): Boolean {
     return currentRoute in
         listOf(
             Route.SavedMenu::class.qualifiedName,
+            Route.Ocr::class.qualifiedName,
             Route.ImportMenu::class.qualifiedName,
             Route.Profile::class.qualifiedName,
         )
 }
+
+/**
+ * Determines whether the top app bar should be displayed.
+ *
+ * The top bar (with settings button) is shown on main app screens to provide
+ * quick access to settings. It's hidden on secondary screens for a cleaner UI.
+ *
+ * @param navController Navigation controller to access the current route.
+ * @return True if the top bar should be shown, false otherwise.
+ */
+@Composable
+private fun shouldShowTopBar(navController: NavHostController): Boolean {
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+
+    return currentRoute in
+        listOf(
+            Route.SavedMenu::class.qualifiedName,
+            Route.Ocr::class.qualifiedName,
+            Route.ImportMenu::class.qualifiedName,
+            Route.Profile::class.qualifiedName,
+        )
+}
+
+

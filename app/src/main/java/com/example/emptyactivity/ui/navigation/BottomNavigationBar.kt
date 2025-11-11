@@ -16,17 +16,18 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 
 /**
- * Bottom navigation bar for authenticated users.
+ * Bottom navigation bar composable for main app navigation.
  *
- * This composable displays a Material 3 navigation bar with three main destinations:
- * - SavedMenu: View saved restaurant menus
- * - Scanning: Scan new menus (not yet implemented)
- * - Profile: User profile and settings
+ * This navigation bar provides persistent access to the three main app sections:
+ * - Menu: Saved menus screen
+ * - Scan: OCR screen for extracting text from images
+ * - Profile: User profile screen
  *
- * The bar highlights the currently selected route and handles navigation with state saving
- * and restoration for better user experience.
+ * The bar uses Material 3 NavigationBar with icons and labels. It highlights the
+ * currently selected route and handles navigation with state saving/restoration
+ * to maintain scroll position when navigating between tabs.
  *
- * @param navController The navigation controller for handling route changes.
+ * @param navController Navigation controller for handling route navigation.
  */
 @Composable
 fun BottomNavigationBar(navController: NavHostController) {
@@ -84,7 +85,7 @@ private val bottomNavItems =
             icon = Icons.Default.Restaurant,
         ),
         BottomNavItem(
-            route = Route.Scanning,
+            route = Route.Ocr,
             label = "Scan",
             icon = Icons.Default.QrCodeScanner,
         ),

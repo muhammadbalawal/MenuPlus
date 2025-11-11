@@ -167,15 +167,54 @@ class AuthRepositoryImpl
                 Result.Error(e.message ?: "Logout failed", e)
             }
 
-        /**
-         * Extension function to convert Supabase UserInfo to domain User model.
-         *
-         * This function extracts user data from Supabase's UserInfo object, including
-         * metadata fields like name and onboarding_completed status. It safely handles
-         * missing or null values with default fallbacks.
-         *
-         * @return A domain User object with data extracted from UserInfo.
-         */
+        override suspend fun hasCompletedOnboarding(): Boolean =
+            try {
+                val session = auth.currentSessionOrNull()
+                val metadata = session?.user?.userMetadata
+                metadata
+                    ?.get("onboarding_completed")
+                    ?.jsonPrimitive
+                    ?.content
+                    ?.toBoolean() ?: false
+            } catch (e: Exception) {
+                Log.e(TAG, "Error checking onboarding status", e)
+                false
+            }
+
+        override suspend fun completeOnboarding(): Result<Unit> =
+            try {
+                Log.d(TAG, "Marking onboarding as complete")
+    
+                auth.updateUser {
+                    data =
+                        buildJsonObject {
+                            put("onboarding_completed", true)
+                        }
+                }
+    
+                Log.d(TAG, "Onboarding completed successfully")
+                Result.Success(Unit)
+            } catch (e: Exception) {
+                Log.e(TAG, "Error completing onboarding", e)
+                Result.Error(e.message ?: "Failed to update onboarding status", e)
+            }
+
+        override suspend fun refreshSession(): Result<User?> =
+            try {
+                Log.d(TAG, "Refreshing session")
+    
+                // Force refresh the session to get updated user metadata
+                auth.refreshCurrentSession()
+    
+                val user = getCurrentUser()
+                Log.d(TAG, "Session refreshed, user: $user")
+    
+                Result.Success(user)
+            } catch (e: Exception) {
+                Log.e(TAG, "Error refreshing session", e)
+                Result.Error(e.message ?: "Failed to refresh session", e)
+            }
+
         private fun UserInfo.toUser(): User {
             val metadata = this.userMetadata
             val name = metadata?.get("name")?.jsonPrimitive?.content

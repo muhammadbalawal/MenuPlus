@@ -1,20 +1,28 @@
 package com.example.emptyactivity.util
 
 /**
- * Sealed class representing the result of an operation.
+ * Sealed class representing the result of an asynchronous operation.
  *
- * This is a generic result wrapper used throughout the application to handle
- * asynchronous operations with three possible states: Success, Error, or Loading.
- * It provides type-safe error handling and eliminates the need for try-catch blocks
- * in many cases.
+ * This is a common pattern for handling async operations in Kotlin. It provides type-safe
+ * handling of three possible states: success, error, and loading. This eliminates the need
+ * for nullable return types and provides clear state management throughout the app.
  *
- * @param T The type of data contained in a Success result.
+ * Usage example:
+ * ```
+ * when (val result = someAsyncOperation()) {
+ *     is Result.Success -> handleSuccess(result.data)
+ *     is Result.Error -> handleError(result.message)
+ *     is Result.Loading -> showLoadingIndicator()
+ * }
+ * ```
+ *
+ * @param T The type of data returned on success. Use Unit if no data is returned.
  */
 sealed class Result<out T> {
     /**
      * Represents a successful operation with data.
      *
-     * @param data The result data of the operation.
+     * @param data The result data from the successful operation.
      */
     data class Success<out T>(
         val data: T,
@@ -23,8 +31,9 @@ sealed class Result<out T> {
     /**
      * Represents a failed operation with an error message.
      *
-     * @param message A human-readable error message describing what went wrong.
-     * @param exception Optional exception that caused the error, for debugging purposes.
+     * @param message Human-readable error message describing what went wrong.
+     * @param exception Optional exception that caused the error. Useful for logging
+     *                  and debugging, but not always necessary for UI display.
      */
     data class Error(
         val message: String,
@@ -34,7 +43,8 @@ sealed class Result<out T> {
     /**
      * Represents an operation that is currently in progress.
      *
-     * This state is typically used to show loading indicators in the UI.
+     * This state is useful for showing loading indicators in the UI while
+     * an async operation is executing.
      */
     data object Loading : Result<Nothing>()
 }

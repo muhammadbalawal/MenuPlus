@@ -4,15 +4,13 @@ import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-
     id("org.jetbrains.kotlin.plugin.compose")
-
     id("org.jlleitschuh.gradle.ktlint")
-
     id("org.jetbrains.kotlin.plugin.serialization")
-
     id("com.google.dagger.hilt.android")
     kotlin("kapt")
+
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -26,10 +24,11 @@ android {
         versionCode = 1
         versionName = "1.0"
 
+        // Expose the Vision key from local.properties into BuildConfig
+        buildConfigField("String", "GCP_VISION_KEY", "\"${project.findProperty("GCP_VISION_KEY") ?: ""}\"")
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
+        vectorDrawables { useSupportLibrary = true }
     }
 
     buildTypes {
@@ -41,29 +40,37 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+
     kotlin {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_17)
-        }
+        compilerOptions { jvmTarget.set(JvmTarget.JVM_17) }
     }
+
     buildFeatures {
         compose = true
+        buildConfig = true // <-- enables BuildConfig generation for custom fields
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.15"
-    }
+
+    composeOptions { kotlinCompilerExtensionVersion = "1.5.15" }
+
     packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
+        resources { excludes += "/META-INF/{AL2.0,LGPL2.1}" }
     }
 }
 
 dependencies {
+
+    implementation("io.coil-kt:coil-compose:2.6.0")
+
+
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-moshi:2.11.0")
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+
     // Core Android
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
@@ -79,9 +86,6 @@ dependencies {
 
     // Navigation
     implementation("androidx.navigation:navigation-compose:2.8.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
-    implementation("androidx.compose.material:material-icons-extended:1.7.5")
-
 
     // Kotlin Serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
@@ -100,6 +104,15 @@ dependencies {
     implementation("io.ktor:ktor-client-android:3.0.1")
     implementation("io.ktor:ktor-client-core:3.0.1")
     implementation("io.ktor:ktor-utils:3.0.1")
+
+    // Moshi (for Vision API/OCR)
+    implementation("com.squareup.moshi:moshi:1.15.1")
+    implementation("com.squareup.moshi:moshi-kotlin:1.15.1")
+
+    // Firebase AI (for Gemini)
+    implementation(platform("com.google.firebase:firebase-bom:34.5.0"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-ai")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
@@ -125,8 +138,5 @@ ktlint {
         reporter(ReporterType.JSON)
         reporter(ReporterType.HTML)
     }
-    // Disable annoying rules
-    filter {
-        exclude("**/build/**")
-    }
+    filter { exclude("**/build/**") }
 }

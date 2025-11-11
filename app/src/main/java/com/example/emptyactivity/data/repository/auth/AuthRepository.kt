@@ -68,4 +68,10 @@ interface AuthRepository {
      * @return A Result indicating success or failure of the logout operation.
      */
     suspend fun logout(): Result<Unit>
+
+    suspend fun hasCompletedOnboarding(): Boolean
+
+    suspend fun completeOnboarding(): Result<Unit>
+
+    suspend fun refreshSession(): Result<User?>
 }
