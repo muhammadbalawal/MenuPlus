@@ -27,7 +27,15 @@ import com.example.emptyactivity.ui.screens.onboarding.OnboardingScreen
 import com.example.emptyactivity.ui.screens.profile.ProfileScreen
 import com.example.emptyactivity.ui.screens.savedmenu.SavedMenuScreen
 
-
+/**
+ * Root composable for the MenuPlus application navigation.
+ *
+ * This composable observes the application UI state and displays the appropriate
+ * navigation graph based on authentication and onboarding status. It serves as the
+ * entry point for all navigation in the app.
+ *
+ * @param appViewModel The ViewModel managing application-level UI state.
+ */
 @Composable
 fun MenuPlusApp(
     appViewModel: MenuPlusAppViewModel = hiltViewModel(),
@@ -58,6 +66,11 @@ fun MenuPlusApp(
     }
 }
 
+/**
+ * Loading screen shown while checking authentication status.
+ *
+ * Displays a circular progress indicator centered on the screen.
+ */
 @Composable
 private fun LoadingScreen() {
     Box(
@@ -68,6 +81,14 @@ private fun LoadingScreen() {
     }
 }
 
+/**
+ * Navigation graph for unauthenticated users.
+ *
+ * This graph contains routes accessible to users who are not logged in:
+ * - Landing: Initial welcome screen
+ * - Login: User authentication screen
+ * - Register: User registration screen
+ */
 @Composable
 private fun UnauthenticatedNavGraph() {
     val navController = rememberNavController()
@@ -98,6 +119,16 @@ private fun UnauthenticatedNavGraph() {
     }
 }
 
+/**
+ * Navigation graph for authenticated users.
+ *
+ * This graph contains routes accessible to users who are logged in and have completed onboarding:
+ * - SavedMenu: List of saved restaurant menus
+ * - ImportMenu: Screen for importing new menus
+ * - Profile: User profile and settings
+ *
+ * The graph includes a bottom navigation bar for easy navigation between main screens.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun AuthenticatedNavGraph() {
@@ -130,6 +161,15 @@ private fun AuthenticatedNavGraph() {
     }
 }
 
+/**
+ * Determines whether the bottom navigation bar should be displayed.
+ *
+ * The bottom bar is only shown on main authenticated screens (SavedMenu, ImportMenu, Profile).
+ * It is hidden on other screens like DetailedMenu or during navigation transitions.
+ *
+ * @param navController The navigation controller to check the current route.
+ * @return true if the bottom bar should be shown, false otherwise.
+ */
 @Composable
 private fun shouldShowBottomBar(navController: NavHostController): Boolean {
     val navBackStackEntry by navController.currentBackStackEntryAsState()

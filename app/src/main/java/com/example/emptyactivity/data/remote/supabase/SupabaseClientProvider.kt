@@ -7,9 +7,25 @@ import io.github.jan.supabase.postgrest.Postgrest
 import io.github.jan.supabase.storage.Storage
 
 /**
- * Supabase client singleton.
+ * Provider for the Supabase client singleton instance.
+ *
+ * This object provides lazy initialization of the Supabase client with all required
+ * plugins (Auth, PostgREST, Storage). The client is configured with auto-refresh
+ * and auto-load from storage enabled for seamless authentication state management.
+ *
+ * The client is initialized lazily on first access, ensuring it's only created when needed.
  */
 object SupabaseClientProvider {
+    /**
+     * The Supabase client instance with Auth, PostgREST, and Storage plugins.
+     *
+     * This client is configured with:
+     * - Auth plugin with auto-refresh and auto-load from storage
+     * - PostgREST plugin for database operations
+     * - Storage plugin for file storage operations
+     *
+     * The client is initialized lazily on first access.
+     */
     val client: SupabaseClient by lazy {
         createSupabaseClient(
             supabaseUrl = "https://sofybacejzvsmohggujv.supabase.co",
