@@ -29,6 +29,7 @@ class RegisterViewModel
         private val registerUseCase: RegisterUseCase,
     ) : ViewModel() {
         private val _uiState = MutableStateFlow(RegisterUiState())
+
         /**
          * The current UI state for the registration screen.
          *

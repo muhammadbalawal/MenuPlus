@@ -29,6 +29,7 @@ class LoginViewModel
         private val loginUseCase: LoginUseCase,
     ) : ViewModel() {
         private val _uiState = MutableStateFlow(LoginUiState())
+
         /**
          * The current UI state for the login screen.
          *
