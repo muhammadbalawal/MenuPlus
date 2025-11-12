@@ -1,39 +1,39 @@
 package com.example.emptyactivity.ui.screens.auth.register
 
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.compose.material3.TextFieldDefaults
 import com.example.emptyactivity.ui.theme.PrestigeBlack
 import com.example.emptyactivity.ui.theme.RoyalGold
 
@@ -69,41 +69,36 @@ fun RegisterScreen(
     }
 
     Box(
-        modifier =
-            Modifier
-                .fillMaxSize()
-                .background(color = PrestigeBlack)
-                .safeDrawingPadding(),
-    ) {
-        // Background glow effect
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = PrestigeBlack)
+            .safeDrawingPadding(),
+    )
+    {// Background glow effect
         Canvas(
-            modifier =
-                Modifier
-                    .align(Alignment.TopCenter)
-                    .offset(y = (-100).dp)
-                    .size(400.dp),
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .offset(y = (-100).dp)
+                .size(400.dp)
         ) {
             drawCircle(
-                brush =
-                    Brush.radialGradient(
-                        colors =
-                            listOf(
-                                RoyalGold.copy(alpha = 0.15f),
-                                RoyalGold.copy(alpha = 0.08f),
-                                Color.Transparent,
-                            ),
-                        radius = size.minDimension / 2f,
+                brush = Brush.radialGradient(
+                    colors = listOf(
+                        RoyalGold.copy(alpha = 0.15f),
+                        RoyalGold.copy(alpha = 0.08f),
+                        Color.Transparent,
                     ),
+                    radius = size.minDimension / 2f
+                ),
                 radius = size.minDimension / 2f,
-                center = center,
+                center = center
             )
         }
         Column(
-            modifier =
-                Modifier
-                    .fillMaxSize()
-                    .verticalScroll(rememberScrollState())
-                    .padding(24.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
@@ -114,25 +109,21 @@ fun RegisterScreen(
                 fontSize = 42.sp,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
-                style =
-                    TextStyle(
-                        brush =
-                            Brush.linearGradient(
-                                colors =
-                                    listOf(
-                                        Color(0xFF7A5A00),
-                                        RoyalGold,
-                                        Color(0xFFFFF4C8),
-                                        Color(0xFFD4AF37),
-                                    ),
-                            ),
-                        shadow =
-                            Shadow(
-                                color = Color(0xAA8B7500),
-                                offset = Offset(1f, 1f),
-                                blurRadius = 4f,
-                            ),
+                style = TextStyle(
+                    brush = Brush.linearGradient(
+                        colors = listOf(
+                            Color(0xFF7A5A00),
+                            RoyalGold,
+                            Color(0xFFFFF4C8),
+                            Color(0xFFD4AF37),
+                        )
                     ),
+                    shadow = Shadow(
+                        color = Color(0xAA8B7500),
+                        offset = Offset(1f, 1f),
+                        blurRadius = 4f
+                    )
+                ),
                 color = Color.Unspecified,
             )
 
@@ -156,19 +147,18 @@ fun RegisterScreen(
                     Icon(
                         Icons.Default.Person,
                         contentDescription = null,
-                        tint = RoyalGold.copy(alpha = 0.7f),
+                        tint = RoyalGold.copy(alpha = 0.7f)
                     )
                 },
                 singleLine = true,
-                colors =
-                    TextFieldDefaults.outlinedTextFieldColors(
-                        focusedBorderColor = RoyalGold,
-                        unfocusedBorderColor = Color.White.copy(alpha = 0.3f),
-                        textColor = Color.White,
-                        cursorColor = RoyalGold,
-                        focusedLabelColor = Color.White.copy(alpha = 0.6f),
-                        unfocusedLabelColor = Color.White.copy(alpha = 0.6f),
-                    ),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = RoyalGold,
+                    unfocusedBorderColor = Color.White.copy(alpha = 0.3f),
+                    textColor = Color.White,
+                    cursorColor = RoyalGold,
+                    focusedLabelColor = Color.White.copy(alpha = 0.6f),
+                    unfocusedLabelColor = Color.White.copy(alpha = 0.6f),
+                ),
                 shape = RoundedCornerShape(16.dp),
                 modifier = Modifier.fillMaxWidth(),
             )
@@ -184,20 +174,19 @@ fun RegisterScreen(
                     Icon(
                         Icons.Default.Email,
                         contentDescription = null,
-                        tint = RoyalGold.copy(alpha = 0.7f),
+                        tint = RoyalGold.copy(alpha = 0.7f)
                     )
                 },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                colors =
-                    TextFieldDefaults.outlinedTextFieldColors(
-                        focusedBorderColor = RoyalGold,
-                        unfocusedBorderColor = Color.White.copy(alpha = 0.3f),
-                        textColor = Color.White,
-                        cursorColor = RoyalGold,
-                        focusedLabelColor = Color.White.copy(alpha = 0.6f),
-                        unfocusedLabelColor = Color.White.copy(alpha = 0.6f),
-                    ),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = RoyalGold,
+                    unfocusedBorderColor = Color.White.copy(alpha = 0.3f),
+                    textColor = Color.White,
+                    cursorColor = RoyalGold,
+                    focusedLabelColor = Color.White.copy(alpha = 0.6f),
+                    unfocusedLabelColor = Color.White.copy(alpha = 0.6f),
+                ),
                 shape = RoundedCornerShape(16.dp),
                 modifier = Modifier.fillMaxWidth(),
             )
@@ -213,40 +202,37 @@ fun RegisterScreen(
                     Icon(
                         Icons.Default.Lock,
                         contentDescription = null,
-                        tint = RoyalGold.copy(alpha = 0.7f),
+                        tint = RoyalGold.copy(alpha = 0.7f)
                     )
                 },
                 singleLine = true,
-                visualTransformation =
-                    if (uiState.isPasswordVisible) {
-                        VisualTransformation.None
-                    } else {
-                        PasswordVisualTransformation()
-                    },
+                visualTransformation = if (uiState.isPasswordVisible) {
+                    VisualTransformation.None
+                } else {
+                    PasswordVisualTransformation()
+                },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 trailingIcon = {
                     IconButton(onClick = { viewModel.onTogglePasswordVisibility() }) {
                         Icon(
-                            imageVector =
-                                if (uiState.isPasswordVisible) {
-                                    Icons.Default.VisibilityOff
-                                } else {
-                                    Icons.Default.Visibility
-                                },
+                            imageVector = if (uiState.isPasswordVisible) {
+                                Icons.Default.VisibilityOff
+                            } else {
+                                Icons.Default.Visibility
+                            },
                             contentDescription = "Toggle password visibility",
-                            tint = RoyalGold.copy(alpha = 0.7f),
+                            tint = RoyalGold.copy(alpha = 0.7f)
                         )
                     }
                 },
-                colors =
-                    TextFieldDefaults.outlinedTextFieldColors(
-                        focusedBorderColor = RoyalGold,
-                        unfocusedBorderColor = Color.White.copy(alpha = 0.3f),
-                        textColor = Color.White,
-                        cursorColor = RoyalGold,
-                        focusedLabelColor = Color.White.copy(alpha = 0.6f),
-                        unfocusedLabelColor = Color.White.copy(alpha = 0.6f),
-                    ),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = RoyalGold,
+                    unfocusedBorderColor = Color.White.copy(alpha = 0.3f),
+                    textColor = Color.White,
+                    cursorColor = RoyalGold,
+                    focusedLabelColor = Color.White.copy(alpha = 0.6f),
+                    unfocusedLabelColor = Color.White.copy(alpha = 0.6f),
+                ),
                 shape = RoundedCornerShape(16.dp),
                 modifier = Modifier.fillMaxWidth(),
             )
@@ -262,26 +248,24 @@ fun RegisterScreen(
                     Icon(
                         Icons.Default.Lock,
                         contentDescription = null,
-                        tint = RoyalGold.copy(alpha = 0.7f),
+                        tint = RoyalGold.copy(alpha = 0.7f)
                     )
                 },
                 singleLine = true,
-                visualTransformation =
-                    if (uiState.isPasswordVisible) {
-                        VisualTransformation.None
-                    } else {
-                        PasswordVisualTransformation()
-                    },
+                visualTransformation = if (uiState.isPasswordVisible) {
+                    VisualTransformation.None
+                } else {
+                    PasswordVisualTransformation()
+                },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                colors =
-                    TextFieldDefaults.outlinedTextFieldColors(
-                        focusedBorderColor = RoyalGold,
-                        unfocusedBorderColor = Color.White.copy(alpha = 0.3f),
-                        textColor = Color.White,
-                        cursorColor = RoyalGold,
-                        focusedLabelColor = Color.White.copy(alpha = 0.6f),
-                        unfocusedLabelColor = Color.White.copy(alpha = 0.6f),
-                    ),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = RoyalGold,
+                    unfocusedBorderColor = Color.White.copy(alpha = 0.3f),
+                    textColor = Color.White,
+                    cursorColor = RoyalGold,
+                    focusedLabelColor = Color.White.copy(alpha = 0.6f),
+                    unfocusedLabelColor = Color.White.copy(alpha = 0.6f),
+                ),
                 shape = RoundedCornerShape(16.dp),
                 modifier = Modifier.fillMaxWidth(),
             )
@@ -295,17 +279,15 @@ fun RegisterScreen(
                 onClick = { viewModel.onRegisterClick() },
                 enabled = !uiState.isLoading,
                 shape = RoundedCornerShape(28.dp),
-                colors =
-                    ButtonDefaults.buttonColors(
-                        containerColor = RoyalGold,
-                        contentColor = PrestigeBlack,
-                        disabledContainerColor = RoyalGold.copy(alpha = 0.5f),
-                        disabledContentColor = PrestigeBlack.copy(alpha = 0.5f),
-                    ),
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .height(56.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = RoyalGold,
+                    contentColor = PrestigeBlack,
+                    disabledContainerColor = RoyalGold.copy(alpha = 0.5f),
+                    disabledContentColor = PrestigeBlack.copy(alpha = 0.5f),
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp),
             ) {
                 if (uiState.isLoading) {
                     CircularProgressIndicator(

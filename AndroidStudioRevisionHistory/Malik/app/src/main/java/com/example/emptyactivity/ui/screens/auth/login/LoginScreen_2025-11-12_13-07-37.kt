@@ -1,6 +1,7 @@
 package com.example.emptyactivity.ui.screens.auth.login
 
 
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -12,7 +13,6 @@ import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -65,40 +65,37 @@ fun LoginScreen(
         )
     }
     Box(
-        modifier =
-            Modifier
-                .fillMaxSize()
-                .background(color = PrestigeBlack)
-                .safeDrawingPadding(),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = PrestigeBlack)
+            .safeDrawingPadding(),
     ) {
         // Background glow effect
         Canvas(
-            modifier =
-                Modifier
-                    .align(Alignment.TopCenter)
-                    .offset(y = (-100).dp)
-                    .size(400.dp),
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .offset(y = (-100).dp)
+                .size(400.dp)
         ) {
+
             drawCircle(
-                brush =
-                    Brush.radialGradient(
-                        colors =
-                            listOf(
-                                RoyalGold.copy(alpha = 0.15f),
-                                RoyalGold.copy(alpha = 0.08f),
-                                Color.Transparent,
-                            ),
-                        radius = size.minDimension / 2f,
+                brush = Brush.radialGradient(
+                    colors = listOf(
+                        RoyalGold.copy(alpha = 0.15f),
+                        RoyalGold.copy(alpha = 0.08f),
+                        Color.Transparent,
                     ),
+                    radius = size.minDimension / 2f
+                ),
                 radius = size.minDimension / 2f,
-                center = center,
+                center = center
             )
+
         }
         Column(
-            modifier =
-                Modifier
-                    .fillMaxSize()
-                    .padding(24.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
@@ -108,26 +105,23 @@ fun LoginScreen(
                 fontSize = 42.sp,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
-                style =
-                    TextStyle(
-                        brush =
-                            Brush.linearGradient(
-                                colors =
-                                    listOf(
-                                        Color(0xFF7A5A00),
-                                        RoyalGold,
-                                        Color(0xFFFFF4C8),
-                                        Color(0xFFD4AF37),
-                                    ),
-                            ),
-                        shadow =
-                            Shadow(
-                                color = Color(0xAA8B7500),
-                                offset = Offset(1f, 1f),
-                                blurRadius = 4f,
-                            ),
+                style = TextStyle(
+                    brush = Brush.linearGradient(
+                        colors = listOf(
+                            Color(0xFF7A5A00),
+                            RoyalGold,
+                            Color(0xFFFFF4C8),
+                            Color(0xFFD4AF37),
+                        )
                     ),
+                    shadow = Shadow(
+                        color = Color(0xAA8B7500),
+                        offset = Offset(1f, 1f),
+                        blurRadius = 4f
+                    )
+                ),
                 color = Color.Unspecified,
+
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -150,20 +144,19 @@ fun LoginScreen(
                     Icon(
                         Icons.Default.Email,
                         contentDescription = null,
-                        tint = RoyalGold.copy(alpha = 0.7f),
+                        tint = RoyalGold.copy(alpha = 0.7f)
                     )
                 },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                colors =
-                    TextFieldDefaults.outlinedTextFieldColors(
-                        focusedBorderColor = RoyalGold,
-                        unfocusedBorderColor = Color.White.copy(alpha = 0.3f),
-                        textColor = Color.White,
-                        cursorColor = RoyalGold,
-                        focusedLabelColor = Color.White.copy(alpha = 0.6f),
-                        unfocusedLabelColor = Color.White.copy(alpha = 0.6f),
-                    ),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = RoyalGold,
+                    unfocusedBorderColor = Color.White.copy(alpha = 0.3f),
+                    textColor = Color.White,
+                    cursorColor = RoyalGold,
+                    focusedLabelColor = Color.White.copy(alpha = 0.6f),
+                    unfocusedLabelColor = Color.White.copy(alpha = 0.6f),
+                ),
                 shape = RoundedCornerShape(16.dp),
                 modifier = Modifier.fillMaxWidth(),
             )
@@ -179,40 +172,37 @@ fun LoginScreen(
                     Icon(
                         Icons.Default.Lock,
                         contentDescription = null,
-                        tint = RoyalGold.copy(alpha = 0.7f),
+                        tint = RoyalGold.copy(alpha = 0.7f)
                     )
                 },
                 singleLine = true,
-                visualTransformation =
-                    if (uiState.isPasswordVisible) {
-                        VisualTransformation.None
-                    } else {
-                        PasswordVisualTransformation()
-                    },
+                visualTransformation = if (uiState.isPasswordVisible) {
+                    VisualTransformation.None
+                } else {
+                    PasswordVisualTransformation()
+                },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 trailingIcon = {
                     IconButton(onClick = { viewModel.onTogglePasswordVisibility() }) {
                         Icon(
-                            imageVector =
-                                if (uiState.isPasswordVisible) {
-                                    Icons.Default.VisibilityOff
-                                } else {
-                                    Icons.Default.Visibility
-                                },
+                            imageVector = if (uiState.isPasswordVisible) {
+                                Icons.Default.VisibilityOff
+                            } else {
+                                Icons.Default.Visibility
+                            },
                             contentDescription = "Toggle password visibility",
-                            tint = RoyalGold.copy(alpha = 0.7f),
+                            tint = RoyalGold.copy(alpha = 0.7f)
                         )
                     }
                 },
-                colors =
-                    TextFieldDefaults.outlinedTextFieldColors(
-                        focusedBorderColor = RoyalGold,
-                        unfocusedBorderColor = Color.White.copy(alpha = 0.3f),
-                        textColor = Color.White,
-                        cursorColor = RoyalGold,
-                        focusedLabelColor = Color.White.copy(alpha = 0.6f),
-                        unfocusedLabelColor = Color.White.copy(alpha = 0.6f),
-                    ),
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = RoyalGold,
+                    unfocusedBorderColor = Color.White.copy(alpha = 0.3f),
+                    textColor = Color.White,
+                    cursorColor = RoyalGold,
+                    focusedLabelColor = Color.White.copy(alpha = 0.6f),
+                    unfocusedLabelColor = Color.White.copy(alpha = 0.6f),
+                ),
                 shape = RoundedCornerShape(16.dp),
                 modifier = Modifier.fillMaxWidth(),
             )
@@ -221,18 +211,9 @@ fun LoginScreen(
             //
 
 
-            // Login Button
             Button(
                 onClick = { viewModel.onLoginClick() },
                 enabled = !uiState.isLoading,
-                shape = RoundedCornerShape(28.dp),
-                colors =
-                    ButtonDefaults.buttonColors(
-                        containerColor = RoyalGold,
-                        contentColor = PrestigeBlack,
-                        disabledContainerColor = RoyalGold.copy(alpha = 0.5f),
-                        disabledContentColor = PrestigeBlack.copy(alpha = 0.5f),
-                    ),
                 modifier =
                     Modifier
                         .fillMaxWidth()
@@ -241,38 +222,15 @@ fun LoginScreen(
                 if (uiState.isLoading) {
                     CircularProgressIndicator(
                         modifier = Modifier.size(24.dp),
-                        color = PrestigeBlack,
-                        strokeWidth = 2.dp,
+                        color = MaterialTheme.colorScheme.onPrimary,
                     )
                 } else {
-                    Text(
-                        text = "Sign In",
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Medium,
-                    )
+                    Text("Login")
                 }
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // Register prompt
-            Row(
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(
-                    text = "Don't have an account? ",
-                    color = Color.White.copy(alpha = 0.6f),
-                    fontSize = 14.sp,
-                )
-                TextButton(onClick = onNavigateToRegister) {
-                    Text(
-                        text = "Register",
-                        color = RoyalGold,
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.SemiBold,
-                    )
-                }
+            TextButton(onClick = onNavigateToRegister) {
+                Text("Don't have an account? Register")
             }
         }
     }
