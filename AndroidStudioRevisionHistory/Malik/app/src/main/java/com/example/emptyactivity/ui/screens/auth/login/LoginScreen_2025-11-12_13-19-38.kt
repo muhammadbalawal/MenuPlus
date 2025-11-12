@@ -1,16 +1,14 @@
-package com.example.emptyactivity.ui.screens.auth.register
+package com.example.emptyactivity.ui.screens.auth.login
+
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
@@ -39,19 +37,18 @@ import com.example.emptyactivity.ui.theme.RoyalGold
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RegisterScreen(
-    onNavigateToLogin: () -> Unit,
-    onRegisterSuccess: () -> Unit,
-    viewModel: RegisterViewModel = hiltViewModel(),
+fun LoginScreen(
+    onNavigateToRegister: () -> Unit,
+    onLoginSuccess: () -> Unit,
+    viewModel: LoginViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(uiState.isSuccess) {
         if (uiState.isSuccess) {
-            onRegisterSuccess()
+            onLoginSuccess()
         }
     }
-
     if (uiState.errorMessage != null) {
         AlertDialog(
             onDismissRequest = { viewModel.onErrorDismissed() },
@@ -67,7 +64,6 @@ fun RegisterScreen(
             textContentColor = Color.White.copy(alpha = 0.9f),
         )
     }
-
     Box(
         modifier =
             Modifier
@@ -102,15 +98,13 @@ fun RegisterScreen(
             modifier =
                 Modifier
                     .fillMaxSize()
-                    .verticalScroll(rememberScrollState())
                     .padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
-            Spacer(modifier = Modifier.height(24.dp))
             // Title with gradient
             Text(
-                text = "Create Account",
+                text = "Welcome Back",
                 fontSize = 42.sp,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
@@ -139,41 +133,13 @@ fun RegisterScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "Join MenuPlus today",
+                text = "Sign in to continue",
                 fontSize = 16.sp,
                 color = Color.White.copy(alpha = 0.6f),
                 textAlign = TextAlign.Center,
             )
 
-            Spacer(modifier = Modifier.height(40.dp))
-
-            // Name TextField
-            OutlinedTextField(
-                value = uiState.name,
-                onValueChange = { viewModel.onNameChange(it) },
-                label = { Text("Full Name", color = Color.White.copy(alpha = 0.6f)) },
-                leadingIcon = {
-                    Icon(
-                        Icons.Default.Person,
-                        contentDescription = null,
-                        tint = RoyalGold.copy(alpha = 0.7f),
-                    )
-                },
-                singleLine = true,
-                colors =
-                    TextFieldDefaults.outlinedTextFieldColors(
-                        focusedBorderColor = RoyalGold,
-                        unfocusedBorderColor = Color.White.copy(alpha = 0.3f),
-                        textColor = Color.White,
-                        cursorColor = RoyalGold,
-                        focusedLabelColor = Color.White.copy(alpha = 0.6f),
-                        unfocusedLabelColor = Color.White.copy(alpha = 0.6f),
-                    ),
-                shape = RoundedCornerShape(16.dp),
-                modifier = Modifier.fillMaxWidth(),
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(48.dp))
 
             // Email TextField
             OutlinedTextField(
@@ -251,48 +217,13 @@ fun RegisterScreen(
                 modifier = Modifier.fillMaxWidth(),
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Confirm Password TextField
-            OutlinedTextField(
-                value = uiState.confirmPassword,
-                onValueChange = { viewModel.onConfirmPasswordChange(it) },
-                label = { Text("Confirm Password", color = Color.White.copy(alpha = 0.6f)) },
-                leadingIcon = {
-                    Icon(
-                        Icons.Default.Lock,
-                        contentDescription = null,
-                        tint = RoyalGold.copy(alpha = 0.7f),
-                    )
-                },
-                singleLine = true,
-                visualTransformation =
-                    if (uiState.isPasswordVisible) {
-                        VisualTransformation.None
-                    } else {
-                        PasswordVisualTransformation()
-                    },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                colors =
-                    TextFieldDefaults.outlinedTextFieldColors(
-                        focusedBorderColor = RoyalGold,
-                        unfocusedBorderColor = Color.White.copy(alpha = 0.3f),
-                        textColor = Color.White,
-                        cursorColor = RoyalGold,
-                        focusedLabelColor = Color.White.copy(alpha = 0.6f),
-                        unfocusedLabelColor = Color.White.copy(alpha = 0.6f),
-                    ),
-                shape = RoundedCornerShape(16.dp),
-                modifier = Modifier.fillMaxWidth(),
-            )
-
             Spacer(modifier = Modifier.height(32.dp))
+            //
 
-            Spacer(modifier = Modifier.height(16.dp))
 
-            // Register Button
+            // Login Button
             Button(
-                onClick = { viewModel.onRegisterClick() },
+                onClick = { viewModel.onLoginClick() },
                 enabled = !uiState.isLoading,
                 shape = RoundedCornerShape(28.dp),
                 colors =
@@ -315,7 +246,7 @@ fun RegisterScreen(
                     )
                 } else {
                     Text(
-                        text = "Create Account",
+                        text = "Sign In",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Medium,
                     )
@@ -324,27 +255,25 @@ fun RegisterScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Login prompt
+            // Register prompt
             Row(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
-                    text = "Already have an account? ",
+                    text = "Don't have an account? ",
                     color = Color.White.copy(alpha = 0.6f),
                     fontSize = 14.sp,
                 )
-                TextButton(onClick = onNavigateToLogin) {
+                TextButton(onClick = onNavigateToRegister) {
                     Text(
-                        text = "Sign In",
+                        text = "Register",
                         color = RoyalGold,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.SemiBold,
                     )
                 }
             }
-
-            Spacer(modifier = Modifier.height(24.dp))
         }
     }
 }
