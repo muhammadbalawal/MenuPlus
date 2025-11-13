@@ -50,10 +50,9 @@ fun ImportMenuScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     // Parse image URI
-    val imageUri =
-        remember(imageUriString) {
-            if (imageUriString.isNotBlank()) Uri.parse(imageUriString) else null
-        }
+    val imageUri = remember(imageUriString) {
+        if (imageUriString.isNotBlank()) Uri.parse(imageUriString) else null
+    }
 
     // Auto-trigger analysis when screen loads
     LaunchedEffect(initialMenuText, user.id) {
@@ -81,43 +80,38 @@ fun ImportMenuScreen(
     }
 
     Box(
-        modifier =
-            Modifier
-                .fillMaxSize()
-                .background(color = PrestigeBlack)
-                .safeDrawingPadding(),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = PrestigeBlack)
+            .safeDrawingPadding(),
     ) {
         // Background glow effect
         Canvas(
-            modifier =
-                Modifier
-                    .align(Alignment.TopCenter)
-                    .offset(y = (-100).dp)
-                    .size(400.dp),
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .offset(y = (-100).dp)
+                .size(400.dp)
         ) {
             drawCircle(
-                brush =
-                    Brush.radialGradient(
-                        colors =
-                            listOf(
-                                RoyalGold.copy(alpha = 0.15f),
-                                RoyalGold.copy(alpha = 0.08f),
-                                Color.Transparent,
-                            ),
-                        radius = size.minDimension / 2f,
+                brush = Brush.radialGradient(
+                    colors = listOf(
+                        RoyalGold.copy(alpha = 0.15f),
+                        RoyalGold.copy(alpha = 0.08f),
+                        Color.Transparent,
                     ),
+                    radius = size.minDimension / 2f
+                ),
                 radius = size.minDimension / 2f,
-                center = center,
+                center = center
             )
         }
 
         // LOADING STATE (analyzing OR waiting for results)
-        if (uiState.isAnalyzing || (uiState.safeMenuContent == null && uiState.bestMenuContent == null && uiState.fullMenuContent == null && uiState.menuText.isNotBlank())) {
+        if (uiState.isAnalyzing || (uiState.analysisResult == null && uiState.menuText.isNotBlank())) {
             Column(
-                modifier =
-                    Modifier
-                        .fillMaxSize()
-                        .padding(24.dp),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
             ) {
@@ -127,25 +121,21 @@ fun ImportMenuScreen(
                     fontSize = 32.sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
-                    style =
-                        TextStyle(
-                            brush =
-                                Brush.linearGradient(
-                                    colors =
-                                        listOf(
-                                            Color(0xFF7A5A00),
-                                            RoyalGold,
-                                            Color(0xFFFFF4C8),
-                                            Color(0xFFD4AF37),
-                                        ),
-                                ),
-                            shadow =
-                                Shadow(
-                                    color = Color(0xAA8B7500),
-                                    offset = Offset(1f, 1f),
-                                    blurRadius = 4f,
-                                ),
+                    style = TextStyle(
+                        brush = Brush.linearGradient(
+                            colors = listOf(
+                                Color(0xFF7A5A00),
+                                RoyalGold,
+                                Color(0xFFFFF4C8),
+                                Color(0xFFD4AF37),
+                            )
                         ),
+                        shadow = Shadow(
+                            color = Color(0xAA8B7500),
+                            offset = Offset(1f, 1f),
+                            blurRadius = 4f
+                        )
+                    ),
                     color = Color.Unspecified,
                 )
 
@@ -154,11 +144,10 @@ fun ImportMenuScreen(
                 // Image with animated magnifying glass
                 if (imageUri != null) {
                     Box(
-                        modifier =
-                            Modifier
-                                .fillMaxWidth()
-                                .height(300.dp)
-                                .clip(RoundedCornerShape(20.dp)),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(300.dp)
+                            .clip(RoundedCornerShape(20.dp)),
                         contentAlignment = Alignment.Center,
                     ) {
                         AsyncImage(
@@ -187,18 +176,17 @@ fun ImportMenuScreen(
                 CircularProgressIndicator(
                     color = RoyalGold,
                     strokeWidth = 3.dp,
-                    modifier = Modifier.size(48.dp),
+                    modifier = Modifier.size(48.dp)
                 )
             }
         }
 
         // RESULTS STATE (analysis complete)
-        if (uiState.safeMenuContent != null || uiState.bestMenuContent != null || uiState.fullMenuContent != null) {
+        if (uiState.analysisResult != null) {
             Column(
-                modifier =
-                    Modifier
-                        .fillMaxSize()
-                        .padding(24.dp),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(24.dp),
             ) {
                 // Title
                 Text(
@@ -206,27 +194,24 @@ fun ImportMenuScreen(
                     fontSize = 32.sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
-                    style =
-                        TextStyle(
-                            brush =
-                                Brush.linearGradient(
-                                    colors =
-                                        listOf(
-                                            Color(0xFF7A5A00),
-                                            RoyalGold,
-                                            Color(0xFFFFF4C8),
-                                            Color(0xFFD4AF37),
-                                        ),
-                                ),
-                            shadow =
-                                Shadow(
-                                    color = Color(0xAA8B7500),
-                                    offset = Offset(1f, 1f),
-                                    blurRadius = 4f,
-                                ),
+                    style = TextStyle(
+                        brush = Brush.linearGradient(
+                            colors = listOf(
+
+                                Color(0xFF7A5A00),
+                                RoyalGold,
+                                Color(0xFFFFF4C8),
+                                Color(0xFFD4AF37),
+                            )
                         ),
+                        shadow = Shadow(
+                            color = Color(0xAA8B7500),
+                            offset = Offset(1f, 1f),
+                            blurRadius = 4f
+                        )
+                    ),
                     color = Color.Unspecified,
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth()
                 )
 
                 Spacer(modifier = Modifier.height(24.dp))
@@ -243,7 +228,7 @@ fun ImportMenuScreen(
                         text = {
                             Text(
                                 "Safe Menu",
-                                fontWeight = if (selectedTabIndex == 0) FontWeight.Bold else FontWeight.Normal,
+                                fontWeight = if (selectedTabIndex == 0) FontWeight.Bold else FontWeight.Normal
                             )
                         },
                         selectedContentColor = RoyalGold,
@@ -255,7 +240,7 @@ fun ImportMenuScreen(
                         text = {
                             Text(
                                 "Best Menu",
-                                fontWeight = if (selectedTabIndex == 1) FontWeight.Bold else FontWeight.Normal,
+                                fontWeight = if (selectedTabIndex == 1) FontWeight.Bold else FontWeight.Normal
                             )
                         },
                         selectedContentColor = RoyalGold,
@@ -267,7 +252,7 @@ fun ImportMenuScreen(
                         text = {
                             Text(
                                 "Full Menu",
-                                fontWeight = if (selectedTabIndex == 2) FontWeight.Bold else FontWeight.Normal,
+                                fontWeight = if (selectedTabIndex == 2) FontWeight.Bold else FontWeight.Normal
                             )
                         },
                         selectedContentColor = RoyalGold,
@@ -279,9 +264,9 @@ fun ImportMenuScreen(
 
                 // Tab Content
                 when (selectedTabIndex) {
-                    0 -> SafeMenuContent(uiState.safeMenuContent ?: "No safe items found")
-                    1 -> BestMenuContent(uiState.bestMenuContent ?: "No recommendations available")
-                    2 -> FullMenuContent(uiState.fullMenuContent ?: "No analysis available")
+                    0 -> SafeMenuContent(uiState.analysisResult ?: "")
+                    1 -> BestMenuContent(uiState.analysisResult ?: "")
+                    2 -> FullMenuContent(uiState.analysisResult ?: "")
                 }
             }
         }
@@ -300,44 +285,40 @@ fun AnimatedMagnifyingGlass() {
     val offsetX by infiniteTransition.animateFloat(
         initialValue = -100f,
         targetValue = 100f,
-        animationSpec =
-            infiniteRepeatable(
-                animation = tween(3000, easing = FastOutSlowInEasing),
-                repeatMode = RepeatMode.Reverse,
-            ),
-        label = "offset_x",
+        animationSpec = infiniteRepeatable(
+            animation = tween(3000, easing = FastOutSlowInEasing),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "offset_x"
     )
 
     // Vertical position animation
     val offsetY by infiniteTransition.animateFloat(
         initialValue = -50f,
         targetValue = 50f,
-        animationSpec =
-            infiniteRepeatable(
-                animation = tween(2000, easing = FastOutSlowInEasing),
-                repeatMode = RepeatMode.Reverse,
-            ),
-        label = "offset_y",
+        animationSpec = infiniteRepeatable(
+            animation = tween(2000, easing = FastOutSlowInEasing),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "offset_y"
     )
 
     // Scale animation (pulse effect)
     val scale by infiniteTransition.animateFloat(
         initialValue = 0.9f,
         targetValue = 1.1f,
-        animationSpec =
-            infiniteRepeatable(
-                animation = tween(1500, easing = FastOutSlowInEasing),
-                repeatMode = RepeatMode.Reverse,
-            ),
-        label = "scale",
+        animationSpec = infiniteRepeatable(
+            animation = tween(1500, easing = FastOutSlowInEasing),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "scale"
     )
 
     Canvas(
-        modifier =
-            Modifier
-                .size(80.dp)
-                .offset(x = offsetX.dp, y = offsetY.dp)
-                .scale(scale),
+        modifier = Modifier
+            .size(80.dp)
+            .offset(x = offsetX.dp, y = offsetY.dp)
+            .scale(scale)
     ) {
         val center = Offset(size.width / 2f, size.height / 2f)
         val radius = size.minDimension * 0.35f
@@ -346,128 +327,23 @@ fun AnimatedMagnifyingGlass() {
         drawCircle(
             color = RoyalGold.copy(alpha = 0.3f),
             radius = radius,
-            center = center,
+            center = center
         )
         drawCircle(
             color = RoyalGold,
             radius = radius,
             center = center,
-            style = Stroke(width = 6f),
+            style = Stroke(width = 6f)
         )
 
         // Handle
-        val handleStart =
-            Offset(
-                center.x + radius * 0.7f,
-                center.y + radius * 0.7f,
-            )
-        val handleEnd =
-            Offset(
-                center.x + radius * 1.5f,
-                center.y + radius * 1.5f,
-            )
-        drawLine(
-            color = RoyalGold,
-            start = handleStart,
-            end = handleEnd,
-            strokeWidth = 8f,
-            cap = androidx.compose.ui.graphics.StrokeCap.Round,
+        val handleStart = Offset(
+            center.x + radius * 0.7f,
+            center.y + radius * 0.7f
         )
-    }
-}
+        val handleEnd = Offset(
+            center.x + radius * 1.5f,
+            center.y + radius * 1.5f
+        )
+        drawLine(
 
-@Composable
-fun SafeMenuContent(analysisResult: String) {
-    Card(
-        modifier =
-            Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState()),
-        colors =
-            CardDefaults.cardColors(
-                containerColor = Color(0xFF1B3A1B), // Dark greenish
-            ),
-        shape = RoundedCornerShape(16.dp),
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-            Text(
-                text = "✅ Safe Choices",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color(0xFF43A047),
-            )
-            Text(
-                text = analysisResult,
-                color = Color.White.copy(alpha = 0.9f),
-                fontSize = 14.sp,
-            )
-        }
-    }
-}
-
-@Composable
-fun BestMenuContent(analysisResult: String) {
-    Card(
-        modifier =
-            Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState()),
-        colors =
-            CardDefaults.cardColors(
-                containerColor = Color(0xFF3A2A1B), // Dark brownish
-            ),
-        shape = RoundedCornerShape(16.dp),
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-            Text(
-                text = "⭐ Best Recommendations",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                color = RoyalGold,
-            )
-            Text(
-                text = analysisResult,
-                color = Color.White.copy(alpha = 0.9f),
-                fontSize = 14.sp,
-            )
-        }
-    }
-}
-
-@Composable
-fun FullMenuContent(analysisResult: String) {
-    Card(
-        modifier =
-            Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState()),
-        colors =
-            CardDefaults.cardColors(
-                containerColor = Color(0xFF1A1A1A), // Dark grey
-            ),
-        shape = RoundedCornerShape(16.dp),
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-            Text(
-                text = "📋 Full Menu Analysis",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.White,
-            )
-            Text(
-                text = analysisResult,
-                color = Color.White.copy(alpha = 0.9f),
-                fontSize = 14.sp,
-            )
-        }
-    }
-}

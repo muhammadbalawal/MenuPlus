@@ -122,40 +122,25 @@ class GeminiClient
             $menuText
             
             INSTRUCTIONS:
-            Analyze each menu item and provide THREE DISTINCT SECTIONS in your response, separated by the markers below.
+            1. Convert the menu into user language.
+            2. Analyze each menu item for safety based on the user's profile
+            3. Classify items into three categories:
+               - RED (Dangerous): Contains allergies or violates Dietary restrictions
+               - YELLOW (Caution): Contains dislikes or minor concerns
+               - GREEN (Safe): No concerns, good choice
             
-            1. Convert menu to user language if needed
-            2. Classify items: RED (contains allergies/restrictions), YELLOW (contains dislikes), GREEN (safe)
-            3. Structure your response EXACTLY as follows:
+            3. For each item, provide:
+               - Safety rating (RED/YELLOW/GREEN)
+               - Clear reason for the rating
+               - Any ingredients of concern
+               - Suggestions or alternatives if applicable
             
-            === SAFE MENU START ===
-            List ONLY the items marked as GREEN (completely safe for this user).
-            Format: Item name, brief description, why it's safe.
-            Focus on what they CAN eat without worry.
-            === SAFE MENU END ===
+            4. At the end, provide:
+               - Summary of safest options
+               - Items to absolutely avoid
+               - Recommended dishes based on user preferences
             
-            === BEST MENU START ===
-            Provide TOP 5 personalized recommendations based on their preferences.
-            Format: Ranked list with detailed reasoning.
-            Explain why each recommendation matches their taste profile.
-            Include flavor profiles and what makes each dish special.
-            === BEST MENU END ===
-            
-            === FULL MENU START ===
-            Complete menu with ALL items annotated with safety ratings.
-            Format each item as:
-            [RED/YELLOW/GREEN] Item Name
-            - Description (translated)
-            - Concerns: (allergies, restrictions, or dislikes present)
-            - Recommendation: (safe to eat / avoid / ask about ingredients)
-            
-            Include summary at end:
-            SUMMARY:
-            ✅ Safest Options: [list]
-            ⚠️ Items to Avoid: [list]
-            💡 Ask Staff About: [items needing clarification]
-            === FULL MENU END ===
-            
-            IMPORTANT: Use the EXACT markers shown above (=== SECTION NAME START/END ===) so the app can parse your response correctly.
+            FORMAT:
+            Please structure your response clearly with easy-to-read formatting.
             """.trimIndent()
     }

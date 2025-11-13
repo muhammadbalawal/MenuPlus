@@ -68,33 +68,29 @@ fun OnboardingScreen(
     }
 
     Box(
-        modifier =
-            Modifier
-                .fillMaxSize()
-                .background(color = PrestigeBlack)
-                .safeDrawingPadding(),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = PrestigeBlack)
+            .safeDrawingPadding(),
     ) {
         // Background glow effect
         Canvas(
-            modifier =
-                Modifier
-                    .align(Alignment.TopCenter)
-                    .offset(y = (-50).dp)
-                    .size(350.dp),
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .offset(y = (-50).dp)
+                .size(350.dp)
         ) {
             drawCircle(
-                brush =
-                    Brush.radialGradient(
-                        colors =
-                            listOf(
-                                RoyalGold.copy(alpha = 0.15f),
-                                RoyalGold.copy(alpha = 0.08f),
-                                Color.Transparent,
-                            ),
-                        radius = size.minDimension / 2f,
+                brush = Brush.radialGradient(
+                    colors = listOf(
+                        RoyalGold.copy(alpha = 0.15f),
+                        RoyalGold.copy(alpha = 0.08f),
+                        Color.Transparent,
                     ),
+                    radius = size.minDimension / 2f
+                ),
                 radius = size.minDimension / 2f,
-                center = center,
+                center = center
             )
         }
 
@@ -107,11 +103,10 @@ fun OnboardingScreen(
             }
         } else {
             Column(
-                modifier =
-                    Modifier
-                        .fillMaxSize()
-                        .verticalScroll(rememberScrollState())
-                        .padding(24.dp),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+                    .padding(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Spacer(modifier = Modifier.height(16.dp))
@@ -122,25 +117,21 @@ fun OnboardingScreen(
                     fontSize = 38.sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
-                    style =
-                        TextStyle(
-                            brush =
-                                Brush.linearGradient(
-                                    colors =
-                                        listOf(
-                                            Color(0xFF7A5A00),
-                                            RoyalGold,
-                                            Color(0xFFFFF4C8),
-                                            Color(0xFFD4AF37),
-                                        ),
-                                ),
-                            shadow =
-                                Shadow(
-                                    color = Color(0xAA8B7500),
-                                    offset = Offset(1f, 1f),
-                                    blurRadius = 4f,
-                                ),
+                    style = TextStyle(
+                        brush = Brush.linearGradient(
+                            colors = listOf(
+                                Color(0xFF7A5A00),
+                                RoyalGold,
+                                Color(0xFFFFF4C8),
+                                Color(0xFFD4AF37),
+                            )
                         ),
+                        shadow = Shadow(
+                            color = Color(0xAA8B7500),
+                            offset = Offset(1f, 1f),
+                            blurRadius = 4f
+                        )
+                    ),
                     color = Color.Unspecified,
                 )
 
@@ -181,20 +172,18 @@ fun OnboardingScreen(
                             trailingIcon = {
                                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
                             },
-                            colors =
-                                TextFieldDefaults.outlinedTextFieldColors(
-                                    focusedBorderColor = RoyalGold,
-                                    unfocusedBorderColor = Color.White.copy(alpha = 0.3f),
-                                    textColor = Color.White,
-                                    cursorColor = RoyalGold,
-                                    focusedLabelColor = Color.White.copy(alpha = 0.6f),
-                                    unfocusedLabelColor = Color.White.copy(alpha = 0.6f),
-                                ),
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                focusedBorderColor = RoyalGold,
+                                unfocusedBorderColor = Color.White.copy(alpha = 0.3f),
+                                textColor = Color.White,
+                                cursorColor = RoyalGold,
+                                focusedLabelColor = Color.White.copy(alpha = 0.6f),
+                                unfocusedLabelColor = Color.White.copy(alpha = 0.6f),
+                            ),
                             shape = RoundedCornerShape(12.dp),
-                            modifier =
-                                Modifier
-                                    .fillMaxWidth()
-                                    .menuAnchor(),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .menuAnchor(),
                         )
 
                         ExposedDropdownMenu(
@@ -209,10 +198,9 @@ fun OnboardingScreen(
                                         viewModel.onLanguageSelected(language.id)
                                         expanded = false
                                     },
-                                    colors =
-                                        MenuDefaults.itemColors(
-                                            textColor = Color.White,
-                                        ),
+                                    colors = MenuDefaults.itemColors(
+                                        textColor = Color.White,
+                                    ),
                                 )
                             }
                         }
@@ -290,17 +278,15 @@ fun OnboardingScreen(
                     onClick = { viewModel.onSaveProfile(user) },
                     enabled = !uiState.isSaving && uiState.selectedLanguageId.isNotBlank(),
                     shape = RoundedCornerShape(28.dp),
-                    colors =
-                        ButtonDefaults.buttonColors(
-                            containerColor = RoyalGold,
-                            contentColor = PrestigeBlack,
-                            disabledContainerColor = RoyalGold.copy(alpha = 0.5f),
-                            disabledContentColor = PrestigeBlack.copy(alpha = 0.5f),
-                        ),
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .height(56.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = RoyalGold,
+                        contentColor = PrestigeBlack,
+                        disabledContainerColor = RoyalGold.copy(alpha = 0.5f),
+                        disabledContentColor = PrestigeBlack.copy(alpha = 0.5f),
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp),
                 ) {
                     if (uiState.isSaving) {
                         CircularProgressIndicator(
@@ -326,26 +312,23 @@ fun OnboardingScreen(
 @Composable
 private fun GoldDivider() {
     Canvas(
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .height(1.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(1.dp)
     ) {
         drawLine(
-            brush =
-                Brush.horizontalGradient(
-                    colors =
-                        listOf(
-                            Color.Transparent,
-                            RoyalGold.copy(alpha = 0.3f),
-                            RoyalGold.copy(alpha = 0.6f),
-                            RoyalGold.copy(alpha = 0.3f),
-                            Color.Transparent,
-                        ),
-                ),
+            brush = Brush.horizontalGradient(
+                colors = listOf(
+                    Color.Transparent,
+                    RoyalGold.copy(alpha = 0.3f),
+                    RoyalGold.copy(alpha = 0.6f),
+                    RoyalGold.copy(alpha = 0.3f),
+                    Color.Transparent,
+                )
+            ),
             start = Offset(0f, 0f),
             end = Offset(size.width, 0f),
-            strokeWidth = 2f,
+            strokeWidth = 2f
         )
     }
 }
@@ -385,26 +368,23 @@ private fun TagInputSection(
             onValueChange = onInputChange,
             label = { Text("Add $title", color = Color.White.copy(alpha = 0.6f)) },
             modifier = Modifier.fillMaxWidth(),
-            colors =
-                TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = RoyalGold,
-                    unfocusedBorderColor = Color.White.copy(alpha = 0.3f),
-                    textColor = Color.White,
-                    cursorColor = RoyalGold,
-                    focusedLabelColor = Color.White.copy(alpha = 0.6f),
-                    unfocusedLabelColor = Color.White.copy(alpha = 0.6f),
-                ),
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = RoyalGold,
+                unfocusedBorderColor = Color.White.copy(alpha = 0.3f),
+                textColor = Color.White,
+                cursorColor = RoyalGold,
+                focusedLabelColor = Color.White.copy(alpha = 0.6f),
+                unfocusedLabelColor = Color.White.copy(alpha = 0.6f),
+            ),
             shape = RoundedCornerShape(12.dp),
-            keyboardOptions =
-                KeyboardOptions(
-                    imeAction = ImeAction.Done,
-                ),
-            keyboardActions =
-                KeyboardActions(
-                    onDone = {
-                        onAddTag()
-                    },
-                ),
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Done,
+            ),
+            keyboardActions = KeyboardActions(
+                onDone = {
+                    onAddTag()
+                },
+            ),
             trailingIcon = {
                 if (currentInput.isNotBlank()) {
                     TextButton(onClick = onAddTag) {
@@ -453,20 +433,18 @@ private fun TagChip(
                     imageVector = Icons.Default.Close,
                     contentDescription = "Remove $text",
                     modifier = Modifier.size(16.dp),
-                    tint = color,
+                    tint = color
                 )
             }
         },
-        colors =
-            InputChipDefaults.inputChipColors(
-                containerColor = color.copy(alpha = 0.15f),
-                labelColor = color,
-            ),
-        border =
-            InputChipDefaults.inputChipBorder(
-                borderColor = color.copy(alpha = 0.5f),
-                borderWidth = 1.5.dp,
-            ),
+        colors = InputChipDefaults.inputChipColors(
+            containerColor = color.copy(alpha = 0.15f),
+            labelColor = color,
+        ),
+        border = InputChipDefaults.inputChipBorder(
+            borderColor = color.copy(alpha = 0.5f),
+            borderWidth = 1.5.dp,
+        ),
         shape = RoundedCornerShape(20.dp),
     )
 }

@@ -112,7 +112,7 @@ fun ImportMenuScreen(
         }
 
         // LOADING STATE (analyzing OR waiting for results)
-        if (uiState.isAnalyzing || (uiState.safeMenuContent == null && uiState.bestMenuContent == null && uiState.fullMenuContent == null && uiState.menuText.isNotBlank())) {
+        if (uiState.isAnalyzing || (uiState.analysisResult == null && uiState.menuText.isNotBlank())) {
             Column(
                 modifier =
                     Modifier
@@ -193,7 +193,7 @@ fun ImportMenuScreen(
         }
 
         // RESULTS STATE (analysis complete)
-        if (uiState.safeMenuContent != null || uiState.bestMenuContent != null || uiState.fullMenuContent != null) {
+        if (uiState.analysisResult != null) {
             Column(
                 modifier =
                     Modifier
@@ -279,9 +279,9 @@ fun ImportMenuScreen(
 
                 // Tab Content
                 when (selectedTabIndex) {
-                    0 -> SafeMenuContent(uiState.safeMenuContent ?: "No safe items found")
-                    1 -> BestMenuContent(uiState.bestMenuContent ?: "No recommendations available")
-                    2 -> FullMenuContent(uiState.fullMenuContent ?: "No analysis available")
+                    0 -> SafeMenuContent(uiState.analysisResult ?: "")
+                    1 -> BestMenuContent(uiState.analysisResult ?: "")
+                    2 -> FullMenuContent(uiState.analysisResult ?: "")
                 }
             }
         }

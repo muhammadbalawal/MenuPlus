@@ -25,17 +25,15 @@ fun TopBar(
     onSettingsClick: () -> Unit,
 ) {
     Column(
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .background(PrestigeBlack),
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(PrestigeBlack)
     ) {
         Row(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .height(64.dp)
-                    .padding(horizontal = 16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(64.dp)
+                .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -44,26 +42,22 @@ fun TopBar(
                 text = "MenuPlus",
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
-                style =
-                    TextStyle(
-                        brush =
-                            Brush.linearGradient(
-                                colors =
-                                    listOf(
-                                        Color(0xFF7A5A00),
-                                        RoyalGold,
-                                        Color(0xFFFFF4C8),
-                                        Color(0xFFD4AF37),
-                                    ),
-                            ),
-                        shadow =
-                            Shadow(
-                                color = Color(0xAA8B7500),
-                                offset = Offset(0.5f, 0.5f),
-                                blurRadius = 3f,
-                            ),
-                        letterSpacing = 0.5.sp,
+                style = TextStyle(
+                    brush = Brush.linearGradient(
+                        colors = listOf(
+                            Color(0xFF7A5A00),
+                            RoyalGold,
+                            Color(0xFFFFF4C8),
+                            Color(0xFFD4AF37),
+                        )
                     ),
+                    shadow = Shadow(
+                        color = Color(0xAA8B7500),
+                        offset = Offset(0.5f, 0.5f),
+                        blurRadius = 3f
+                    ),
+                    letterSpacing = 0.5.sp,
+                ),
                 color = Color.Unspecified,
             )
 
@@ -79,26 +73,23 @@ fun TopBar(
 
         // Subtle bottom border with gradient
         Canvas(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .height(1.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(1.dp)
         ) {
             drawLine(
-                brush =
-                    Brush.horizontalGradient(
-                        colors =
-                            listOf(
-                                Color.Transparent,
-                                RoyalGold.copy(alpha = 0.3f),
-                                RoyalGold.copy(alpha = 0.5f),
-                                RoyalGold.copy(alpha = 0.3f),
-                                Color.Transparent,
-                            ),
-                    ),
+                brush = Brush.horizontalGradient(
+                    colors = listOf(
+                        Color.Transparent,
+                        RoyalGold.copy(alpha = 0.3f),
+                        RoyalGold.copy(alpha = 0.5f),
+                        RoyalGold.copy(alpha = 0.3f),
+                        Color.Transparent,
+                    )
+                ),
                 start = Offset(0f, 0f),
                 end = Offset(size.width, 0f),
-                strokeWidth = 2f,
+                strokeWidth = 2f
             )
         }
     }

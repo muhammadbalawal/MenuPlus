@@ -40,33 +40,29 @@ fun BottomNavigationBar(navController: NavHostController) {
     val currentDestination = navBackStackEntry?.destination
 
     Column(
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .background(PrestigeBlack),
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(PrestigeBlack)
     ) {
         // Subtle top border with gradient
         Canvas(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .height(1.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(1.dp)
         ) {
             drawLine(
-                brush =
-                    Brush.horizontalGradient(
-                        colors =
-                            listOf(
-                                Color.Transparent,
-                                RoyalGold.copy(alpha = 0.3f),
-                                RoyalGold.copy(alpha = 0.5f),
-                                RoyalGold.copy(alpha = 0.3f),
-                                Color.Transparent,
-                            ),
-                    ),
+                brush = Brush.horizontalGradient(
+                    colors = listOf(
+                        Color.Transparent,
+                        RoyalGold.copy(alpha = 0.3f),
+                        RoyalGold.copy(alpha = 0.5f),
+                        RoyalGold.copy(alpha = 0.3f),
+                        Color.Transparent,
+                    )
+                ),
                 start = Offset(0f, 0f),
                 end = Offset(size.width, 0f),
-                strokeWidth = 2f,
+                strokeWidth = 2f
             )
         }
         NavigationBar(
@@ -92,14 +88,13 @@ fun BottomNavigationBar(navController: NavHostController) {
                         )
                     },
                     label = { Text(item.label) },
-                    colors =
-                        NavigationBarItemDefaults.colors(
-                            selectedIconColor = RoyalGold,
-                            selectedTextColor = RoyalGold,
-                            unselectedIconColor = Color.White.copy(alpha = 0.5f),
-                            unselectedTextColor = Color.White.copy(alpha = 0.5f),
-                            indicatorColor = RoyalGold.copy(alpha = 0.15f),
-                        ),
+                    colors = NavigationBarItemDefaults.colors(
+                        selectedIconColor = RoyalGold,
+                        selectedTextColor = RoyalGold,
+                        unselectedIconColor = Color.White.copy(alpha = 0.5f),
+                        unselectedTextColor = Color.White.copy(alpha = 0.5f),
+                        indicatorColor = RoyalGold.copy(alpha = 0.15f),
+                    ),
                 )
             }
         }

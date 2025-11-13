@@ -26,7 +26,6 @@ import javax.inject.Inject
  * - Triggers Gemini AI analysis when user requests it
  * - Manages analysis state (loading, success, error)
  * - Exposes reactive StateFlows for UI observation
- * - Parses Gemini response into three distinct sections for tabbed display
  *
  * Note: Menu text can only be set via initializeMenuText() - manual text entry is not supported.
  * All menu text must come from OCR extraction.
@@ -55,8 +54,7 @@ class ImportMenuViewModel
          * 2. Retrieves the current menu text from state
          * 3. Calls the analyze menu use case with user ID and menu text
          * 4. The use case fetches user profile (allergies, preferences, etc.) and sends to Gemini
-         * 5. Parses the response into three sections (Safe, Best, Full)
-         * 6. Updates state with parsed results or error message
+         * 5. Updates state with analysis result or error message
          *
          * The analysis provides personalized recommendations including:
          * - Safety ratings (RED/YELLOW/GREEN) for each menu item
@@ -75,9 +73,7 @@ class ImportMenuViewModel
                     it.copy(
                         isAnalyzing = true,
                         errorMessage = null,
-                        safeMenuContent = null,
-                        bestMenuContent = null,
-                        fullMenuContent = null,
+                        analysisResult = null,
                     )
                 }
 
@@ -92,17 +88,10 @@ class ImportMenuViewModel
                 ) {
                     is Result.Success -> {
                         Log.d(TAG, "Menu analysis successful")
-
-                        // Parse the response into three sections
-                        val analysisText = result.data
-                        val (safeMenu, bestMenu, fullMenu) = parseAnalysisResponse(analysisText)
-
                         _uiState.update {
                             it.copy(
                                 isAnalyzing = false,
-                                safeMenuContent = safeMenu,
-                                bestMenuContent = bestMenu,
-                                fullMenuContent = fullMenu,
+                                analysisResult = result.data,
                             )
                         }
                     }
@@ -135,17 +124,11 @@ class ImportMenuViewModel
         /**
          * Clears the analysis result from the UI.
          *
-         * Removes the displayed analysis results from all three tabs, allowing the user
-         * to request a new analysis or start over.
+         * Removes the displayed analysis result, allowing the user to request a new analysis
+         * or start over. This is called when the user clicks the close button on the result card.
          */
         fun onClearResult() {
-            _uiState.update {
-                it.copy(
-                    safeMenuContent = null,
-                    bestMenuContent = null,
-                    fullMenuContent = null,
-                )
-            }
+            _uiState.update { it.copy(analysisResult = null) }
         }
 
         /**
@@ -163,51 +146,4 @@ class ImportMenuViewModel
                 _uiState.update { it.copy(menuText = text) }
             }
         }
-
-        /**
-         * Parses the Gemini AI response into three distinct sections.
-         *
-         * This method extracts content between the structured markers that were
-         * requested in the prompt (=== SECTION NAME START/END ===).
-         * If parsing fails, it returns appropriate fallback content.
-         *
-         * @param response The complete response from Gemini AI
-         * @return Triple of (safeMenu, bestMenu, fullMenu) strings
-         */
-        private fun parseAnalysisResponse(response: String): Triple<String, String, String> =
-            try {
-                val safeMenuStart = response.indexOf("=== SAFE MENU START ===")
-                val safeMenuEnd = response.indexOf("=== SAFE MENU END ===")
-                val bestMenuStart = response.indexOf("=== BEST MENU START ===")
-                val bestMenuEnd = response.indexOf("=== BEST MENU END ===")
-                val fullMenuStart = response.indexOf("=== FULL MENU START ===")
-                val fullMenuEnd = response.indexOf("=== FULL MENU END ===")
-
-                val safeMenu =
-                    if (safeMenuStart != -1 && safeMenuEnd != -1) {
-                        response.substring(safeMenuStart + 24, safeMenuEnd).trim()
-                    } else {
-                        "Unable to parse safe menu items. Please try again."
-                    }
-
-                val bestMenu =
-                    if (bestMenuStart != -1 && bestMenuEnd != -1) {
-                        response.substring(bestMenuStart + 24, bestMenuEnd).trim()
-                    } else {
-                        "Unable to parse recommendations. Please try again."
-                    }
-
-                val fullMenu =
-                    if (fullMenuStart != -1 && fullMenuEnd != -1) {
-                        response.substring(fullMenuStart + 24, fullMenuEnd).trim()
-                    } else {
-                        response // Fallback to full response if parsing fails
-                    }
-
-                Triple(safeMenu, bestMenu, fullMenu)
-            } catch (e: Exception) {
-                Log.e(TAG, "Error parsing analysis response", e)
-                // Fallback: return full response in all sections
-                Triple(response, response, response)
-            }
     }

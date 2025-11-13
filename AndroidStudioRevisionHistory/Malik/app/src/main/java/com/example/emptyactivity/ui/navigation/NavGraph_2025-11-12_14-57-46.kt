@@ -186,7 +186,6 @@ private fun AuthenticatedNavGraph(user: User) {
                 ImportMenuScreen(
                     user = user,
                     initialMenuText = route.menuText,
-                    imageUriString = route.imageUriString,
                 )
             }
 
