@@ -30,68 +30,73 @@ class MenuPlusAppViewModel
     constructor(
         observeAuthStateUseCase: ObserveAuthStateUseCase,
     ) : ViewModel() {
+        private val deepLinkState = MutableStateFlow<DeepLinkType?>(null)
 
-    private val _deepLinkState = MutableStateFlow<DeepLinkType?>(null)
+        /**
+         * The current application UI state based on authentication and onboarding status.
+         *
+         * This StateFlow emits:
+         * - Loading: While checking authentication status
+         * - NotAuthenticated: When no user is logged in
+         * - NeedsOnboarding: When user is authenticated but hasn't completed onboarding
+         * - Authenticated: When user is authenticated and has completed onboarding
+         *
+         * The state is cached and shared, stopping after 5 seconds of no subscribers.
+         */
+        val uiState: StateFlow<MenuPlusAppUiState> =
+            combine(
+                observeAuthStateUseCase(),
+                deepLinkState,
+            ) { user, deepLink ->
+                when (deepLink) {
+                    is DeepLinkType.Onboarding ->
+                        MenuPlusAppUiState.DeepLinkOnboarding(deepLink.language)
 
-    /**
-     * The current application UI state based on authentication and onboarding status.
-     *
-     * This StateFlow emits:
-     * - Loading: While checking authentication status
-     * - NotAuthenticated: When no user is logged in
-     * - NeedsOnboarding: When user is authenticated but hasn't completed onboarding
-     * - Authenticated: When user is authenticated and has completed onboarding
-     *
-     * The state is cached and shared, stopping after 5 seconds of no subscribers.
-     */
-    val uiState: StateFlow<MenuPlusAppUiState> =
-        combine(
-            observeAuthStateUseCase(),
-            _deepLinkState
-        ) { user, deepLink ->
-            when (deepLink) {
-                is DeepLinkType.Onboarding ->
-                    MenuPlusAppUiState.DeepLinkOnboarding(deepLink.language)
+                    is DeepLinkType.Signup ->
+                        MenuPlusAppUiState.DeepLinkSignup(deepLink.email)
 
-                is DeepLinkType.Signup ->
-                    MenuPlusAppUiState.DeepLinkSignup(deepLink.email)
-
-                null -> when {
-                    user == null -> MenuPlusAppUiState.NotAuthenticated
-                    !user.hasCompletedOnboarding -> MenuPlusAppUiState.NeedsOnboarding(user)
-                    else -> MenuPlusAppUiState.Authenticated(user)
+                    null ->
+                        when {
+                            user == null -> MenuPlusAppUiState.NotAuthenticated
+                            !user.hasCompletedOnboarding -> MenuPlusAppUiState.NeedsOnboarding(user)
+                            else -> MenuPlusAppUiState.Authenticated(user)
+                        }
                 }
-            }
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = MenuPlusAppUiState.Loading,
-        )
+            }.stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = MenuPlusAppUiState.Loading,
+            )
 
-    fun handleDeepLinkIntent(intent: Intent) {
-        if (intent.action == Intent.ACTION_VIEW && intent.data != null) {
-            val uri = intent.data
+        fun handleDeepLinkIntent(intent: Intent) {
+            if (intent.action == Intent.ACTION_VIEW && intent.data != null) {
+                val uri = intent.data
 
-            when (uri?.host) {
-                "compose.deeplink" -> {
-                    val language = uri.getQueryParameter("language")
-                    _deepLinkState.value = DeepLinkType.Onboarding(language)
-                }
+                when (uri?.host) {
+                    "compose.deeplink" -> {
+                        val language = uri.getQueryParameter("language")
+                        deepLinkState.value = DeepLinkType.Onboarding(language)
+                    }
 
-                "signup.deeplink" -> {
-                    val email = uri.getQueryParameter("email")
-                    _deepLinkState.value = DeepLinkType.Signup(email)
+                    "signup.deeplink" -> {
+                        val email = uri.getQueryParameter("email")
+                        deepLinkState.value = DeepLinkType.Signup(email)
+                    }
                 }
             }
         }
-    }
 
-    fun clearDeepLinkState() {
-        _deepLinkState.value = null
-    }
+        fun clearDeepLinkState() {
+            deepLinkState.value = null
+        }
 
-    sealed interface DeepLinkType {
-        data class Onboarding(val language: String?) : DeepLinkType
-        data class Signup(val email: String?) : DeepLinkType
+        sealed interface DeepLinkType {
+            data class Onboarding(
+                val language: String?,
+            ) : DeepLinkType
+
+            data class Signup(
+                val email: String?,
+            ) : DeepLinkType
+        }
     }
-}

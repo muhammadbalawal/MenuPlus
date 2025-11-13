@@ -197,6 +197,8 @@ class OnboardingViewModel
         fun onNavigationEventHandled() {
             _navigationEvent.value = null
         }
+
+        
     }
 
 sealed interface OnboardingNavigationEvent {
