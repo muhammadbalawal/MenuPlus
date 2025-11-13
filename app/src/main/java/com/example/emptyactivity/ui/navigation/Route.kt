@@ -36,6 +36,7 @@ sealed interface Route {
      */
     @Serializable data class ImportMenu(
         val menuText: String = "",
+        val imageUriString: String = "",
     ) : Route
 
     /** User profile screen displaying user information and dietary preferences. */
