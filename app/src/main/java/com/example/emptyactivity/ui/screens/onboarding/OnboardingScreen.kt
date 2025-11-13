@@ -2,8 +2,11 @@ package com.example.emptyactivity.ui.screens.onboarding
 
 import android.app.Activity
 import android.content.Intent
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -13,14 +16,22 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.emptyactivity.domain.model.User
+import com.example.emptyactivity.ui.theme.PrestigeBlack
+import com.example.emptyactivity.ui.theme.RoyalGold
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -70,7 +81,7 @@ fun OnboardingScreen(
             null -> {  }
         }
     }
-        
+
     // Show error dialog
     if (uiState.errorMessage != null) {
         AlertDialog(
@@ -79,85 +90,172 @@ fun OnboardingScreen(
             text = { Text(uiState.errorMessage ?: "") },
             confirmButton = {
                 TextButton(onClick = { viewModel.onErrorDismissed() }) {
-                    Text("OK")
+                    Text("OK", color = RoyalGold)
                 }
             },
+            containerColor = PrestigeBlack,
+            titleContentColor = RoyalGold,
+            textContentColor = Color.White.copy(alpha = 0.9f),
         )
     }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Welcome to MenuPlus!") },
+    Box(
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(color = PrestigeBlack)
+                .safeDrawingPadding(),
+    ) {
+        // Background glow effect
+        Canvas(
+            modifier =
+                Modifier
+                    .align(Alignment.TopCenter)
+                    .offset(y = (-50).dp)
+                    .size(350.dp),
+        ) {
+            drawCircle(
+                brush =
+                    Brush.radialGradient(
+                        colors =
+                            listOf(
+                                RoyalGold.copy(alpha = 0.15f),
+                                RoyalGold.copy(alpha = 0.08f),
+                                Color.Transparent,
+                            ),
+                        radius = size.minDimension / 2f,
+                    ),
+                radius = size.minDimension / 2f,
+                center = center,
             )
-        },
-    ) { paddingValues ->
+        }
+
         if (uiState.isLoadingLanguages) {
             Box(
-                modifier =
-                    Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues),
+                modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center,
             ) {
-                CircularProgressIndicator()
+                CircularProgressIndicator(color = RoyalGold)
             }
         } else {
             Column(
                 modifier =
                     Modifier
                         .fillMaxSize()
-                        .padding(paddingValues)
                         .verticalScroll(rememberScrollState())
                         .padding(24.dp),
-                verticalArrangement = Arrangement.spacedBy(24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Title with gradient
                 Text(
-                    text = "Preferred Language *",
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold,
+                    text = "Welcome to MenuPlus!",
+                    fontSize = 38.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center,
+                    style =
+                        TextStyle(
+                            brush =
+                                Brush.linearGradient(
+                                    colors =
+                                        listOf(
+                                            Color(0xFF7A5A00),
+                                            RoyalGold,
+                                            Color(0xFFFFF4C8),
+                                            Color(0xFFD4AF37),
+                                        ),
+                                ),
+                            shadow =
+                                Shadow(
+                                    color = Color(0xAA8B7500),
+                                    offset = Offset(1f, 1f),
+                                    blurRadius = 4f,
+                                ),
+                        ),
+                    color = Color.Unspecified,
                 )
 
-                var expanded by remember { mutableStateOf(false) }
-                val selectedLanguage = uiState.languages.find { it.id == uiState.selectedLanguageId }
+                Spacer(modifier = Modifier.height(8.dp))
 
-                ExposedDropdownMenuBox(
-                    expanded = expanded,
-                    onExpandedChange = { expanded = it },
+                Text(
+                    text = "Let's personalize your dining experience",
+                    fontSize = 14.sp,
+                    color = Color.White.copy(alpha = 0.6f),
+                    textAlign = TextAlign.Center,
+                )
+
+                Spacer(modifier = Modifier.height(32.dp))
+
+                // Language Selection
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
-                    OutlinedTextField(
-                        value = selectedLanguage?.name ?: "Select Language",
-                        onValueChange = {},
-                        readOnly = true,
-                        trailingIcon = {
-                            ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
-                        },
-                        modifier =
-                            Modifier
-                                .fillMaxWidth()
-                                .menuAnchor(),
-                        colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
+                    Text(
+                        text = "Preferred Language *",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.SemiBold,
+                        color = RoyalGold,
                     )
 
-                    ExposedDropdownMenu(
+                    var expanded by remember { mutableStateOf(false) }
+                    val selectedLanguage = uiState.languages.find { it.id == uiState.selectedLanguageId }
+
+                    ExposedDropdownMenuBox(
                         expanded = expanded,
-                        onDismissRequest = { expanded = false },
+                        onExpandedChange = { expanded = it },
                     ) {
-                        uiState.languages.forEach { language ->
-                            DropdownMenuItem(
-                                text = { Text(language.name) },
-                                onClick = {
-                                    viewModel.onLanguageSelected(language.id)
-                                    expanded = false
-                                },
-                            )
+                        OutlinedTextField(
+                            value = selectedLanguage?.name ?: "Select Language",
+                            onValueChange = {},
+                            readOnly = true,
+                            trailingIcon = {
+                                ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                            },
+                            colors =
+                                TextFieldDefaults.outlinedTextFieldColors(
+                                    focusedBorderColor = RoyalGold,
+                                    unfocusedBorderColor = Color.White.copy(alpha = 0.3f),
+                                    textColor = Color.White,
+                                    cursorColor = RoyalGold,
+                                    focusedLabelColor = Color.White.copy(alpha = 0.6f),
+                                    unfocusedLabelColor = Color.White.copy(alpha = 0.6f),
+                                ),
+                            shape = RoundedCornerShape(12.dp),
+                            modifier =
+                                Modifier
+                                    .fillMaxWidth()
+                                    .menuAnchor(),
+                        )
+
+                        ExposedDropdownMenu(
+                            expanded = expanded,
+                            onDismissRequest = { expanded = false },
+                            modifier = Modifier.background(PrestigeBlack),
+                        ) {
+                            uiState.languages.forEach { language ->
+                                DropdownMenuItem(
+                                    text = { Text(language.name, color = Color.White) },
+                                    onClick = {
+                                        viewModel.onLanguageSelected(language.id)
+                                        expanded = false
+                                    },
+                                    colors =
+                                        MenuDefaults.itemColors(
+                                            textColor = Color.White,
+                                        ),
+                                )
+                            }
                         }
                     }
                 }
 
-                Divider()
+                Spacer(modifier = Modifier.height(8.dp))
+                GoldDivider()
+                Spacer(modifier = Modifier.height(8.dp))
 
-                // Allergies Section
+                // Allergies Section (RED)
                 TagInputSection(
                     title = "Allergies",
                     subtitle = "Foods that cause allergic reactions",
@@ -166,12 +264,14 @@ fun OnboardingScreen(
                     onInputChange = viewModel::onAllergyInputChange,
                     onAddTag = viewModel::onAddAllergy,
                     onRemoveTag = viewModel::onRemoveAllergy,
-                    tagColor = Color(0xFFE53935), // Red
+                    tagColor = Color(0xFFE53935), // Red for danger
                 )
 
-                Divider()
+                Spacer(modifier = Modifier.height(8.dp))
+                GoldDivider()
+                Spacer(modifier = Modifier.height(8.dp))
 
-                // Dietary Restrictions Section
+                // Dietary Restrictions Section (ORANGE)
                 TagInputSection(
                     title = "Dietary Restrictions",
                     subtitle = "Foods you avoid (vegan, halal, kosher, etc.)",
@@ -180,12 +280,14 @@ fun OnboardingScreen(
                     onInputChange = viewModel::onDietaryRestrictionInputChange,
                     onAddTag = viewModel::onAddDietaryRestriction,
                     onRemoveTag = viewModel::onRemoveDietaryRestriction,
-                    tagColor = Color(0xFFE53935), // Red
+                    tagColor = Color(0xFFFF6F00), // Orange for warning
                 )
 
-                Divider()
+                Spacer(modifier = Modifier.height(8.dp))
+                GoldDivider()
+                Spacer(modifier = Modifier.height(8.dp))
 
-                // Dislikes Section
+                // Dislikes Section (YELLOW)
                 TagInputSection(
                     title = "Dislikes",
                     subtitle = "Foods you prefer not to eat",
@@ -194,12 +296,14 @@ fun OnboardingScreen(
                     onInputChange = viewModel::onDislikeInputChange,
                     onAddTag = viewModel::onAddDislike,
                     onRemoveTag = viewModel::onRemoveDislike,
-                    tagColor = Color(0xFFFDD835), // Yellow
+                    tagColor = Color(0xFFFDD835), // Yellow for caution
                 )
 
-                Divider()
+                Spacer(modifier = Modifier.height(8.dp))
+                GoldDivider()
+                Spacer(modifier = Modifier.height(8.dp))
 
-                // Preferences Section
+                // Preferences Section (GREEN)
                 TagInputSection(
                     title = "Preferences",
                     subtitle = "Foods you especially enjoy",
@@ -208,37 +312,73 @@ fun OnboardingScreen(
                     onInputChange = viewModel::onPreferenceInputChange,
                     onAddTag = viewModel::onAddPreference,
                     onRemoveTag = viewModel::onRemovePreference,
-                    tagColor = Color(0xFF43A047), // Green
+                    tagColor = Color(0xFF43A047), // Green for positive
                 )
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(32.dp))
 
                 // Save Button
                 Button(
                     onClick = { viewModel.onSaveProfile(user) },
+                    enabled = !uiState.isSaving && uiState.selectedLanguageId.isNotBlank(),
+                    shape = RoundedCornerShape(28.dp),
+                    colors =
+                        ButtonDefaults.buttonColors(
+                            containerColor = RoyalGold,
+                            contentColor = PrestigeBlack,
+                            disabledContainerColor = RoyalGold.copy(alpha = 0.5f),
+                            disabledContentColor = PrestigeBlack.copy(alpha = 0.5f),
+                        ),
                     modifier =
                         Modifier
                             .fillMaxWidth()
                             .height(56.dp),
-                    enabled = !uiState.isSaving && uiState.selectedLanguageId.isNotBlank(),
                 ) {
                     if (uiState.isSaving) {
                         CircularProgressIndicator(
                             modifier = Modifier.size(24.dp),
-                            color = MaterialTheme.colorScheme.onPrimary,
+                            color = PrestigeBlack,
+                            strokeWidth = 2.dp,
                         )
                     } else {
                         Text(
-                            if (activity?.intent?.action == Intent.ACTION_VIEW)
-                                "Save and Return to Launcher"
-                            else
-                                "Complete Setup"
+                            text = "Complete Setup",
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Medium,
                         )
-
                     }
                 }
+
+                Spacer(modifier = Modifier.height(24.dp))
             }
         }
+    }
+}
+
+@Composable
+private fun GoldDivider() {
+    Canvas(
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .height(1.dp),
+    ) {
+        drawLine(
+            brush =
+                Brush.horizontalGradient(
+                    colors =
+                        listOf(
+                            Color.Transparent,
+                            RoyalGold.copy(alpha = 0.3f),
+                            RoyalGold.copy(alpha = 0.6f),
+                            RoyalGold.copy(alpha = 0.3f),
+                            Color.Transparent,
+                        ),
+                ),
+            start = Offset(0f, 0f),
+            end = Offset(size.width, 0f),
+            strokeWidth = 2f,
+        )
     }
 }
 
@@ -255,25 +395,38 @@ private fun TagInputSection(
     tagColor: Color,
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         Text(
             text = title,
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold,
+            color = RoyalGold,
         )
 
         Text(
             text = subtitle,
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = Color.White.copy(alpha = 0.6f),
         )
+
         // Input Field
         OutlinedTextField(
             value = currentInput,
             onValueChange = onInputChange,
-            label = { Text("Add $title") },
+            label = { Text("Add $title", color = Color.White.copy(alpha = 0.6f)) },
             modifier = Modifier.fillMaxWidth(),
+            colors =
+                TextFieldDefaults.outlinedTextFieldColors(
+                    focusedBorderColor = RoyalGold,
+                    unfocusedBorderColor = Color.White.copy(alpha = 0.3f),
+                    textColor = Color.White,
+                    cursorColor = RoyalGold,
+                    focusedLabelColor = Color.White.copy(alpha = 0.6f),
+                    unfocusedLabelColor = Color.White.copy(alpha = 0.6f),
+                ),
+            shape = RoundedCornerShape(12.dp),
             keyboardOptions =
                 KeyboardOptions(
                     imeAction = ImeAction.Done,
@@ -287,7 +440,7 @@ private fun TagInputSection(
             trailingIcon = {
                 if (currentInput.isNotBlank()) {
                     TextButton(onClick = onAddTag) {
-                        Text("Add")
+                        Text("Add", color = RoyalGold, fontWeight = FontWeight.Bold)
                     }
                 }
             },
@@ -322,7 +475,7 @@ private fun TagChip(
     InputChip(
         selected = false,
         onClick = { },
-        label = { Text(text) },
+        label = { Text(text, fontWeight = FontWeight.Medium) },
         trailingIcon = {
             IconButton(
                 onClick = onRemove,
@@ -332,18 +485,20 @@ private fun TagChip(
                     imageVector = Icons.Default.Close,
                     contentDescription = "Remove $text",
                     modifier = Modifier.size(16.dp),
+                    tint = color,
                 )
             }
         },
         colors =
             InputChipDefaults.inputChipColors(
-                containerColor = color.copy(alpha = 0.2f),
-                labelColor = color.copy(alpha = 0.8f),
+                containerColor = color.copy(alpha = 0.15f),
+                labelColor = color,
             ),
         border =
             InputChipDefaults.inputChipBorder(
-                borderColor = color,
-                borderWidth = 1.dp,
+                borderColor = color.copy(alpha = 0.5f),
+                borderWidth = 1.5.dp,
             ),
+        shape = RoundedCornerShape(20.dp),
     )
 }
