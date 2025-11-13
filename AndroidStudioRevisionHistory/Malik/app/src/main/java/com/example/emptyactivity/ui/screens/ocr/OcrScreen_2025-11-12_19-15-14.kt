@@ -294,47 +294,6 @@ fun OcrScreen(
                         )
                     }
 
-                    // Scan with AI Button (Primary)
-                    Button(
-                        onClick = {
-                            // Get the extracted text and navigate to analysis
-                            val extractedText = vm.getExtractedText()
-                            if (extractedText.isNotBlank()) {
-                                navController.navigate(Route.ImportMenu(menuText = extractedText))
-                            }
-                        },
-                        modifier = Modifier
-                            .weight(1.5f)
-                            .height(56.dp),
-                        shape = RoundedCornerShape(28.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = RoyalGold,
-                            contentColor = PrestigeBlack,
-                        ),
-                    ) {
-                        Row(
-                            horizontalArrangement = Arrangement.spacedBy(8.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.AutoAwesome,
-                                contentDescription = null,
-                                modifier = Modifier.size(20.dp)
-                            )
-                            Text(
-                                text = "Scan with AI",
-                                fontSize = 16.sp,
-                                fontWeight = FontWeight.Bold,
-                            )
-                        }
-                    }
-                }
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-        }
-    }
-}
-
+                 
 
 
