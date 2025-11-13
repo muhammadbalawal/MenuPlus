@@ -31,19 +31,19 @@ class MenuPlusAppViewModel
         observeAuthStateUseCase: ObserveAuthStateUseCase,
     ) : ViewModel() {
 
-    private val _deepLinkState = MutableStateFlow<DeepLinkType?>(null)
+        private val _deepLinkState = MutableStateFlow<DeepLinkType?>(null)
 
     /**
-     * The current application UI state based on authentication and onboarding status.
-     *
-     * This StateFlow emits:
-     * - Loading: While checking authentication status
-     * - NotAuthenticated: When no user is logged in
-     * - NeedsOnboarding: When user is authenticated but hasn't completed onboarding
-     * - Authenticated: When user is authenticated and has completed onboarding
-     *
-     * The state is cached and shared, stopping after 5 seconds of no subscribers.
-     */
+         * The current application UI state based on authentication and onboarding status.
+         *
+         * This StateFlow emits:
+         * - Loading: While checking authentication status
+         * - NotAuthenticated: When no user is logged in
+         * - NeedsOnboarding: When user is authenticated but hasn't completed onboarding
+         * - Authenticated: When user is authenticated and has completed onboarding
+         *
+         * The state is cached and shared, stopping after 5 seconds of no subscribers.
+         */
     val uiState: StateFlow<MenuPlusAppUiState> =
         combine(
             observeAuthStateUseCase(),
@@ -62,13 +62,13 @@ class MenuPlusAppViewModel
                     else -> MenuPlusAppUiState.Authenticated(user)
                 }
             }
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = MenuPlusAppUiState.Loading,
-        )
+            }.stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = MenuPlusAppUiState.Loading,
+            )
 
-    fun handleDeepLinkIntent(intent: Intent) {
+    fun handleDeepLink(intent: Intent) {
         if (intent.action == Intent.ACTION_VIEW && intent.data != null) {
             val uri = intent.data
 
@@ -86,12 +86,8 @@ class MenuPlusAppViewModel
         }
     }
 
-    fun clearDeepLinkState() {
-        _deepLinkState.value = null
-    }
 
-    sealed interface DeepLinkType {
-        data class Onboarding(val language: String?) : DeepLinkType
-        data class Signup(val email: String?) : DeepLinkType
-    }
+sealed interface DeepLinkType {
+    data class Onboarding(val language: String?) : DeepLinkType
+    data class Signup(val email: String?) : DeepLinkType
 }

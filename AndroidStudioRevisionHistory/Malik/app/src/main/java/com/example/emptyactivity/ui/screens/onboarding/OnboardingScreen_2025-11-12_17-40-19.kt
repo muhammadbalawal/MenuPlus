@@ -1,7 +1,5 @@
 package com.example.emptyactivity.ui.screens.onboarding
 
-import android.app.Activity
-import android.content.Intent
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
@@ -14,7 +12,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
@@ -28,46 +25,18 @@ fun OnboardingScreen(
     user: User,
     onComplete: () -> Unit,
     viewModel: OnboardingViewModel = hiltViewModel(),
-    initialLanguage: String? = null
 ) {
-    val localContext = LocalContext.current
-    val activity = localContext as? Activity
-
+    
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val navigationEvent by viewModel.navigationEvent.collectAsStateWithLifecycle()
-
-
-    LaunchedEffect(initialLanguage,  uiState.languages) {
-        if (!initialLanguage.isNullOrBlank()) {
-            val language = uiState.languages.find { it.name.equals(initialLanguage, ignoreCase = true) }
-            language?.let { viewModel.onLanguageSelected(it.id) }
-        }
-    }
 
     LaunchedEffect(navigationEvent) {
         when (navigationEvent) {
             OnboardingNavigationEvent.NavigateToMain -> {
                 viewModel.onNavigationEventHandled()
-                val selectedLanguageName = uiState.languages.find { it.id == uiState.selectedLanguageId }?.name ?: "Unknown"
-                val resultData = """
-                Onboarding Completed Successfully!
-                Language: $selectedLanguageName
-                Allergies: ${uiState.allergies.joinToString(", ")}
-                Dietary Restrictions: ${uiState.dietaryRestrictions.joinToString(", ")}
-                Dislikes: ${uiState.dislikes.joinToString(", ")}
-                Preferences: ${uiState.preferences.joinToString(", ")}
-            """.trimIndent()
-
-                activity?.let { safeActivity ->
-                    val resultIntent = safeActivity.intent
-                    resultIntent.putExtra("resultData", resultData)
-                    safeActivity.setResult(Activity.RESULT_OK, resultIntent)
-                    safeActivity.finish()
-                }
-
                 onComplete()
             }
-            null -> {  }
+            null -> { /* Do nothing */ }
         }
     }
         
@@ -228,13 +197,7 @@ fun OnboardingScreen(
                             color = MaterialTheme.colorScheme.onPrimary,
                         )
                     } else {
-                        Text(
-                            if (activity?.intent?.action == Intent.ACTION_VIEW)
-                                "Save and Return to Launcher"
-                            else
-                                "Complete Setup"
-                        )
-
+                        Text("Complete Setup")
                     }
                 }
             }

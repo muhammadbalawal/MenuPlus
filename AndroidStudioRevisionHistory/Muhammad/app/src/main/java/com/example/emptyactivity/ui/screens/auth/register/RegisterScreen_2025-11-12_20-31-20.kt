@@ -53,12 +53,6 @@ fun RegisterScreen(
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(initialEmail) {
-        if (!initialEmail.isNullOrBlank()) {
-            viewModel.onEmailChange(initialEmail)
-        }
-    }
-
     LaunchedEffect(uiState.isSuccess) {
         if (uiState.isSuccess) {
             if (activity?.intent?.action == android.content.Intent.ACTION_VIEW) {

@@ -41,7 +41,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data
                     android:scheme="example"
-                    android:host="signup.deeplink" />
+                    android:host="import.deeplink" />
             </intent-filter>
 
             <intent-filter>

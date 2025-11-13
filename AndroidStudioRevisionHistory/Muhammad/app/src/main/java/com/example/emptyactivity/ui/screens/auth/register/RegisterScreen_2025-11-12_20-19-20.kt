@@ -45,19 +45,13 @@ fun RegisterScreen(
     onNavigateToLogin: () -> Unit,
     onRegisterSuccess: () -> Unit,
     viewModel: RegisterViewModel = hiltViewModel(),
-    initialEmail: String? = null
+    prefilledEmail: String? = null
 ) {
 
     val localContext = LocalContext.current
     val activity = localContext as? Activity
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
-    LaunchedEffect(initialEmail) {
-        if (!initialEmail.isNullOrBlank()) {
-            viewModel.onEmailChange(initialEmail)
-        }
-    }
 
     LaunchedEffect(uiState.isSuccess) {
         if (uiState.isSuccess) {
@@ -135,10 +129,7 @@ fun RegisterScreen(
             Spacer(modifier = Modifier.height(24.dp))
             // Title with gradient
             Text(
-                text = if (activity?.intent?.action == android.content.Intent.ACTION_VIEW)
-                    "Sign Up for Cookie"
-                else
-                    "Create Account",
+                text = "Create Account",
                 fontSize = 42.sp,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
@@ -167,11 +158,11 @@ fun RegisterScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = 
-                    if (activity?.intent?.action == android.content.Intent.ACTION_VIEW)
-                        "Complete sign up to claim your cookie!"
-                    else 
-                        "Join MenuPlus today",
+                text = if (activity?.intent?.action == android.content.Intent.ACTION_VIEW)
+                    "Complete sign up to claim your cookie!"
+                            
+
+                            text = "Join MenuPlus today",
                 fontSize = 16.sp,
                 color = Color.White.copy(alpha = 0.6f),
                 textAlign = TextAlign.Center,
@@ -347,10 +338,7 @@ fun RegisterScreen(
                     )
                 } else {
                     Text(
-                        text = if (activity?.intent?.action == android.content.Intent.ACTION_VIEW)
-                            "Claim Cookie! 🍪"
-                        else
-                            "Create Account",
+                        text = "Create Account",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Medium,
                     )

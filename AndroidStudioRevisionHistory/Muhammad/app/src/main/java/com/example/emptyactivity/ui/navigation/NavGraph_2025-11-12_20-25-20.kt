@@ -261,24 +261,12 @@ fun OnboardingNavGraph(
     }
 }
 
-@Composable
 fun RegisterNavGraph(
     initialEmail: String? = null
 ){
     val navController = rememberNavController()
 
-    NavHost(
-        navController = navController,
-        startDestination = Route.Register,
-    ){
-        composable<Route.Register> {
-            RegisterScreen(
-                onNavigateToLogin = { navController.navigateUp() },
-                onRegisterSuccess = { /* Auth state handles navigation */ },
-                initialEmail = initialEmail
-            )
-        }
-    }
+    NavHost
 }
 
 /**

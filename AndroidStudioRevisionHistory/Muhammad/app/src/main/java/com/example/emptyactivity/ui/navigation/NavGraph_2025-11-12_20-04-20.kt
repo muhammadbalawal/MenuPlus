@@ -12,7 +12,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavHost
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -90,7 +89,7 @@ fun MenuPlusApp(
 
         is MenuPlusAppUiState.DeepLinkSignup -> {
             val deepLinkState = appUiState as MenuPlusAppUiState.DeepLinkSignup
-            RegisterNavGraph(initialEmail  = deepLinkState.email)
+
         }
 
     }
@@ -256,26 +255,6 @@ fun OnboardingNavGraph(
                 user = user,
                 onComplete = { },
                 initialLanguage = deepLinkLanguage
-            )
-        }
-    }
-}
-
-@Composable
-fun RegisterNavGraph(
-    initialEmail: String? = null
-){
-    val navController = rememberNavController()
-
-    NavHost(
-        navController = navController,
-        startDestination = Route.Register,
-    ){
-        composable<Route.Register> {
-            RegisterScreen(
-                onNavigateToLogin = { navController.navigateUp() },
-                onRegisterSuccess = { /* Auth state handles navigation */ },
-                initialEmail = initialEmail
             )
         }
     }
