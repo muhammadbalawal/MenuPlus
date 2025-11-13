@@ -197,18 +197,3 @@ constructor(
                     "Unable to parse recommendations. Please try again."
                 }
 
-            val fullMenu =
-                if (fullMenuStart != -1 && fullMenuEnd != -1) {
-                    response.substring(fullMenuStart + 24, fullMenuEnd).trim()
-                } else {
-                    response // Fallback to full response if parsing fails
-                }
-
-            Triple(safeMenu, bestMenu, fullMenu)
-        } catch (e: Exception) {
-            Log.e(TAG, "Error parsing analysis response", e)
-            // Fallback: return full response in all sections
-            Triple(response, response, response)
-        }
-    }
-}
