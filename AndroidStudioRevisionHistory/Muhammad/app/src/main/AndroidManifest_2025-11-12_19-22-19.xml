@@ -26,7 +26,7 @@
             android:theme="@style/Theme.EmptyActivity">
 
 
-            <intent-filter>
+            <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
@@ -35,13 +35,13 @@
                     android:host="compose.deeplink" />
             </intent-filter>
 
-            <intent-filter >
+            <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data
                     android:scheme="example"
-                    android:host="signup.deeplink" />
+                    android:host="import.deeplink" />
             </intent-filter>
 
             <intent-filter>

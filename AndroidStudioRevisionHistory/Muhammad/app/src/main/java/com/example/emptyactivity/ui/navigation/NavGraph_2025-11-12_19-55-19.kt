@@ -12,12 +12,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavHost
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navDeepLink
 import androidx.navigation.toRoute
 import com.example.emptyactivity.domain.model.User
 import com.example.emptyactivity.ui.MenuPlusAppUiState
@@ -77,21 +77,21 @@ fun MenuPlusApp(
         is MenuPlusAppUiState.DeepLinkOnboarding -> {
             val deepLinkState = appUiState as MenuPlusAppUiState.DeepLinkOnboarding
             OnboardingNavGraph(
-                user =
-                    User(
-                        id = "3a85c4a9-7a9f-4612-8de6-f6f099b37ff2",
-                        email = "deep_link@assignment.com",
-                        name = "Assignment Demo User",
-                        hasCompletedOnboarding = false,
-                    ),
-                deepLinkLanguage = deepLinkState.language,
+                user = User(
+                    id = "3a85c4a9-7a9f-4612-8de6-f6f099b37ff2",
+                    email = "deep_link@assignment.com",
+                    name = "Assignment Demo User",
+                    hasCompletedOnboarding = false
+                ),
+                deepLinkLanguage = deepLinkState.language
             )
         }
 
         is MenuPlusAppUiState.DeepLinkSignup -> {
             val deepLinkState = appUiState as MenuPlusAppUiState.DeepLinkSignup
-            RegisterNavGraph(initialEmail = deepLinkState.email)
+
         }
+
     }
 }
 
@@ -206,7 +206,6 @@ private fun AuthenticatedNavGraph(user: User) {
                 ImportMenuScreen(
                     user = user,
                     initialMenuText = route.menuText,
-                    imageUriString = route.imageUriString,
                 )
             }
 
@@ -243,7 +242,7 @@ private fun AuthenticatedNavGraph(user: User) {
 @Composable
 fun OnboardingNavGraph(
     user: User,
-    deepLinkLanguage: String? = null,
+    deepLinkLanguage: String? = null
 ) {
     val navController = rememberNavController()
 
@@ -255,27 +254,7 @@ fun OnboardingNavGraph(
             OnboardingScreen(
                 user = user,
                 onComplete = { },
-                initialLanguage = deepLinkLanguage,
-            )
-        }
-    }
-}
-
-@Composable
-fun RegisterNavGraph(
-    initialEmail: String? = null,
-) {
-    val navController = rememberNavController()
-
-    NavHost(
-        navController = navController,
-        startDestination = Route.Register,
-    ) {
-        composable<Route.Register> {
-            RegisterScreen(
-                onNavigateToLogin = { navController.navigateUp() },
-                onRegisterSuccess = { /* Auth state handles navigation */ },
-                initialEmail = initialEmail,
+                initialLanguage = deepLinkLanguage  
             )
         }
     }

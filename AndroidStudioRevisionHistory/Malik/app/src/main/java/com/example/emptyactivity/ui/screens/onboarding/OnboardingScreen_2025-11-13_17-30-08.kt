@@ -1,6 +1,7 @@
 package com.example.emptyactivity.ui.screens.onboarding
 
 import android.app.Activity
+import android.content.Intent
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -18,8 +19,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -38,7 +39,7 @@ fun OnboardingScreen(
     user: User,
     onComplete: () -> Unit,
     viewModel: OnboardingViewModel = hiltViewModel(),
-    initialLanguage: String? = null,
+    initialLanguage: String? = null
 ) {
     val localContext = LocalContext.current
     val activity = localContext as? Activity
@@ -47,7 +48,7 @@ fun OnboardingScreen(
     val navigationEvent by viewModel.navigationEvent.collectAsStateWithLifecycle()
 
 
-    LaunchedEffect(initialLanguage, uiState.languages) {
+    LaunchedEffect(initialLanguage,  uiState.languages) {
         if (!initialLanguage.isNullOrBlank()) {
             val language = uiState.languages.find { it.name.equals(initialLanguage, ignoreCase = true) }
             language?.let { viewModel.onLanguageSelected(it.id) }
@@ -59,15 +60,14 @@ fun OnboardingScreen(
             OnboardingNavigationEvent.NavigateToMain -> {
                 viewModel.onNavigationEventHandled()
                 val selectedLanguageName = uiState.languages.find { it.id == uiState.selectedLanguageId }?.name ?: "Unknown"
-                val resultData =
-                    """
-                    Onboarding Completed Successfully!
-                    Language: $selectedLanguageName
-                    Allergies: ${uiState.allergies.joinToString(", ")}
-                    Dietary Restrictions: ${uiState.dietaryRestrictions.joinToString(", ")}
-                    Dislikes: ${uiState.dislikes.joinToString(", ")}
-                    Preferences: ${uiState.preferences.joinToString(", ")}
-                    """.trimIndent()
+                val resultData = """
+                Onboarding Completed Successfully!
+                Language: $selectedLanguageName
+                Allergies: ${uiState.allergies.joinToString(", ")}
+                Dietary Restrictions: ${uiState.dietaryRestrictions.joinToString(", ")}
+                Dislikes: ${uiState.dislikes.joinToString(", ")}
+                Preferences: ${uiState.preferences.joinToString(", ")}
+            """.trimIndent()
 
                 activity?.let { safeActivity ->
                     val resultIntent = safeActivity.intent
@@ -78,7 +78,7 @@ fun OnboardingScreen(
 
                 onComplete()
             }
-            null -> { }
+            null -> {  }
         }
     }
 

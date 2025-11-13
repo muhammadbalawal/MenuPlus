@@ -40,11 +40,7 @@ sealed interface MenuPlusAppUiState {
         val user: User,
     ) : MenuPlusAppUiState
 
-    data class DeepLinkOnboarding(
-        val language: String?,
-    ) : MenuPlusAppUiState
+    data class DeepLinkOnboarding(val language: String?) : MenuPlusAppUiState
 
-    data class DeepLinkSignup(
-        val email: String?,
-    ) : MenuPlusAppUiState
+    data class DeepLinkImportMenu(val menuText: String?) : MenuPlusAppUiState
 }
