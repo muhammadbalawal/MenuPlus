@@ -12,6 +12,18 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * ViewModel for the settings screen.
+ *
+ * This ViewModel manages the settings screen functionality, primarily handling user logout.
+ * It processes logout requests, manages loading/error states, and triggers navigation
+ * back to the landing screen on successful logout.
+ *
+ * The ViewModel exposes reactive StateFlows that the UI can observe to update automatically
+ * when the settings state changes (loading, logout success, errors).
+ *
+ * @param logoutUseCase The use case for performing user logout.
+ */
 @HiltViewModel
 class SettingsViewModel
     @Inject

@@ -7,6 +7,22 @@ import com.example.emptyactivity.domain.model.UserProfile
 import com.example.emptyactivity.util.Result
 import javax.inject.Inject
 
+/**
+ * Use case for saving or updating a user's dietary profile.
+ *
+ * This use case orchestrates the complete profile save workflow:
+ * 1. Validates that a language has been selected
+ * 2. Checks if a profile already exists for the user
+ * 3. Creates a new profile or updates the existing one
+ * 4. Marks onboarding as complete in the user's auth metadata
+ * 5. Refreshes the session to apply the onboarding status change
+ *
+ * The use case handles errors at each step and returns appropriate Result types
+ * for the UI layer to handle (success, error, loading).
+ *
+ * @param userProfileRepository Repository for saving/updating user profile data.
+ * @param authRepository Repository for updating user authentication metadata.
+ */
 class SaveUserProfileUseCase
     @Inject
     constructor(

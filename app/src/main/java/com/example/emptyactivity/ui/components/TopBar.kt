@@ -20,6 +20,19 @@ import androidx.compose.ui.unit.sp
 import com.example.emptyactivity.ui.theme.PrestigeBlack
 import com.example.emptyactivity.ui.theme.RoyalGold
 
+/**
+ * Top app bar component with premium black and gold theme.
+ *
+ * This composable displays the MenuPlus branding with a gradient gold text effect
+ * and provides a settings button for quick access to app settings. The bar includes
+ * a subtle gradient border at the bottom for visual separation.
+ *
+ * The component is used in the main authenticated navigation graph to provide
+ * consistent branding and settings access across main app screens.
+ *
+ * @param onSettingsClick Callback invoked when the settings icon is clicked.
+ *                        Typically navigates to the Settings screen.
+ */
 @Composable
 fun TopBar(
     onSettingsClick: () -> Unit,
