@@ -14,6 +14,22 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * ViewModel for the onboarding screen.
+ *
+ * This ViewModel manages the onboarding flow where new users set up their dietary profile.
+ * It handles:
+ * - Loading available languages from the repository
+ * - Managing user input for dietary preferences (allergies, restrictions, dislikes, preferences)
+ * - Saving the complete user profile to the database
+ * - Navigation events to move to the main app after onboarding completion
+ *
+ * The ViewModel exposes reactive StateFlows that the UI can observe to update automatically
+ * when the onboarding state changes (loading, saving, errors).
+ *
+ * @param getAllLanguagesUseCase The use case for fetching available languages from the database.
+ * @param saveUserProfileUseCase The use case for saving the user's dietary profile.
+ */
 @HiltViewModel
 class OnboardingViewModel
     @Inject
