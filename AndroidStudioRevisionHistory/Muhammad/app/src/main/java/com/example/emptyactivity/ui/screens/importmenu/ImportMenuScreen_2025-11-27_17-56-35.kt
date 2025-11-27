@@ -52,21 +52,6 @@ fun ImportMenuScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(uiState.isAnalyzing, uiState.safeMenuContent) {
-        if (!uiState.isAnalyzing &&
-            (uiState.safeMenuContent != null || uiState.bestMenuContent != null || uiState.fullMenuContent != null)) {
-            navController.navigate(
-                Route.MenuAnalysis(
-                    menuText = uiState.menuText,
-                    safeMenuContent = uiState.safeMenuContent ?: "",
-                    bestMenuContent = uiState.bestMenuContent ?: "",
-                    fullMenuContent = uiState.fullMenuContent ?: "",
-                    imageUriString = imageUriString,
-                )
-            )
-        }
-    }
-
     // Parse image URI
     val imageUri =
         remember(imageUriString) {
@@ -207,6 +192,27 @@ fun ImportMenuScreen(
                     strokeWidth = 3.dp,
                     modifier = Modifier.size(48.dp),
                 )
+            }
+        }
+
+        // Add navigation handling
+        LaunchedEffect(Unit) {
+            viewModel.navigationEvent.collect { event ->
+                when (event) {
+                    is ImportMenuNavigationEvent.NavigateToAnalysis -> {
+                        navController.navigate(
+                            Route.MenuAnalysis(
+                                menuText = event.menuText,
+                                safeMenuContent = event.safeMenuContent,
+                                bestMenuContent = event.bestMenuContent,
+                                fullMenuContent = event.fullMenuContent,
+                                imageUriString = imageUriString,
+                            )
+                        )
+                        viewModel.onNavigationEventHandled()
+                    }
+                    null -> {}
+                }
             }
         }
     }
