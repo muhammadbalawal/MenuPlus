@@ -73,6 +73,7 @@ class MenuRepositoryImpl
                             filter {
                                 eq("user_id", userId)
                             }
+                            order("created_at", ascending = false)
                             limit(1)
                         }.decodeList<MenuDto>()
 
@@ -151,6 +152,7 @@ class MenuRepositoryImpl
                             filter {
                                 eq("user_id", userId)
                             }
+                            order("created_at", ascending = false)
                         }.decodeList<MenuDto>()
 
                 Log.d(TAG, "Fetched ${menus.size} menus")
