@@ -49,9 +49,6 @@ class ImportMenuViewModel
         private val _uiState = MutableStateFlow(ImportMenuUiState())
         val uiState: StateFlow<ImportMenuUiState> = _uiState.asStateFlow()
 
-        private val _navigationEvent = MutableStateFlow<ImportMenuNavigationEvent?>(null)
-        val navigationEvent: StateFlow<ImportMenuNavigationEvent?> = _navigationEvent.asStateFlow()
-
         /**
          * Initiates Gemini AI analysis of the menu text.
          *
@@ -110,13 +107,6 @@ class ImportMenuViewModel
                                 fullMenuContent = fullMenu,
                             )
                         }
-
-                        _navigationEvent.value = ImportMenuNavigationEvent.NavigateToAnalysis(
-                            menuText = menuText,
-                            safeMenuContent = safeMenu,
-                            bestMenuContent = bestMenu,
-                            fullMenuContent = fullMenu,
-                        )
                     }
                     is Result.Error -> {
                         Log.e(TAG, "Menu analysis failed: ${result.message}")
@@ -281,8 +271,4 @@ class ImportMenuViewModel
                 // Fallback: return full response in all sections
                 Triple(response, response, response)
             }
-
-        fun onNavigationEventHandled() {
-            _navigationEvent.value = null
-        }
     }

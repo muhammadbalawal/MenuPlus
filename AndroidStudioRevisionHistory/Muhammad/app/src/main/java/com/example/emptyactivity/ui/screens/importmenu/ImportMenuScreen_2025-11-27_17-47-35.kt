@@ -31,8 +31,6 @@ import coil.compose.AsyncImage
 import com.example.emptyactivity.domain.model.User
 import com.example.emptyactivity.ui.theme.PrestigeBlack
 import com.example.emptyactivity.ui.theme.RoyalGold
-import androidx.navigation.NavController
-import com.example.emptyactivity.ui.navigation.Route
 
 /**
  * Import Menu Screen - Loading & Results
@@ -47,7 +45,6 @@ fun ImportMenuScreen(
     user: User,
     initialMenuText: String = "",
     imageUriString: String = "",
-    navController: NavController,
     viewModel: ImportMenuViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -195,23 +192,128 @@ fun ImportMenuScreen(
             }
         }
 
-        // Add navigation handling
-        LaunchedEffect(Unit) {
-            viewModel.navigationEvent.collect { event ->
-                when (event) {
-                    is ImportMenuNavigationEvent.NavigateToAnalysis -> {
-                        navController.navigate(
-                            Route.MenuAnalysis(
-                                menuText = event.menuText,
-                                safeMenuContent = event.safeMenuContent,
-                                bestMenuContent = event.bestMenuContent,
-                                fullMenuContent = event.fullMenuContent,
-                                imageUriString = imageUriString,
-                            )
+        // RESULTS STATE (analysis complete)
+        if (uiState.safeMenuContent != null || uiState.bestMenuContent != null || uiState.fullMenuContent != null) {
+            Column(
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .padding(24.dp),
+            ) {
+                // Title
+                Text(
+                    text = "Menu Analysis",
+                    fontSize = 32.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center,
+                    style =
+                        TextStyle(
+                            brush =
+                                Brush.linearGradient(
+                                    colors =
+                                        listOf(
+                                            Color(0xFF7A5A00),
+                                            RoyalGold,
+                                            Color(0xFFFFF4C8),
+                                            Color(0xFFD4AF37),
+                                        ),
+                                ),
+                            shadow =
+                                Shadow(
+                                    color = Color(0xAA8B7500),
+                                    offset = Offset(1f, 1f),
+                                    blurRadius = 4f,
+                                ),
+                        ),
+                    color = Color.Unspecified,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Save Menu Button - ADD THIS SECTION
+                Button(
+                    onClick = { viewModel.onSaveMenu(user, imageUriString) },
+                    enabled = !uiState.isSaving && !uiState.isSaved,
+                    modifier = Modifier.fillMaxWidth(),
+                    colors =
+                        ButtonDefaults.buttonColors(
+                            containerColor =
+                                if (uiState.isSaved) {
+                                    Color(0xFF43A047) // Green when saved
+                                } else {
+                                    RoyalGold
+                                },
+                        ),
+                ) {
+                    if (uiState.isSaving) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(20.dp),
+                            color = Color.White,
+                            strokeWidth = 2.dp,
                         )
-                        viewModel.onNavigationEventHandled()
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text("Saving...", color = Color.White)
+                    } else if (uiState.isSaved) {
+                        Text("✓ Saved", color = Color.White)
+                    } else {
+                        Text("Save Menu", color = PrestigeBlack)
                     }
-                    null -> {}
+                }
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                // Tab Row
+                TabRow(
+                    selectedTabIndex = selectedTabIndex,
+                    containerColor = PrestigeBlack,
+                    contentColor = RoyalGold,
+                ) {
+                    Tab(
+                        selected = selectedTabIndex == 0,
+                        onClick = { selectedTabIndex = 0 },
+                        text = {
+                            Text(
+                                "Safe Menu",
+                                fontWeight = if (selectedTabIndex == 0) FontWeight.Bold else FontWeight.Normal,
+                            )
+                        },
+                        selectedContentColor = RoyalGold,
+                        unselectedContentColor = Color.White.copy(alpha = 0.6f),
+                    )
+                    Tab(
+                        selected = selectedTabIndex == 1,
+                        onClick = { selectedTabIndex = 1 },
+                        text = {
+                            Text(
+                                "Best Menu",
+                                fontWeight = if (selectedTabIndex == 1) FontWeight.Bold else FontWeight.Normal,
+                            )
+                        },
+                        selectedContentColor = RoyalGold,
+                        unselectedContentColor = Color.White.copy(alpha = 0.6f),
+                    )
+                    Tab(
+                        selected = selectedTabIndex == 2,
+                        onClick = { selectedTabIndex = 2 },
+                        text = {
+                            Text(
+                                "Full Menu",
+                                fontWeight = if (selectedTabIndex == 2) FontWeight.Bold else FontWeight.Normal,
+                            )
+                        },
+                        selectedContentColor = RoyalGold,
+                        unselectedContentColor = Color.White.copy(alpha = 0.6f),
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Tab Content
+                when (selectedTabIndex) {
+                    0 -> SafeMenuContent(uiState.safeMenuContent ?: "No safe items found")
+                    1 -> BestMenuContent(uiState.bestMenuContent ?: "No recommendations available")
+                    2 -> FullMenuContent(uiState.fullMenuContent ?: "No analysis available")
                 }
             }
         }

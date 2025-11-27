@@ -32,7 +32,6 @@ import com.example.emptyactivity.ui.screens.onboarding.OnboardingScreen
 import com.example.emptyactivity.ui.screens.profile.ProfileScreen
 import com.example.emptyactivity.ui.screens.savedmenu.SavedMenuScreen
 import com.example.emptyactivity.ui.screens.settings.SettingsScreen
-import com.example.emptyactivity.ui.screens.menuanalysis.MenuAnalysisScreen
 
 
 /**
@@ -208,7 +207,6 @@ private fun AuthenticatedNavGraph(user: User) {
                     user = user,
                     initialMenuText = route.menuText,
                     imageUriString = route.imageUriString,
-                    navController = navController,
                 )
             }
 
@@ -224,19 +222,6 @@ private fun AuthenticatedNavGraph(user: User) {
                     user = user,
                     onNavigateBack = { navController.navigateUp() },
                     onLogout = {},
-                )
-            }
-
-            composable<Route.MenuAnalysis> { backStackEntry ->
-                val route = backStackEntry.toRoute<Route.MenuAnalysis>()
-                MenuAnalysisScreen(
-                    user = user,
-                    menuText = route.menuText,
-                    safeMenuContent = route.safeMenuContent,
-                    bestMenuContent = route.bestMenuContent,
-                    fullMenuContent = route.fullMenuContent,
-                    imageUriString = route.imageUriString,
-                    navController = navController,
                 )
             }
         }
@@ -317,6 +302,7 @@ private fun shouldShowBottomBar(navController: NavHostController): Boolean {
         listOf(
             Route.SavedMenu::class.qualifiedName,
             Route.Ocr::class.qualifiedName,
+            Route.ImportMenu::class.qualifiedName,
             Route.Profile::class.qualifiedName,
         )
 }
@@ -339,6 +325,7 @@ private fun shouldShowTopBar(navController: NavHostController): Boolean {
         listOf(
             Route.SavedMenu::class.qualifiedName,
             Route.Ocr::class.qualifiedName,
+            Route.ImportMenu::class.qualifiedName,
             Route.Profile::class.qualifiedName,
         )
 }
