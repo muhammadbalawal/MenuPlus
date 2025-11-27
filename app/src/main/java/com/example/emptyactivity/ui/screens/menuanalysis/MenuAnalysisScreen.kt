@@ -25,6 +25,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.example.emptyactivity.domain.model.User
+import com.example.emptyactivity.ui.navigation.Route
 import com.example.emptyactivity.ui.theme.PrestigeBlack
 import com.example.emptyactivity.ui.theme.RoyalGold
 
@@ -65,7 +66,11 @@ fun MenuAnalysisScreen(
                 .safeDrawingPadding(),
     ) {
         IconButton(
-            onClick = { navController.navigateUp() },
+            onClick = { 
+                navController.navigate(Route.SavedMenu) {
+                    popUpTo(Route.SavedMenu) { inclusive = false }
+                }
+            },
             modifier = Modifier
                 .align(Alignment.TopStart)
                 .padding(16.dp)
