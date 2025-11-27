@@ -211,7 +211,10 @@ private fun AuthenticatedNavGraph(user: User) {
             }
 
             composable<Route.Profile> {
-                ProfileScreen()
+                ProfileScreen(
+                    user = user,
+                    onNavigateBack = { navController.navigateUp() },
+                )
             }
 
             composable<Route.Settings> {
