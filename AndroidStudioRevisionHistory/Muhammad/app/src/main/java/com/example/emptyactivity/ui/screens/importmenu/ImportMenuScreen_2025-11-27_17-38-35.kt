@@ -229,38 +229,6 @@ fun ImportMenuScreen(
                     modifier = Modifier.fillMaxWidth(),
                 )
 
-                Spacer(modifier = Modifier.height(16.dp))
-
-                // Save Menu Button - ADD THIS SECTION
-                Button(
-                    onClick = { viewModel.onSaveMenu(user, imageUriString) },
-                    enabled = !uiState.isSaving && !uiState.isSaved,
-                    modifier = Modifier.fillMaxWidth(),
-                    colors =
-                        ButtonDefaults.buttonColors(
-                            containerColor =
-                                if (uiState.isSaved) {
-                                    Color(0xFF43A047) // Green when saved
-                                } else {
-                                    RoyalGold
-                                },
-                        ),
-                ) {
-                    if (uiState.isSaving) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.size(20.dp),
-                            color = Color.White,
-                            strokeWidth = 2.dp,
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text("Saving...", color = Color.White)
-                    } else if (uiState.isSaved) {
-                        Text("✓ Saved", color = Color.White)
-                    } else {
-                        Text("Save Menu", color = PrestigeBlack)
-                    }
-                }
-
                 Spacer(modifier = Modifier.height(24.dp))
 
                 // Tab Row
