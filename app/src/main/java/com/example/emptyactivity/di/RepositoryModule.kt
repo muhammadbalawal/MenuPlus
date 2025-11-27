@@ -7,6 +7,8 @@ import com.example.emptyactivity.data.repository.ocr.OcrRepository
 import com.example.emptyactivity.data.repository.ocr.OcrRepositoryImpl
 import com.example.emptyactivity.data.repository.profile.UserProfileRepository
 import com.example.emptyactivity.data.repository.profile.UserProfileRepositoryImpl
+import com.example.emptyactivity.data.repository.menu.MenuRepository
+import com.example.emptyactivity.data.repository.menu.MenuRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -58,6 +60,20 @@ abstract class RepositoryModule {
     abstract fun bindUserProfileRepository(
         impl: UserProfileRepositoryImpl,
     ): UserProfileRepository
+
+    /**
+     * Binds MenuRepository interface to MenuRepositoryImpl implementation.
+     *
+     * This binding provides access to saved menu data stored in Supabase.
+     *
+     * @param impl The concrete implementation of MenuRepository. Injected automatically by Hilt.
+     * @return MenuRepository interface instance (actually the implementation).
+     */
+    @Binds
+    @Singleton
+    abstract fun bindMenuRepository(
+        impl: MenuRepositoryImpl,
+    ): MenuRepository
 
     companion object {
         /**

@@ -19,8 +19,6 @@ package com.example.emptyactivity.ui.screens.importmenu
  * @param bestMenuContent Content for the "Best Menu" tab - personalized recommendations.
  * @param fullMenuContent Content for the "Full Menu" tab - complete annotated menu.
  * @param errorMessage Error message string if menu analysis fails. Null if no error has occurred.
- * @param isSaving True when menu is being saved to database, false otherwise.
- * @param isSaved True when menu has been successfully saved, false otherwise.
  */
 data class ImportMenuUiState(
     val menuText: String = "",
@@ -29,6 +27,4 @@ data class ImportMenuUiState(
     val bestMenuContent: String? = null,
     val fullMenuContent: String? = null,
     val errorMessage: String? = null,
-    val isSaving: Boolean = false,
-    val isSaved: Boolean = false,
 )
