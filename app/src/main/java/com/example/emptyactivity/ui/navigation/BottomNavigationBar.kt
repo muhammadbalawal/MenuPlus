@@ -98,7 +98,7 @@ fun BottomNavigationBar(navController: NavHostController) {
                             selectedTextColor = RoyalGold,
                             unselectedIconColor = Color.White.copy(alpha = 0.5f),
                             unselectedTextColor = Color.White.copy(alpha = 0.5f),
-                            indicatorColor = RoyalGold.copy(alpha = 0.15f),
+                            indicatorColor = Color.Transparent,
                         ),
                 )
             }
