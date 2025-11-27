@@ -21,7 +21,7 @@ class MenuRepositoryImpl
 
         companion object {
             private const val TAG = "MenuRepository"
-            private const val TABLE_MENU = "user_menu" 
+            private const val TABLE_MENU = "menu"
         }
 
         override suspend fun saveMenu(
