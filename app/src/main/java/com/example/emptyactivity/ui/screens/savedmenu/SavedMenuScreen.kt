@@ -29,6 +29,10 @@ import com.example.emptyactivity.ui.theme.RoyalGold
 import java.text.SimpleDateFormat
 import java.util.*
 import android.net.Uri
+import android.graphics.BitmapFactory
+import android.util.Base64
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
 
 @Composable
 fun SavedMenuScreen(
@@ -88,7 +92,7 @@ fun SavedMenuScreen(
                                     safeMenuContent = menu.safeMenuContent ?: "",
                                     bestMenuContent = menu.bestMenuContent ?: "",
                                     fullMenuContent = menu.fullMenuContent ?: "",
-                                    imageUriString = menu.imageUri ?: "",
+                                    imageUriString = menu.imageBase64 ?: "",
                                 ),
                             )
                         },
@@ -104,14 +108,14 @@ fun MenuCard(
     menu: Menu,
     onClick: () -> Unit,
 ) {
-    val context = LocalContext.current
     val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
     val formattedDate = dateFormat.format(Date(menu.createdAt))
 
-    val imageUri = remember(menu.imageUri) {
-        if (!menu.imageUri.isNullOrBlank()) {
+    val imageBitmap = remember(menu.imageBase64) {
+        if (!menu.imageBase64.isNullOrBlank()) {
             try {
-                Uri.parse(menu.imageUri)
+                val imageBytes = Base64.decode(menu.imageBase64, Base64.NO_WRAP)
+                BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)?.asImageBitmap()
             } catch (e: Exception) {
                 null
             }
@@ -139,9 +143,9 @@ fun MenuCard(
                         .fillMaxWidth()
                         .height(160.dp),
             ) {
-                if (imageUri != null) {
-                    AsyncImage(
-                        model = imageUri,
+                if (imageBitmap != null) {
+                    Image(
+                        bitmap = imageBitmap,
                         contentDescription = "Menu image",
                         modifier = Modifier.fillMaxSize(),
                         contentScale = ContentScale.Crop,

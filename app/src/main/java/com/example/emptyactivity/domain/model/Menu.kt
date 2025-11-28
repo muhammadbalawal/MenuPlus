@@ -13,7 +13,7 @@ package com.example.emptyactivity.domain.model
  * @param safeMenuContent The analyzed safe menu content (GREEN items).
  * @param bestMenuContent The analyzed best menu content (recommendations).
  * @param fullMenuContent The analyzed full menu content (all items with ratings).
- * @param imageUri Optional URI of the original menu image.
+ * @param imageBase64 Optional base64-encoded image of the original menu.
  * @param createdAt Timestamp when the menu was saved (milliseconds since epoch).
  */
 data class Menu(
@@ -23,6 +23,6 @@ data class Menu(
     val safeMenuContent: String? = null,
     val bestMenuContent: String? = null,
     val fullMenuContent: String? = null,
-    val imageUri: String? = null,
+    val imageBase64: String? = null,
     val createdAt: Long = System.currentTimeMillis(),
 )
