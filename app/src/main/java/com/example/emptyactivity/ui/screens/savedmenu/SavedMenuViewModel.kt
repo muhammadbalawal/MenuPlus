@@ -24,7 +24,7 @@ class SavedMenuViewModel
             private const val TAG = "SavedMenuViewModel"
         }
 
-        private val _uiState = MutableStateFlow(SavedMenuUiState())
+        private val _uiState = MutableStateFlow(SavedMenuUiState(isLoading = true))
         val uiState: StateFlow<SavedMenuUiState> = _uiState.asStateFlow()
 
         fun loadMenus(user: User) {

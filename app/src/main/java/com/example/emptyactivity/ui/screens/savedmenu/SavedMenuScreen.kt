@@ -1,6 +1,5 @@
 package com.example.emptyactivity.ui.screens.savedmenu
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -16,14 +15,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import coil.compose.rememberAsyncImagePainter
-import coil.request.ImageRequest
+import coil.compose.AsyncImage
 import com.example.emptyactivity.domain.model.Menu
 import com.example.emptyactivity.domain.model.User
 import com.example.emptyactivity.ui.navigation.Route
@@ -111,7 +108,6 @@ fun MenuCard(
     val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
     val formattedDate = dateFormat.format(Date(menu.createdAt))
 
-    // Parse the imageUri string to Uri object
     val imageUri = remember(menu.imageUri) {
         if (!menu.imageUri.isNullOrBlank()) {
             try {
@@ -128,7 +124,7 @@ fun MenuCard(
         modifier =
             Modifier
                 .fillMaxWidth()
-                .height(200.dp)  // Reduced from 220.dp to make gray area smaller
+                .height(200.dp)
                 .clickable(onClick = onClick),
         shape = RoundedCornerShape(16.dp),
         colors =
@@ -137,22 +133,15 @@ fun MenuCard(
             ),
     ) {
         Column {
-            // Image section
             Box(
                 modifier =
                     Modifier
                         .fillMaxWidth()
-                        .height(160.dp),  // Increased from 140.dp to make image bigger
+                        .height(160.dp),
             ) {
                 if (imageUri != null) {
-                    Image(
-                        painter =
-                            rememberAsyncImagePainter(
-                                ImageRequest.Builder(context)
-                                    .data(imageUri)
-                                    .crossfade(true)
-                                    .build(),
-                            ),
+                    AsyncImage(
+                        model = imageUri,
                         contentDescription = "Menu image",
                         modifier = Modifier.fillMaxSize(),
                         contentScale = ContentScale.Crop,
@@ -173,11 +162,10 @@ fun MenuCard(
                 }
             }
 
-            // Date section - reduced padding, no bottom padding
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 12.dp, vertical = 8.dp),  // Reduced padding, no bottom padding
+                    .padding(horizontal = 12.dp, vertical = 8.dp),
             ) {
                 Text(
                     text = formattedDate,
