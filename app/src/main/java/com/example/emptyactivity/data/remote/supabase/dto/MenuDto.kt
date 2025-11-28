@@ -17,8 +17,8 @@ data class MenuDto(
     val bestMenuContent: String? = null,
     @SerialName("full_menu_content")
     val fullMenuContent: String? = null,
-    @SerialName("image_base64")
-    val imageBase64: String? = null,
+    @SerialName("image_uri")
+    val imageUri: String? = null,
     @SerialName("created_at")
     val createdAt: String? = null,
 )
@@ -35,6 +35,6 @@ data class CreateMenuDto(
     val bestMenuContent: String? = null,
     @SerialName("full_menu_content")
     val fullMenuContent: String? = null,
-    @SerialName("image_base64")
-    val imageBase64: String? = null,
+    @SerialName("image_uri")
+    val imageUri: String? = null,
 )

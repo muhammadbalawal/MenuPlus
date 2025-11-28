@@ -21,7 +21,7 @@ class SaveMenuUseCase
             safeMenuContent: String?,
             bestMenuContent: String?,
             fullMenuContent: String?,
-            imageBase64: String?,
+            imageUri: String?,
         ): Result<Menu> {
             // Validation
             if (menuText.isBlank()) {
@@ -36,7 +36,7 @@ class SaveMenuUseCase
                 safeMenuContent = safeMenuContent,
                 bestMenuContent = bestMenuContent,
                 fullMenuContent = fullMenuContent,
-                imageBase64 = imageBase64,
+                imageUri = imageUri,
             )
         }
     }

@@ -9,7 +9,6 @@ import com.example.emptyactivity.domain.model.User
 import com.example.emptyactivity.domain.usecase.menu.AnalyzeMenuUseCase
 import com.example.emptyactivity.util.Result
 import com.example.emptyactivity.domain.usecase.menu.SaveMenuUseCase
-import com.example.emptyactivity.util.ImageEncoding
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -149,16 +148,6 @@ class ImportMenuViewModel
 
                 val state = uiState.value
 
-                var imageBase64: String? = null
-                if (imageUriString.isNotBlank() && context != null) {
-                    try {
-                        val uri = Uri.parse(imageUriString)
-                        imageBase64 = ImageEncoding.uriToBase64(context, uri)
-                    } catch (e: Exception) {
-                        Log.e(TAG, "Error encoding image to base64", e)
-                    }
-                }
-
                 when (
                     val result =
                         saveMenuUseCase(
@@ -167,7 +156,7 @@ class ImportMenuViewModel
                             safeMenuContent = state.safeMenuContent,
                             bestMenuContent = state.bestMenuContent,
                             fullMenuContent = state.fullMenuContent,
-                            imageBase64 = imageBase64,
+                            imageUri = if (imageUriString.isNotBlank()) imageUriString else null,
                         )
                 ) {
                     is Result.Success -> {

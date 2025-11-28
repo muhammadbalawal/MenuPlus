@@ -30,7 +30,7 @@ class MenuRepositoryImpl
             safeMenuContent: String?,
             bestMenuContent: String?,
             fullMenuContent: String?,
-            imageBase64: String?,
+            imageUri: String?,
         ): Result<Menu> =
             try {
                 Log.d(TAG, "Saving menu for userId: $userId")
@@ -42,7 +42,7 @@ class MenuRepositoryImpl
                         safeMenuContent = safeMenuContent,
                         bestMenuContent = bestMenuContent,
                         fullMenuContent = fullMenuContent,
-                        imageBase64 = imageBase64,
+                        imageUri = imageUri,
                     )
 
                 supabase
@@ -65,7 +65,7 @@ class MenuRepositoryImpl
                                     safe_menu_content,
                                     best_menu_content,
                                     full_menu_content,
-                                    image_base64,
+                                    image_uri,
                                     created_at
                                     """.trimIndent(),
                                 ),
@@ -104,7 +104,7 @@ class MenuRepositoryImpl
                                     safe_menu_content,
                                     best_menu_content,
                                     full_menu_content,
-                                    image_base64,
+                                    image_uri,
                                     created_at
                                     """.trimIndent(),
                                 ),
@@ -143,7 +143,7 @@ class MenuRepositoryImpl
                                     safe_menu_content,
                                     best_menu_content,
                                     full_menu_content,
-                                    image_base64,
+                                    image_uri,
                                     created_at
                                     """.trimIndent(),
                                 ),
@@ -202,7 +202,7 @@ class MenuRepositoryImpl
                 safeMenuContent = this.safeMenuContent,
                 bestMenuContent = this.bestMenuContent,
                 fullMenuContent = this.fullMenuContent,
-                imageBase64 = this.imageBase64,
+                imageUri = this.imageUri,
                 createdAt = createdAtLong,
             )
         }
