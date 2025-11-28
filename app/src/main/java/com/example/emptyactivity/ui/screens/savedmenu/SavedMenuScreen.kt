@@ -31,6 +31,7 @@ import com.example.emptyactivity.ui.theme.PrestigeBlack
 import com.example.emptyactivity.ui.theme.RoyalGold
 import java.text.SimpleDateFormat
 import java.util.*
+import android.net.Uri
 
 @Composable
 fun SavedMenuScreen(
@@ -110,11 +111,24 @@ fun MenuCard(
     val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
     val formattedDate = dateFormat.format(Date(menu.createdAt))
 
+    // Parse the imageUri string to Uri object
+    val imageUri = remember(menu.imageUri) {
+        if (!menu.imageUri.isNullOrBlank()) {
+            try {
+                Uri.parse(menu.imageUri)
+            } catch (e: Exception) {
+                null
+            }
+        } else {
+            null
+        }
+    }
+
     Card(
         modifier =
             Modifier
                 .fillMaxWidth()
-                .height(220.dp)
+                .height(200.dp)  // Reduced from 220.dp to make gray area smaller
                 .clickable(onClick = onClick),
         shape = RoundedCornerShape(16.dp),
         colors =
@@ -128,14 +142,14 @@ fun MenuCard(
                 modifier =
                     Modifier
                         .fillMaxWidth()
-                        .height(140.dp),
+                        .height(160.dp),  // Increased from 140.dp to make image bigger
             ) {
-                if (!menu.imageUri.isNullOrBlank()) {
+                if (imageUri != null) {
                     Image(
                         painter =
                             rememberAsyncImagePainter(
                                 ImageRequest.Builder(context)
-                                    .data(menu.imageUri)
+                                    .data(imageUri)
                                     .crossfade(true)
                                     .build(),
                             ),
@@ -159,9 +173,11 @@ fun MenuCard(
                 }
             }
 
-            // Date section only (removed menu text description)
+            // Date section - reduced padding, no bottom padding
             Column(
-                modifier = Modifier.padding(12.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 12.dp, vertical = 8.dp),  // Reduced padding, no bottom padding
             ) {
                 Text(
                     text = formattedDate,
