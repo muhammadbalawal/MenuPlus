@@ -35,7 +35,9 @@ fun SavedMenuDetailScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(menuId) {
-        viewModel.loadMenu(menuId)
+        if (menuId.isNotBlank()) {
+            viewModel.loadMenu(menuId)
+        }
     }
 
     // Navigate back after deletion
@@ -162,6 +164,53 @@ fun SavedMenuDetailScreen(
                     bestMenuContent = uiState.menu?.bestMenuContent,
                     fullMenuContent = uiState.menu?.fullMenuContent,
                 )
+            }
+        } else {
+            // Menu not found or failed to load
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+            ) {
+                // Back button
+                IconButton(
+                    onClick = { navController.navigateUp() },
+                    modifier = Modifier
+                        .align(Alignment.Start)
+                        .padding(bottom = 16.dp),
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.ArrowBack,
+                        contentDescription = "Back",
+                        tint = RoyalGold,
+                        modifier = Modifier.size(24.dp),
+                    )
+                }
+
+                Text(
+                    text = "Menu Not Found",
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White,
+                    modifier = Modifier.padding(bottom = 8.dp),
+                )
+                Text(
+                    text = "The menu you're looking for doesn't exist or has been deleted.",
+                    fontSize = 14.sp,
+                    color = Color.White.copy(alpha = 0.7f),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(bottom = 24.dp),
+                )
+                Button(
+                    onClick = { navController.navigateUp() },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = RoyalGold,
+                    ),
+                ) {
+                    Text("Go Back", color = Color.Black)
+                }
             }
         }
     }

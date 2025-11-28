@@ -29,31 +29,55 @@ class SavedMenuDetailViewModel
         val uiState: StateFlow<SavedMenuDetailUiState> = _uiState.asStateFlow()
 
         fun loadMenu(menuId: String) {
+            if (menuId.isBlank()) {
+                Log.e(TAG, "Cannot load menu: menuId is blank")
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        errorMessage = "Invalid menu ID",
+                        menu = null,
+                    )
+                }
+                return
+            }
+
             viewModelScope.launch {
                 Log.d(TAG, "Loading menu: $menuId")
                 _uiState.update { it.copy(isLoading = true, errorMessage = null) }
 
-                when (val result = getMenuByIdUseCase(menuId)) {
-                    is Result.Success -> {
-                        Log.d(TAG, "Menu loaded successfully")
-                        _uiState.update {
-                            it.copy(
-                                menu = result.data,
-                                isLoading = false,
-                            )
+                try {
+                    when (val result = getMenuByIdUseCase(menuId)) {
+                        is Result.Success -> {
+                            Log.d(TAG, "Menu loaded successfully")
+                            _uiState.update {
+                                it.copy(
+                                    menu = result.data,
+                                    isLoading = false,
+                                )
+                            }
+                        }
+                        is Result.Error -> {
+                            Log.e(TAG, "Failed to load menu: ${result.message}")
+                            _uiState.update {
+                                it.copy(
+                                    isLoading = false,
+                                    errorMessage = result.message,
+                                    menu = null,
+                                )
+                            }
+                        }
+                        is Result.Loading -> {
+                            _uiState.update { it.copy(isLoading = true) }
                         }
                     }
-                    is Result.Error -> {
-                        Log.e(TAG, "Failed to load menu: ${result.message}")
-                        _uiState.update {
-                            it.copy(
-                                isLoading = false,
-                                errorMessage = result.message,
-                            )
-                        }
-                    }
-                    is Result.Loading -> {
-                        _uiState.update { it.copy(isLoading = true) }
+                } catch (e: Exception) {
+                    Log.e(TAG, "Exception while loading menu", e)
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            errorMessage = "Failed to load menu: ${e.message}",
+                            menu = null,
+                        )
                     }
                 }
             }
