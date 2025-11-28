@@ -37,6 +37,8 @@ import coil.compose.AsyncImage
 import com.example.emptyactivity.ui.navigation.Route
 import com.example.emptyactivity.ui.theme.PrestigeBlack
 import com.example.emptyactivity.ui.theme.RoyalGold
+import android.content.ContentResolver
+import android.content.Intent
 
 /**
  * OCR Screen - Image Picker with Premium Theme
@@ -63,6 +65,16 @@ fun OcrScreen(
         rememberLauncherForActivityResult(
             contract = ActivityResultContracts.PickVisualMedia(),
         ) { uri: Uri? ->
+            uri?.let {
+                try {
+                    context.contentResolver.takePersistableUriPermission(
+                        it,
+                        Intent.FLAG_GRANT_READ_URI_PERMISSION
+                    )
+                } catch (e: SecurityException) {
+                    android.util.Log.e("OcrScreen", "Failed to take persistable URI permission", e)
+                }
+            }
             vm.onImagePicked(uri, context)
         }
 
