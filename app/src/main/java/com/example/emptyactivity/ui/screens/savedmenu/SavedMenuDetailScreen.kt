@@ -40,7 +40,6 @@ fun SavedMenuDetailScreen(
         }
     }
 
-    // Navigate back after deletion
     LaunchedEffect(uiState.isDeleted) {
         if (uiState.isDeleted) {
             navController.navigate(Route.SavedMenu) {
@@ -137,7 +136,7 @@ fun SavedMenuDetailScreen(
                                 if (uiState.isDeleted) {
                                     Color(0xFF43A047)
                                 } else {
-                                    Color(0xFFD32F2F), // Red for delete
+                                    Color(0xFFD32F2F) // Red for delete
                                 },
                         ),
                 ) {

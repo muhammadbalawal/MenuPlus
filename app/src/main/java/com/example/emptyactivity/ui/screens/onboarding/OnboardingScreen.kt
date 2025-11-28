@@ -8,7 +8,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.emptyactivity.domain.model.User
 import com.example.emptyactivity.ui.components.ProfileFormScreen
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun OnboardingScreen(
     user: User,

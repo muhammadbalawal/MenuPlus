@@ -259,6 +259,7 @@ fun ProfileFormScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun LanguageSelectionSection(
     languages: List<com.example.emptyactivity.domain.model.Language>,
