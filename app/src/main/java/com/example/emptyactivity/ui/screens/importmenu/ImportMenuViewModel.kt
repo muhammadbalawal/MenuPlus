@@ -1,5 +1,7 @@
 package com.example.emptyactivity.ui.screens.importmenu
 
+import android.content.Context
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -7,6 +9,7 @@ import com.example.emptyactivity.domain.model.User
 import com.example.emptyactivity.domain.usecase.menu.AnalyzeMenuUseCase
 import com.example.emptyactivity.util.Result
 import com.example.emptyactivity.domain.usecase.menu.SaveMenuUseCase
+import com.example.emptyactivity.util.ImageEncoding
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -133,7 +136,7 @@ class ImportMenuViewModel
          * @param user The current authenticated user. Used to associate the menu with the user.
          * @param imageUriString Optional URI of the original menu image.
          */
-        fun onSaveMenu(user: User, imageUriString: String = "") {
+        fun onSaveMenu(user: User, imageUriString: String = "", context: Context? = null) {
             viewModelScope.launch {
                 Log.d(TAG, "Saving menu for user: ${user.id}")
                 _uiState.update {
@@ -146,6 +149,16 @@ class ImportMenuViewModel
 
                 val state = uiState.value
 
+                var imageBase64: String? = null
+                if (imageUriString.isNotBlank() && context != null) {
+                    try {
+                        val uri = Uri.parse(imageUriString)
+                        imageBase64 = ImageEncoding.uriToBase64(context, uri)
+                    } catch (e: Exception) {
+                        Log.e(TAG, "Error encoding image to base64", e)
+                    }
+                }
+
                 when (
                     val result =
                         saveMenuUseCase(
@@ -154,7 +167,7 @@ class ImportMenuViewModel
                             safeMenuContent = state.safeMenuContent,
                             bestMenuContent = state.bestMenuContent,
                             fullMenuContent = state.fullMenuContent,
-                            imageUri = if (imageUriString.isNotBlank()) imageUriString else null,
+                            imageBase64 = imageBase64,
                         )
                 ) {
                     is Result.Success -> {
