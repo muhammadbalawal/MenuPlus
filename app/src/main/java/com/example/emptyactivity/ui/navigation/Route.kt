@@ -45,6 +45,7 @@ sealed interface Route {
         val bestMenuContent: String = "",
         val fullMenuContent: String = "",
         val imageUriString: String = "",
+        val menuId: String = "",
     ) : Route
 
     /** User profile screen displaying user information and dietary preferences. */

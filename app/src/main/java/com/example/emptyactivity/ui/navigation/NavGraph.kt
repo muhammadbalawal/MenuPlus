@@ -31,6 +31,7 @@ import com.example.emptyactivity.ui.screens.ocr.OcrScreen
 import com.example.emptyactivity.ui.screens.onboarding.OnboardingScreen
 import com.example.emptyactivity.ui.screens.profile.ProfileScreen
 import com.example.emptyactivity.ui.screens.savedmenu.SavedMenuScreen
+import com.example.emptyactivity.ui.screens.savedmenu.SavedMenuDetailScreen
 import com.example.emptyactivity.ui.screens.settings.SettingsScreen
 import com.example.emptyactivity.ui.screens.menuanalysis.MenuAnalysisScreen
 
@@ -195,7 +196,10 @@ private fun AuthenticatedNavGraph(user: User) {
             modifier = Modifier.padding(paddingValues),
         ) {
             composable<Route.SavedMenu> {
-                SavedMenuScreen()
+                SavedMenuScreen(
+                    user = user,
+                    navController = navController,
+                )
             }
 
             composable<Route.Ocr> {
@@ -229,15 +233,25 @@ private fun AuthenticatedNavGraph(user: User) {
 
             composable<Route.MenuAnalysis> { backStackEntry ->
                 val route = backStackEntry.toRoute<Route.MenuAnalysis>()
-                MenuAnalysisScreen(
-                    user = user,
-                    menuText = route.menuText,
-                    safeMenuContent = route.safeMenuContent,
-                    bestMenuContent = route.bestMenuContent,
-                    fullMenuContent = route.fullMenuContent,
-                    imageUriString = route.imageUriString,
-                    navController = navController,
-                )
+                
+                // If menuId is provided, show SavedMenuDetailScreen
+                if (route.menuId.isNotBlank()) {
+                    SavedMenuDetailScreen(
+                        menuId = route.menuId,
+                        navController = navController,
+                    )
+                } else {
+                    // Otherwise show regular MenuAnalysisScreen
+                    MenuAnalysisScreen(
+                        user = user,
+                        menuText = route.menuText,
+                        safeMenuContent = route.safeMenuContent,
+                        bestMenuContent = route.bestMenuContent,
+                        fullMenuContent = route.fullMenuContent,
+                        imageUriString = route.imageUriString,
+                        navController = navController,
+                    )
+                }
             }
         }
     }
