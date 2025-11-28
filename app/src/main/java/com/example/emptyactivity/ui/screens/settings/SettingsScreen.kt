@@ -69,8 +69,7 @@ fun SettingsScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = PrestigeBlack)
-            .safeDrawingPadding(),
+            .background(color = PrestigeBlack),
     ) {
         // Back button positioned at top start
         IconButton(

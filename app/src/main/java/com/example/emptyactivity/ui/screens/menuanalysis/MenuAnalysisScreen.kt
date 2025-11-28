@@ -61,8 +61,7 @@ fun MenuAnalysisScreen(
         modifier =
             Modifier
                 .fillMaxSize()
-                .background(color = PrestigeBlack)
-                .safeDrawingPadding(),
+                .background(color = PrestigeBlack),
     ) {
         IconButton(
             onClick = { 
