@@ -1,10 +1,12 @@
 package com.example.emptyactivity.ui.screens.importmenu
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.emptyactivity.domain.model.User
 import com.example.emptyactivity.domain.usecase.menu.AnalyzeMenuUseCase
+import com.example.emptyactivity.domain.usecase.menu.SaveMenuUseCase
 import com.example.emptyactivity.util.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -39,6 +41,7 @@ class ImportMenuViewModel
     @Inject
     constructor(
         private val analyzeMenuUseCase: AnalyzeMenuUseCase,
+        private val saveMenuUseCase: SaveMenuUseCase,
     ) : ViewModel() {
         companion object {
             private const val TAG = "ImportMenuViewModel"
@@ -117,6 +120,65 @@ class ImportMenuViewModel
                     }
                     is Result.Loading -> {
                         _uiState.update { it.copy(isAnalyzing = true) }
+                    }
+                }
+            }
+        }
+
+        /**
+         * Saves the current menu analysis to the database.
+         *
+         * This method saves the menu text and all analysis results (safe, best, full menu)
+         * to Supabase so the user can access it later from the Saved Menus screen.
+         *
+         * @param user The current authenticated user. Used to associate the menu with the user.
+         * @param imageUriString Optional URI of the original menu image.
+         */
+        fun onSaveMenu(user: User, imageUriString: String = "", context: Context? = null) {
+            viewModelScope.launch {
+                Log.d(TAG, "Saving menu for user: ${user.id}")
+                _uiState.update {
+                    it.copy(
+                        isSaving = true,
+                        errorMessage = null,
+                        isSaved = false,
+                    )
+                }
+
+                val state = uiState.value
+
+                when (
+                    val result =
+                        saveMenuUseCase(
+                            userId = user.id,
+                            menuText = state.menuText,
+                            safeMenuContent = state.safeMenuContent,
+                            bestMenuContent = state.bestMenuContent,
+                            fullMenuContent = state.fullMenuContent,
+                            imageUri = if (imageUriString.isNotBlank()) imageUriString else null,
+                        )
+                ) {
+                    is Result.Success -> {
+                        Log.d(TAG, "Menu saved successfully")
+                        _uiState.update {
+                            it.copy(
+                                isSaving = false,
+                                isSaved = true,
+                            )
+                        }
+                    }
+                    is Result.Error -> {
+                        Log.e(TAG, "Menu save failed: ${result.message}")
+                        _uiState.update {
+                            it.copy(
+                                isSaving = false,
+                                errorMessage = result.message,
+                                isSaved = false,
+                            )
+                        }
+                    }
+                    is Result.Loading -> {
+                        _uiState.update { it.copy(isSaving = true) }
                     }
                 }
             }

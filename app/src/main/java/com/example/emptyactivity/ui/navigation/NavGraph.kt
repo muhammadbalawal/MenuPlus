@@ -27,9 +27,11 @@ import com.example.emptyactivity.ui.screens.auth.login.LoginScreen
 import com.example.emptyactivity.ui.screens.auth.register.RegisterScreen
 import com.example.emptyactivity.ui.screens.importmenu.ImportMenuScreen
 import com.example.emptyactivity.ui.screens.landing.LandingScreen
+import com.example.emptyactivity.ui.screens.menuanalysis.MenuAnalysisScreen
 import com.example.emptyactivity.ui.screens.ocr.OcrScreen
 import com.example.emptyactivity.ui.screens.onboarding.OnboardingScreen
 import com.example.emptyactivity.ui.screens.profile.ProfileScreen
+import com.example.emptyactivity.ui.screens.savedmenu.SavedMenuDetailScreen
 import com.example.emptyactivity.ui.screens.savedmenu.SavedMenuScreen
 import com.example.emptyactivity.ui.screens.settings.SettingsScreen
 
@@ -194,7 +196,10 @@ private fun AuthenticatedNavGraph(user: User) {
             modifier = Modifier.padding(paddingValues),
         ) {
             composable<Route.SavedMenu> {
-                SavedMenuScreen()
+                SavedMenuScreen(
+                    user = user,
+                    navController = navController,
+                )
             }
 
             composable<Route.Ocr> {
@@ -207,11 +212,15 @@ private fun AuthenticatedNavGraph(user: User) {
                     user = user,
                     initialMenuText = route.menuText,
                     imageUriString = route.imageUriString,
+                    navController = navController,
                 )
             }
 
             composable<Route.Profile> {
-                ProfileScreen()
+                ProfileScreen(
+                    user = user,
+                    onNavigateBack = { navController.navigateUp() },
+                )
             }
 
             composable<Route.Settings> {
@@ -220,6 +229,29 @@ private fun AuthenticatedNavGraph(user: User) {
                     onNavigateBack = { navController.navigateUp() },
                     onLogout = {},
                 )
+            }
+
+            composable<Route.MenuAnalysis> { backStackEntry ->
+                val route = backStackEntry.toRoute<Route.MenuAnalysis>()
+                
+                // If menuId is provided, show SavedMenuDetailScreen
+                if (route.menuId.isNotBlank()) {
+                    SavedMenuDetailScreen(
+                        menuId = route.menuId,
+                        navController = navController,
+                    )
+                } else {
+                    // Otherwise show regular MenuAnalysisScreen
+                    MenuAnalysisScreen(
+                        user = user,
+                        menuText = route.menuText,
+                        safeMenuContent = route.safeMenuContent,
+                        bestMenuContent = route.bestMenuContent,
+                        fullMenuContent = route.fullMenuContent,
+                        imageUriString = route.imageUriString,
+                        navController = navController,
+                    )
+                }
             }
         }
     }
@@ -299,7 +331,6 @@ private fun shouldShowBottomBar(navController: NavHostController): Boolean {
         listOf(
             Route.SavedMenu::class.qualifiedName,
             Route.Ocr::class.qualifiedName,
-            Route.ImportMenu::class.qualifiedName,
             Route.Profile::class.qualifiedName,
         )
 }
@@ -322,7 +353,6 @@ private fun shouldShowTopBar(navController: NavHostController): Boolean {
         listOf(
             Route.SavedMenu::class.qualifiedName,
             Route.Ocr::class.qualifiedName,
-            Route.ImportMenu::class.qualifiedName,
             Route.Profile::class.qualifiedName,
         )
 }

@@ -1,5 +1,6 @@
 package com.example.emptyactivity.ui.screens.ocr
 
+import android.content.Intent
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
@@ -63,6 +64,16 @@ fun OcrScreen(
         rememberLauncherForActivityResult(
             contract = ActivityResultContracts.PickVisualMedia(),
         ) { uri: Uri? ->
+            uri?.let {
+                try {
+                    context.contentResolver.takePersistableUriPermission(
+                        it,
+                        Intent.FLAG_GRANT_READ_URI_PERMISSION,
+                    )
+                } catch (e: SecurityException) {
+                    android.util.Log.e("OcrScreen", "Failed to take persistable URI permission", e)
+                }
+            }
             vm.onImagePicked(uri, context)
         }
 

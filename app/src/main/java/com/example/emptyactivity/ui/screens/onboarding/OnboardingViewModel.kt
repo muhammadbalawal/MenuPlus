@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.emptyactivity.domain.model.User
 import com.example.emptyactivity.domain.usecase.profile.GetAllLanguagesUseCase
+import com.example.emptyactivity.domain.usecase.profile.GetUserProfileUseCase
 import com.example.emptyactivity.domain.usecase.profile.SaveUserProfileUseCase
 import com.example.emptyactivity.util.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,6 +21,7 @@ class OnboardingViewModel
     constructor(
         private val getAllLanguagesUseCase: GetAllLanguagesUseCase,
         private val saveUserProfileUseCase: SaveUserProfileUseCase,
+        private val getUserProfileUseCase: GetUserProfileUseCase,
     ) : ViewModel() {
         private val _uiState = MutableStateFlow(OnboardingUiState())
         val uiState: StateFlow<OnboardingUiState> = _uiState.asStateFlow()
@@ -159,7 +161,40 @@ class OnboardingViewModel
             _uiState.update { it.copy(errorMessage = null) }
         }
 
-        fun onSaveProfile(user: User) {
+        fun loadUserProfile(userId: String) {
+            viewModelScope.launch {
+                _uiState.update { it.copy(isLoadingLanguages = true) }
+
+                when (val result = getUserProfileUseCase(userId)) {
+                    is Result.Success -> {
+                        val profile = result.data
+                        _uiState.update {
+                            it.copy(
+                                selectedLanguageId = profile?.preferredLanguageId ?: it.selectedLanguageId,
+                                allergies = profile?.allergies ?: emptyList(),
+                                dietaryRestrictions = profile?.dietaryRestrictions ?: emptyList(),
+                                dislikes = profile?.dislikes ?: emptyList(),
+                                preferences = profile?.preferences ?: emptyList(),
+                                isLoadingLanguages = false,
+                            )
+                        }
+                    }
+                    is Result.Error -> {
+                        _uiState.update {
+                            it.copy(
+                                isLoadingLanguages = false,
+                                errorMessage = result.message,
+                            )
+                        }
+                    }
+                    is Result.Loading -> {
+                        _uiState.update { it.copy(isLoadingLanguages = true) }
+                    }
+                }
+            }
+        }
+
+        fun onSaveProfile(user: User, onSaveComplete: () -> Unit = {}) {
             viewModelScope.launch {
                 _uiState.update { it.copy(isSaving = true, errorMessage = null) }
 
@@ -177,7 +212,12 @@ class OnboardingViewModel
                 ) {
                     is Result.Success -> {
                         _uiState.update { it.copy(isSaving = false, isLoading = false) }
-                        _navigationEvent.value = OnboardingNavigationEvent.NavigateToMain
+                        // Call callback if provided, otherwise use navigation event
+                        if (onSaveComplete != {}) {
+                            onSaveComplete()
+                        } else {
+                            _navigationEvent.value = OnboardingNavigationEvent.NavigateToMain
+                        }
                     }
                     is Result.Error -> {
                         _uiState.update {

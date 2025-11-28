@@ -27,8 +27,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.emptyactivity.domain.model.User
+import com.example.emptyactivity.ui.navigation.Route
 import com.example.emptyactivity.ui.theme.PrestigeBlack
 import com.example.emptyactivity.ui.theme.RoyalGold
 
@@ -45,9 +47,26 @@ fun ImportMenuScreen(
     user: User,
     initialMenuText: String = "",
     imageUriString: String = "",
+    navController: NavController,
     viewModel: ImportMenuViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(uiState.isAnalyzing, uiState.safeMenuContent) {
+        if (!uiState.isAnalyzing &&
+            (uiState.safeMenuContent != null || uiState.bestMenuContent != null || uiState.fullMenuContent != null)
+        ) {
+            navController.navigate(
+                Route.MenuAnalysis(
+                    menuText = uiState.menuText,
+                    safeMenuContent = uiState.safeMenuContent ?: "",
+                    bestMenuContent = uiState.bestMenuContent ?: "",
+                    fullMenuContent = uiState.fullMenuContent ?: "",
+                    imageUriString = imageUriString,
+                ),
+            )
+        }
+    }
 
     // Parse image URI
     val imageUri =
@@ -189,100 +208,6 @@ fun ImportMenuScreen(
                     strokeWidth = 3.dp,
                     modifier = Modifier.size(48.dp),
                 )
-            }
-        }
-
-        // RESULTS STATE (analysis complete)
-        if (uiState.safeMenuContent != null || uiState.bestMenuContent != null || uiState.fullMenuContent != null) {
-            Column(
-                modifier =
-                    Modifier
-                        .fillMaxSize()
-                        .padding(24.dp),
-            ) {
-                // Title
-                Text(
-                    text = "Menu Analysis",
-                    fontSize = 32.sp,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-                    style =
-                        TextStyle(
-                            brush =
-                                Brush.linearGradient(
-                                    colors =
-                                        listOf(
-                                            Color(0xFF7A5A00),
-                                            RoyalGold,
-                                            Color(0xFFFFF4C8),
-                                            Color(0xFFD4AF37),
-                                        ),
-                                ),
-                            shadow =
-                                Shadow(
-                                    color = Color(0xAA8B7500),
-                                    offset = Offset(1f, 1f),
-                                    blurRadius = 4f,
-                                ),
-                        ),
-                    color = Color.Unspecified,
-                    modifier = Modifier.fillMaxWidth(),
-                )
-
-                Spacer(modifier = Modifier.height(24.dp))
-
-                // Tab Row
-                TabRow(
-                    selectedTabIndex = selectedTabIndex,
-                    containerColor = PrestigeBlack,
-                    contentColor = RoyalGold,
-                ) {
-                    Tab(
-                        selected = selectedTabIndex == 0,
-                        onClick = { selectedTabIndex = 0 },
-                        text = {
-                            Text(
-                                "Safe Menu",
-                                fontWeight = if (selectedTabIndex == 0) FontWeight.Bold else FontWeight.Normal,
-                            )
-                        },
-                        selectedContentColor = RoyalGold,
-                        unselectedContentColor = Color.White.copy(alpha = 0.6f),
-                    )
-                    Tab(
-                        selected = selectedTabIndex == 1,
-                        onClick = { selectedTabIndex = 1 },
-                        text = {
-                            Text(
-                                "Best Menu",
-                                fontWeight = if (selectedTabIndex == 1) FontWeight.Bold else FontWeight.Normal,
-                            )
-                        },
-                        selectedContentColor = RoyalGold,
-                        unselectedContentColor = Color.White.copy(alpha = 0.6f),
-                    )
-                    Tab(
-                        selected = selectedTabIndex == 2,
-                        onClick = { selectedTabIndex = 2 },
-                        text = {
-                            Text(
-                                "Full Menu",
-                                fontWeight = if (selectedTabIndex == 2) FontWeight.Bold else FontWeight.Normal,
-                            )
-                        },
-                        selectedContentColor = RoyalGold,
-                        unselectedContentColor = Color.White.copy(alpha = 0.6f),
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                // Tab Content
-                when (selectedTabIndex) {
-                    0 -> SafeMenuContent(uiState.safeMenuContent ?: "No safe items found")
-                    1 -> BestMenuContent(uiState.bestMenuContent ?: "No recommendations available")
-                    2 -> FullMenuContent(uiState.fullMenuContent ?: "No analysis available")
-                }
             }
         }
     }

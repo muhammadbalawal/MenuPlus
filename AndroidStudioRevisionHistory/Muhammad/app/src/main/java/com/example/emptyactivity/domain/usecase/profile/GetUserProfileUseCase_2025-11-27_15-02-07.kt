@@ -1,0 +1,3 @@
+class GetUserProfileUseCase
+    @Inject
+    constructor(
