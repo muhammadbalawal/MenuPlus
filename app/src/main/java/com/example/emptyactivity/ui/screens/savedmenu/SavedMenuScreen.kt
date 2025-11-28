@@ -159,22 +159,15 @@ fun MenuCard(
                 }
             }
 
-            // Text section
+            // Date section only (removed menu text description)
             Column(
                 modifier = Modifier.padding(12.dp),
             ) {
                 Text(
-                    text = menu.menuText.take(50) + if (menu.menuText.length > 50) "..." else "",
-                    fontSize = 12.sp,
-                    color = Color.White.copy(alpha = 0.9f),
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
                     text = formattedDate,
-                    fontSize = 10.sp,
-                    color = RoyalGold.copy(alpha = 0.7f),
+                    fontSize = 12.sp,
+                    color = RoyalGold.copy(alpha = 0.9f),
+                    fontWeight = FontWeight.Medium,
                 )
             }
         }
