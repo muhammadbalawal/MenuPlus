@@ -10,7 +10,7 @@ interface MenuRepository {
         safeMenuContent: String?,
         bestMenuContent: String?,
         fullMenuContent: String?,
-        imageUri: String?,
+        imageBase64: String?,
     ): Result<Menu>
 
     suspend fun getMenuById(menuId: String): Result<Menu?>

@@ -26,6 +26,7 @@ import com.example.emptyactivity.ui.components.menu.MenuDisplayContent
 import com.example.emptyactivity.ui.navigation.Route
 import com.example.emptyactivity.ui.theme.PrestigeBlack
 import com.example.emptyactivity.ui.theme.RoyalGold
+import androidx.compose.ui.platform.LocalContext
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -39,6 +40,7 @@ fun MenuAnalysisScreen(
     navController: NavController,
     viewModel: MenuAnalysisViewModel = hiltViewModel(),
 ) {
+    val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     if (uiState.errorMessage != null) {
@@ -126,6 +128,7 @@ fun MenuAnalysisScreen(
                         bestMenuContent = bestMenuContent,
                         fullMenuContent = fullMenuContent,
                         imageUriString = imageUriString,
+                        context = context,
                     )
                 },
                 enabled = !uiState.isSaving && !uiState.isSaved,
