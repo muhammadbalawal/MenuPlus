@@ -76,7 +76,7 @@ class OcrViewModel
             try {
                 context.contentResolver.takePersistableUriPermission(
                     uri,
-                    android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION
+                    android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION,
                 )
             } catch (e: SecurityException) {
                 android.util.Log.e("OcrViewModel", "Failed to take persistable URI permission", e)

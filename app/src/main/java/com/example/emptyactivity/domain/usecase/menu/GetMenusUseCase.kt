@@ -10,8 +10,6 @@ class GetMenusUseCase
     constructor(
         private val menuRepository: MenuRepository,
     ) {
-        suspend operator fun invoke(userId: String): Result<List<Menu>> {
-            return menuRepository.getAllMenusByUserId(userId)
-        }
+        suspend operator fun invoke(userId: String): Result<List<Menu>> = menuRepository.getAllMenusByUserId(userId)
     }
 

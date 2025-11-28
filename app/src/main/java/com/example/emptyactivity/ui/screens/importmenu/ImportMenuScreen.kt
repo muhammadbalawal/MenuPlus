@@ -27,12 +27,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.emptyactivity.domain.model.User
+import com.example.emptyactivity.ui.navigation.Route
 import com.example.emptyactivity.ui.theme.PrestigeBlack
 import com.example.emptyactivity.ui.theme.RoyalGold
-import androidx.navigation.NavController
-import com.example.emptyactivity.ui.navigation.Route
 
 /**
  * Import Menu Screen - Loading & Results
@@ -54,7 +54,8 @@ fun ImportMenuScreen(
 
     LaunchedEffect(uiState.isAnalyzing, uiState.safeMenuContent) {
         if (!uiState.isAnalyzing &&
-            (uiState.safeMenuContent != null || uiState.bestMenuContent != null || uiState.fullMenuContent != null)) {
+            (uiState.safeMenuContent != null || uiState.bestMenuContent != null || uiState.fullMenuContent != null)
+        ) {
             navController.navigate(
                 Route.MenuAnalysis(
                     menuText = uiState.menuText,
@@ -62,7 +63,7 @@ fun ImportMenuScreen(
                     bestMenuContent = uiState.bestMenuContent ?: "",
                     fullMenuContent = uiState.fullMenuContent ?: "",
                     imageUriString = imageUriString,
-                )
+                ),
             )
         }
     }

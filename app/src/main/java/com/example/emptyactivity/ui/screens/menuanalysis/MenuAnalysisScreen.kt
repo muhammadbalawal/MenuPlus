@@ -8,10 +8,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
-import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -26,7 +27,6 @@ import com.example.emptyactivity.ui.components.menu.MenuDisplayContent
 import com.example.emptyactivity.ui.navigation.Route
 import com.example.emptyactivity.ui.theme.PrestigeBlack
 import com.example.emptyactivity.ui.theme.RoyalGold
-import androidx.compose.ui.platform.LocalContext
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -69,10 +69,11 @@ fun MenuAnalysisScreen(
                     popUpTo(Route.SavedMenu) { inclusive = false }
                 }
             },
-            modifier = Modifier
-                .align(Alignment.TopStart)
-                .padding(16.dp)
-                .zIndex(1f),
+            modifier =
+                Modifier
+                    .align(Alignment.TopStart)
+                    .padding(16.dp)
+                    .zIndex(1f),
         ) {
             Icon(
                 imageVector = Icons.Default.ArrowBack,

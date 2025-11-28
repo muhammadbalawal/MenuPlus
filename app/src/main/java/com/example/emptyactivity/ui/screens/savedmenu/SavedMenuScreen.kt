@@ -1,5 +1,6 @@
 package com.example.emptyactivity.ui.screens.savedmenu
 
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -13,7 +14,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -28,7 +28,6 @@ import com.example.emptyactivity.ui.theme.PrestigeBlack
 import com.example.emptyactivity.ui.theme.RoyalGold
 import java.text.SimpleDateFormat
 import java.util.*
-import android.net.Uri
 
 @Composable
 fun SavedMenuScreen(
@@ -107,17 +106,18 @@ fun MenuCard(
     val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
     val formattedDate = dateFormat.format(Date(menu.createdAt))
 
-    val imageUri = remember(menu.imageUri) {
-        if (!menu.imageUri.isNullOrBlank()) {
-            try {
-                Uri.parse(menu.imageUri)
-            } catch (e: Exception) {
+    val imageUri =
+        remember(menu.imageUri) {
+            if (!menu.imageUri.isNullOrBlank()) {
+                try {
+                    Uri.parse(menu.imageUri)
+                } catch (e: Exception) {
+                    null
+                }
+            } else {
                 null
             }
-        } else {
-            null
         }
-    }
 
     Card(
         modifier =
@@ -162,9 +162,10 @@ fun MenuCard(
             }
 
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 12.dp, vertical = 8.dp),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 12.dp, vertical = 8.dp),
             ) {
                 Text(
                     text = formattedDate,

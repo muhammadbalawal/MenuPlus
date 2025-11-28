@@ -1,14 +1,13 @@
 package com.example.emptyactivity.ui.screens.importmenu
 
 import android.content.Context
-import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.emptyactivity.domain.model.User
 import com.example.emptyactivity.domain.usecase.menu.AnalyzeMenuUseCase
-import com.example.emptyactivity.util.Result
 import com.example.emptyactivity.domain.usecase.menu.SaveMenuUseCase
+import com.example.emptyactivity.util.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

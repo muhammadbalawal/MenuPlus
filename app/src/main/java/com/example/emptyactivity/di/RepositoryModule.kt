@@ -3,12 +3,12 @@ package com.example.emptyactivity.di
 import com.example.emptyactivity.data.remote.vision.VisionApi
 import com.example.emptyactivity.data.repository.auth.AuthRepository
 import com.example.emptyactivity.data.repository.auth.AuthRepositoryImpl
+import com.example.emptyactivity.data.repository.menu.MenuRepository
+import com.example.emptyactivity.data.repository.menu.MenuRepositoryImpl
 import com.example.emptyactivity.data.repository.ocr.OcrRepository
 import com.example.emptyactivity.data.repository.ocr.OcrRepositoryImpl
 import com.example.emptyactivity.data.repository.profile.UserProfileRepository
 import com.example.emptyactivity.data.repository.profile.UserProfileRepositoryImpl
-import com.example.emptyactivity.data.repository.menu.MenuRepository
-import com.example.emptyactivity.data.repository.menu.MenuRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.Provides

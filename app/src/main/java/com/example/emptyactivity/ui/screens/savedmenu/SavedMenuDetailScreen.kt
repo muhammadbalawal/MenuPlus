@@ -8,10 +8,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -167,18 +167,20 @@ fun SavedMenuDetailScreen(
         } else {
             // Menu not found or failed to load
             Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(24.dp),
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .padding(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
             ) {
                 // Back button
                 IconButton(
                     onClick = { navController.navigateUp() },
-                    modifier = Modifier
-                        .align(Alignment.Start)
-                        .padding(bottom = 16.dp),
+                    modifier =
+                        Modifier
+                            .align(Alignment.Start)
+                            .padding(bottom = 16.dp),
                 ) {
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
@@ -204,9 +206,10 @@ fun SavedMenuDetailScreen(
                 )
                 Button(
                     onClick = { navController.navigateUp() },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = RoyalGold,
-                    ),
+                    colors =
+                        ButtonDefaults.buttonColors(
+                            containerColor = RoyalGold,
+                        ),
                 ) {
                     Text("Go Back", color = Color.Black)
                 }

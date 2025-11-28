@@ -3,8 +3,8 @@ package com.example.emptyactivity.ui.screens.settings
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Logout
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -67,17 +67,19 @@ fun SettingsScreen(
     }
 
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = PrestigeBlack),
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(color = PrestigeBlack),
     ) {
         // Back button positioned at top start
         IconButton(
             onClick = onNavigateBack,
-            modifier = Modifier
-                .align(Alignment.TopStart)
-                .padding(16.dp)
-                .zIndex(1f),
+            modifier =
+                Modifier
+                    .align(Alignment.TopStart)
+                    .padding(16.dp)
+                    .zIndex(1f),
         ) {
             Icon(
                 imageVector = Icons.Default.ArrowBack,
@@ -88,9 +90,10 @@ fun SettingsScreen(
         }
 
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(24.dp),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(24.dp),
             verticalArrangement = Arrangement.SpaceBetween,
         ) {
             // Top section with title and user info
@@ -101,21 +104,25 @@ fun SettingsScreen(
                     fontSize = 32.sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
-                    style = TextStyle(
-                        brush = Brush.linearGradient(
-                            colors = listOf(
-                                Color(0xFF7A5A00),
-                                RoyalGold,
-                                Color(0xFFFFF4C8),
-                                Color(0xFFD4AF37),
-                            ),
+                    style =
+                        TextStyle(
+                            brush =
+                                Brush.linearGradient(
+                                    colors =
+                                        listOf(
+                                            Color(0xFF7A5A00),
+                                            RoyalGold,
+                                            Color(0xFFFFF4C8),
+                                            Color(0xFFD4AF37),
+                                        ),
+                                ),
+                            shadow =
+                                Shadow(
+                                    color = Color(0xAA8B7500),
+                                    offset = Offset(1f, 1f),
+                                    blurRadius = 4f,
+                                ),
                         ),
-                        shadow = Shadow(
-                            color = Color(0xAA8B7500),
-                            offset = Offset(1f, 1f),
-                            blurRadius = 4f,
-                        ),
-                    ),
                     color = Color.Unspecified,
                     modifier = Modifier.fillMaxWidth(),
                 )
@@ -125,14 +132,16 @@ fun SettingsScreen(
                 // User Email
                 Card(
                     modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = Color(0xFF1A1A1A),
-                    ),
+                    colors =
+                        CardDefaults.cardColors(
+                            containerColor = Color(0xFF1A1A1A),
+                        ),
                 ) {
                     Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp),
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp),
                     ) {
                         Text(
                             text = "Email",
@@ -153,14 +162,16 @@ fun SettingsScreen(
                 // App Version
                 Card(
                     modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = Color(0xFF1A1A1A),
-                    ),
+                    colors =
+                        CardDefaults.cardColors(
+                            containerColor = Color(0xFF1A1A1A),
+                        ),
                 ) {
                     Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp),
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp),
                     ) {
                         Text(
                             text = "App Version",
@@ -181,9 +192,10 @@ fun SettingsScreen(
             Button(
                 onClick = { showLogoutDialog = true },
                 modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFFD32F2F),
-                ),
+                colors =
+                    ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFFD32F2F),
+                    ),
             ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.Logout,

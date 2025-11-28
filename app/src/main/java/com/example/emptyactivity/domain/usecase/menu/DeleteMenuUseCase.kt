@@ -9,8 +9,6 @@ class DeleteMenuUseCase
     constructor(
         private val menuRepository: MenuRepository,
     ) {
-        suspend operator fun invoke(menuId: String): Result<Unit> {
-            return menuRepository.deleteMenu(menuId)
-        }
+        suspend operator fun invoke(menuId: String): Result<Unit> = menuRepository.deleteMenu(menuId)
     }
 
