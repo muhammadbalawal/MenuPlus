@@ -102,15 +102,7 @@ fun SavedMenuScreen(
         } else if (uiState.menus.isEmpty()) {
             EmptyState(
                 onScanClick = {
-                    navController.navigate(Route.Ocr) {
-                        // Use the same navigation pattern as bottom navigation bar
-                        // to preserve navigation state and prevent stack issues
-                        popUpTo(navController.graph.startDestinationId) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
+                    navController.navigate(Route.Ocr)
                 }
             )
         } else {
