@@ -4,8 +4,6 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.emptyactivity.domain.model.MenuItem
-import com.example.emptyactivity.domain.model.SafetyRating
 import com.example.emptyactivity.domain.model.User
 import com.example.emptyactivity.domain.usecase.menu.AnalyzeMenuUseCase
 import com.example.emptyactivity.domain.usecase.menu.SaveMenuUseCase
@@ -16,9 +14,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.decodeFromString
 import javax.inject.Inject
 
 /**
@@ -83,7 +78,9 @@ class ImportMenuViewModel
                     it.copy(
                         isAnalyzing = true,
                         errorMessage = null,
-                        menuItems = null,
+                        safeMenuContent = null,
+                        bestMenuContent = null,
+                        fullMenuContent = null,
                     )
                 }
 
@@ -99,14 +96,16 @@ class ImportMenuViewModel
                     is Result.Success -> {
                         Log.d(TAG, "Menu analysis successful")
 
-                        // Parse the JSON response
+                        // Parse the response into three sections
                         val analysisText = result.data
-                        val menuItems = parseAnalysisResponse(analysisText)
+                        val (safeMenu, bestMenu, fullMenu) = parseAnalysisResponse(analysisText)
 
                         _uiState.update {
                             it.copy(
                                 isAnalyzing = false,
-                                menuItems = menuItems,
+                                safeMenuContent = safeMenu,
+                                bestMenuContent = bestMenu,
+                                fullMenuContent = fullMenu,
                             )
                         }
                     }
@@ -153,7 +152,9 @@ class ImportMenuViewModel
                         saveMenuUseCase(
                             userId = user.id,
                             menuText = state.menuText,
-                            menuItems = state.menuItems,
+                            safeMenuContent = state.safeMenuContent,
+                            bestMenuContent = state.bestMenuContent,
+                            fullMenuContent = state.fullMenuContent,
                             imageUri = if (imageUriString.isNotBlank()) imageUriString else null,
                         )
                 ) {
@@ -202,7 +203,9 @@ class ImportMenuViewModel
         fun onClearResult() {
             _uiState.update {
                 it.copy(
-                    menuItems = null,
+                    safeMenuContent = null,
+                    bestMenuContent = null,
+                    fullMenuContent = null,
                 )
             }
         }
@@ -224,74 +227,49 @@ class ImportMenuViewModel
         }
 
         /**
-         * Parses the Gemini AI JSON response into a list of MenuItem objects.
+         * Parses the Gemini AI response into three distinct sections.
          *
-         * This method extracts JSON from the response (handling cases where Gemini
-         * might wrap it in markdown or other text) and deserializes it into MenuItem objects.
-         * Items are sorted by rank (best for user first).
+         * This method extracts content between the structured markers that were
+         * requested in the prompt (=== SECTION NAME START/END ===).
+         * If parsing fails, it returns appropriate fallback content.
          *
-         * @param response The complete response from Gemini AI (should be JSON)
-         * @return List of MenuItem objects sorted by rank
+         * @param response The complete response from Gemini AI
+         * @return Triple of (safeMenu, bestMenu, fullMenu) strings
          */
-        private fun parseAnalysisResponse(response: String): List<MenuItem> =
+        private fun parseAnalysisResponse(response: String): Triple<String, String, String> =
             try {
-                // Try to extract JSON from response (in case Gemini wraps it in markdown)
-                val jsonStart = response.indexOf("{")
-                val jsonEnd = response.lastIndexOf("}") + 1
-                val jsonString = if (jsonStart != -1 && jsonEnd > jsonStart) {
-                    response.substring(jsonStart, jsonEnd)
-                } else {
-                    response
-                }
+                val safeMenuStart = response.indexOf("=== SAFE MENU START ===")
+                val safeMenuEnd = response.indexOf("=== SAFE MENU END ===")
+                val bestMenuStart = response.indexOf("=== BEST MENU START ===")
+                val bestMenuEnd = response.indexOf("=== BEST MENU END ===")
+                val fullMenuStart = response.indexOf("=== FULL MENU START ===")
+                val fullMenuEnd = response.indexOf("=== FULL MENU END ===")
 
-                val json = Json {
-                    ignoreUnknownKeys = true
-                    coerceInputValues = true
-                }
+                val safeMenu =
+                    if (safeMenuStart != -1 && safeMenuEnd != -1) {
+                        response.substring(safeMenuStart + 24, safeMenuEnd).trim()
+                    } else {
+                        "Unable to parse safe menu items. Please try again."
+                    }
 
-                @Serializable
-                data class MenuItemDto(
-                    val name: String,
-                    val description: String,
-                    val price: String? = null,
-                    val safetyRating: String,
-                    val allergies: List<String> = emptyList(),
-                    val dietaryRestrictions: List<String> = emptyList(),
-                    val dislikes: List<String> = emptyList(),
-                    val preferences: List<String> = emptyList(),
-                    val recommendation: String? = null,
-                    val rank: Int? = null,
-                )
+                val bestMenu =
+                    if (bestMenuStart != -1 && bestMenuEnd != -1) {
+                        response.substring(bestMenuStart + 24, bestMenuEnd).trim()
+                    } else {
+                        "Unable to parse recommendations. Please try again."
+                    }
 
-                @Serializable
-                data class MenuAnalysisResponseDto(
-                    val menuItems: List<MenuItemDto>
-                )
+                val fullMenu =
+                    if (fullMenuStart != -1 && fullMenuEnd != -1) {
+                        response.substring(fullMenuStart + 24, fullMenuEnd).trim()
+                    } else {
+                        response // Fallback to full response if parsing fails
+                    }
 
-                val responseDto = json.decodeFromString<MenuAnalysisResponseDto>(jsonString)
-
-                responseDto.menuItems.map { dto ->
-                    MenuItem(
-                        name = dto.name,
-                        description = dto.description,
-                        price = dto.price,
-                        safetyRating = when (dto.safetyRating.uppercase()) {
-                            "RED" -> SafetyRating.RED
-                            "YELLOW" -> SafetyRating.YELLOW
-                            "GREEN" -> SafetyRating.GREEN
-                            else -> SafetyRating.GREEN
-                        },
-                        allergies = dto.allergies,
-                        dietaryRestrictions = dto.dietaryRestrictions,
-                        dislikes = dto.dislikes,
-                        preferences = dto.preferences,
-                        recommendation = dto.recommendation,
-                        rank = dto.rank ?: Int.MAX_VALUE,
-                    )
-                }.sortedBy { it.rank } // Sort by rank (best first)
+                Triple(safeMenu, bestMenu, fullMenu)
             } catch (e: Exception) {
-                Log.e(TAG, "Error parsing JSON response", e)
-                Log.e(TAG, "Response was: $response")
-                emptyList()
+                Log.e(TAG, "Error parsing analysis response", e)
+                // Fallback: return full response in all sections
+                Triple(response, response, response)
             }
     }

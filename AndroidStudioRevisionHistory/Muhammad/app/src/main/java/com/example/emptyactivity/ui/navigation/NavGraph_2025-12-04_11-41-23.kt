@@ -242,15 +242,54 @@ private fun AuthenticatedNavGraph(user: User) {
                         navController = navController,
                     )
                 } else {
-                    // Parse menuItems from JSON (direct list, not wrapped)
+                    // Parse menuItems from JSON
                     val menuItems = remember(route.menuItemsJson) {
                         if (route.menuItemsJson.isNotBlank()) {
                             try {
+                                @kotlinx.serialization.Serializable
+                                data class MenuItemDto(
+                                    val name: String,
+                                    val description: String,
+                                    val price: String? = null,
+                                    val safetyRating: String,
+                                    val allergies: List<String> = emptyList(),
+                                    val dietaryRestrictions: List<String> = emptyList(),
+                                    val dislikes: List<String> = emptyList(),
+                                    val preferences: List<String> = emptyList(),
+                                    val recommendation: String? = null,
+                                    val rank: Int? = null,
+                                )
+                                
+                                @kotlinx.serialization.Serializable
+                                data class MenuAnalysisResponseDto(
+                                    val menuItems: List<MenuItemDto>
+                                )
+                                
                                 val json = kotlinx.serialization.json.Json { 
                                     ignoreUnknownKeys = true
                                     coerceInputValues = true
                                 }
-                                json.decodeFromString<List<com.example.emptyactivity.domain.model.MenuItem>>(route.menuItemsJson)
+                                val responseDto = json.decodeFromString<MenuAnalysisResponseDto>(route.menuItemsJson)
+                                
+                                responseDto.menuItems.map { dto ->
+                                    com.example.emptyactivity.domain.model.MenuItem(
+                                        name = dto.name,
+                                        description = dto.description,
+                                        price = dto.price,
+                                        safetyRating = when (dto.safetyRating.uppercase()) {
+                                            "RED" -> com.example.emptyactivity.domain.model.SafetyRating.RED
+                                            "YELLOW" -> com.example.emptyactivity.domain.model.SafetyRating.YELLOW
+                                            "GREEN" -> com.example.emptyactivity.domain.model.SafetyRating.GREEN
+                                            else -> com.example.emptyactivity.domain.model.SafetyRating.GREEN
+                                        },
+                                        allergies = dto.allergies,
+                                        dietaryRestrictions = dto.dietaryRestrictions,
+                                        dislikes = dto.dislikes,
+                                        preferences = dto.preferences,
+                                        recommendation = dto.recommendation,
+                                        rank = dto.rank ?: Int.MAX_VALUE,
+                                    )
+                                }.sortedBy { it.rank }
                             } catch (e: Exception) {
                                 emptyList<com.example.emptyactivity.domain.model.MenuItem>()
                             }

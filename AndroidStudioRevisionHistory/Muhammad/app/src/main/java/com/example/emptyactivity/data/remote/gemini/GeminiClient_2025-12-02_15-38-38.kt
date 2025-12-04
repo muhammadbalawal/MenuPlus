@@ -82,73 +82,55 @@ class GeminiClient
                 "Error analyzing menu: ${e.message}"
             }
 
-        /**
-         * Builds the prompt sent to Gemini AI for menu analysis.
-         *
-         * This method constructs a detailed prompt that instructs Gemini on how to analyze
-         * the menu. The prompt includes:
-         * - User's complete dietary profile
-         * - The menu text to analyze
-         * - Detailed instructions on how to categorize items (RED/YELLOW/GREEN)
-         * - Formatting requirements for JSON response
-         *
-         * @param menuText The menu text to analyze.
-         * @param userLanguage User's preferred language for translation.
-         * @param allergies List of user allergies.
-         * @param dietaryRestrictions List of dietary restrictions.
-         * @param dislikes List of food dislikes.
-         * @param preferences List of food preferences.
-         * @return Complete prompt string ready to send to Gemini AI.
-         */
         private fun buildMenuAnalysisPrompt(
-            menuText: String,
-            userLanguage: String?,
-            allergies: List<String>,
-            dietaryRestrictions: List<String>,
-            dislikes: List<String>,
-            preferences: List<String>,
-        ): String =
-            """
-            You are MenuPlus AI, an expert food safety assistant. Analyze this restaurant menu based on the user's dietary profile.
-            
-            USER PROFILE:
-            - Allergies (CRITICAL - these can cause serious health reactions): ${allergies.joinToString(", ").ifEmpty { "None" }}
-            - Dietary Restrictions (must avoid): ${dietaryRestrictions.joinToString(", ").ifEmpty { "None" }}
-            - Dislikes (prefers not to eat): ${dislikes.joinToString(", ").ifEmpty { "None" }}
-            - Preferences (enjoys eating): ${preferences.joinToString(", ").ifEmpty { "None" }}
-            - Language: $userLanguage
-            
-            MENU:
-            $menuText
-            
-            INSTRUCTIONS:
-            1. Convert menu to user language if needed
-            2. Analyze each menu item and classify safety: RED (contains allergies/restrictions), YELLOW (contains dislikes), GREEN (safe)
-            3. Rank items by what's BEST for the user (considering preferences, safety, and match quality)
-            4. Return ONLY valid JSON in this exact format (no markdown, no code blocks):
-            
-            {
-              "menuItems": [
-                {
-                  "name": "Item Name",
-                  "description": "Item description in user's language",
-                  "price": "Price if available (e.g., '$15.99' or null)",
-                  "safetyRating": "GREEN|YELLOW|RED",
-                  "allergies": ["allergy1", "allergy2"],
-                  "dietaryRestrictions": ["restriction1"],
-                  "dislikes": ["dislike1"],
-                  "preferences": ["preference1"],
-                  "recommendation": "Why this item is recommended or concerns",
-                  "rank": 1
-                }
-              ]
-            }
-            
-            IMPORTANT:
-            - Return ONLY the JSON object, no other text
-            - Order items by rank (1 = best for user, higher numbers = less ideal)
-            - Include ALL menu items
-            - Extract price from menu text if available
-            - Be specific about which allergies/restrictions/dislikes/preferences apply to each item
-            """.trimIndent()
+    menuText: String,
+    userLanguage: String?,
+    allergies: List<String>,
+    dietaryRestrictions: List<String>,
+    dislikes: List<String>,
+    preferences: List<String>,
+): String =
+    """
+    You are MenuPlus AI, an expert food safety assistant. Analyze this restaurant menu based on the user's dietary profile.
+    
+    USER PROFILE:
+    - Allergies (CRITICAL - these can cause serious health reactions): ${allergies.joinToString(", ").ifEmpty { "None" }}
+    - Dietary Restrictions (must avoid): ${dietaryRestrictions.joinToString(", ").ifEmpty { "None" }}
+    - Dislikes (prefers not to eat): ${dislikes.joinToString(", ").ifEmpty { "None" }}
+    - Preferences (enjoys eating): ${preferences.joinToString(", ").ifEmpty { "None" }}
+    - Language: $userLanguage
+    
+    MENU:
+    $menuText
+    
+    INSTRUCTIONS:
+    1. Convert menu to user language if needed
+    2. Analyze each menu item and classify safety: RED (contains allergies/restrictions), YELLOW (contains dislikes), GREEN (safe)
+    3. Rank items by what's BEST for the user (considering preferences, safety, and match quality)
+    4. Return ONLY valid JSON in this exact format (no markdown, no code blocks):
+    
+    {
+      "menuItems": [
+        {
+          "name": "Item Name",
+          "description": "Item description in user's language",
+          "price": "Price if available (e.g., '$15.99' or null)",
+          "safetyRating": "GREEN|YELLOW|RED",
+          "allergies": ["allergy1", "allergy2"],
+          "dietaryRestrictions": ["restriction1"],
+          "dislikes": ["dislike1"],
+          "preferences": ["preference1"],
+          "recommendation": "Why this item is recommended or concerns",
+          "rank": 1
+        }
+      ]
+    }
+    
+    IMPORTANT:
+    - Return ONLY the JSON object, no other text
+    - Order items by rank (1 = best for user, higher numbers = less ideal)
+    - Include ALL menu items
+    - Extract price from menu text if available
+    - Be specific about which allergies/restrictions/dislikes/preferences apply to each item
+    """.trimIndent()
     }

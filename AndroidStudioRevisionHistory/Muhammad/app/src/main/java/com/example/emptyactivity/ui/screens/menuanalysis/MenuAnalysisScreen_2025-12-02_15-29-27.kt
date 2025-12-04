@@ -22,9 +22,8 @@ import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import com.example.emptyactivity.domain.model.MenuItem
 import com.example.emptyactivity.domain.model.User
-import com.example.emptyactivity.ui.components.menu.MenuItemList
+import com.example.emptyactivity.ui.components.menu.MenuDisplayContent
 import com.example.emptyactivity.ui.navigation.Route
 import com.example.emptyactivity.ui.theme.PrestigeBlack
 import com.example.emptyactivity.ui.theme.RoyalGold
@@ -34,7 +33,9 @@ import com.example.emptyactivity.ui.theme.RoyalGold
 fun MenuAnalysisScreen(
     user: User,
     menuText: String,
-    menuItems: List<MenuItem>,
+    safeMenuContent: String,
+    bestMenuContent: String,
+    fullMenuContent: String,
     imageUriString: String = "",
     navController: NavController,
     viewModel: MenuAnalysisViewModel = hiltViewModel(),
@@ -123,12 +124,14 @@ fun MenuAnalysisScreen(
                     viewModel.onSaveMenu(
                         user = user,
                         menuText = menuText,
-                        menuItems = menuItems,
+                        safeMenuContent = safeMenuContent,
+                        bestMenuContent = bestMenuContent,
+                        fullMenuContent = fullMenuContent,
                         imageUriString = imageUriString,
                         context = context,
                     )
                 },
-                enabled = !uiState.isSaving && !uiState.isSaved && menuItems.isNotEmpty(),
+                enabled = !uiState.isSaving && !uiState.isSaved,
                 modifier = Modifier.fillMaxWidth(),
                 colors =
                     ButtonDefaults.buttonColors(
@@ -157,20 +160,12 @@ fun MenuAnalysisScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Menu Items List
-            if (menuItems.isNotEmpty()) {
-                MenuItemList(menuItems = menuItems)
-            } else {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Text(
-                        text = "No menu items available",
-                        color = Color.White.copy(alpha = 0.6f),
-                    )
-                }
-            }
+            // Shared menu display content
+            MenuDisplayContent(
+                safeMenuContent = safeMenuContent,
+                bestMenuContent = bestMenuContent,
+                fullMenuContent = fullMenuContent,
+            )
         }
     }
 }

@@ -41,7 +41,9 @@ sealed interface Route {
 
     @Serializable data class MenuAnalysis(
         val menuText: String = "",
-        val menuItemsJson: String = "",
+        val safeMenuContent: String = "",
+        val bestMenuContent: String = "",
+        val fullMenuContent: String = "",
         val imageUriString: String = "",
         val menuId: String = "",
     ) : Route

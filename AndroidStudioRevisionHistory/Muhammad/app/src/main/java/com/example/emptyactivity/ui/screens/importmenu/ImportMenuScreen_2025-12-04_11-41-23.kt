@@ -132,7 +132,7 @@ fun ImportMenuScreen(
         }
 
         // LOADING STATE (analyzing OR waiting for results)
-        if (uiState.isAnalyzing || (uiState.menuItems == null && uiState.menuText.isNotBlank())) {
+        if (uiState.isAnalyzing || (uiState.safeMenuContent == null && uiState.bestMenuContent == null && uiState.fullMenuContent == null && uiState.menuText.isNotBlank())) {
             Column(
                 modifier =
                     Modifier

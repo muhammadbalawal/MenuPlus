@@ -189,7 +189,9 @@ class MenuRepositoryImpl
                 menuId = this.menuId,
                 userId = this.userId,
                 menuText = this.menuText,
-                menuItemsJson = this.menuItemsJson,
+                safeMenuContent = this.safeMenuContent,
+                bestMenuContent = this.bestMenuContent,
+                fullMenuContent = this.fullMenuContent,
                 imageUri = this.imageUri,
                 createdAt = createdAtLong,
             )
