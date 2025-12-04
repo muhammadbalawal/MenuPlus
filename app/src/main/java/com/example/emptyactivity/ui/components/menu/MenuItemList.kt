@@ -93,7 +93,11 @@ fun MenuItemCard(item: MenuItem) {
 
             // Description
             Text(
-                text = item.description,
+                text = if (item.description.isBlank()) {
+                    "No description"
+                } else {
+                    item.description
+                },
                 fontSize = 14.sp,
                 color = Color.White.copy(alpha = 0.8f),
             )
