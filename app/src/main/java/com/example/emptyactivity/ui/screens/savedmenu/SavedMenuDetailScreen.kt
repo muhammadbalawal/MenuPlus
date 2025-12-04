@@ -159,21 +159,18 @@ fun SavedMenuDetailScreen(
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                // Parse and display menu items
                 val menuItems = remember(uiState.menu?.menuItemsJson) {
-                    if (uiState.menu?.menuItemsJson != null && uiState.menu.menuItemsJson.isNotBlank()) {
+                    uiState.menu?.menuItemsJson?.takeIf { it.isNotBlank() }?.let { jsonString ->
                         try {
-                            val json = Json { 
+                            val json = Json {
                                 ignoreUnknownKeys = true
                                 coerceInputValues = true
                             }
-                            json.decodeFromString<List<MenuItem>>(uiState.menu.menuItemsJson)
+                            json.decodeFromString<List<MenuItem>>(jsonString)
                         } catch (e: Exception) {
                             emptyList<MenuItem>()
                         }
-                    } else {
-                        emptyList<MenuItem>()
-                    }
+                    } ?: emptyList()
                 }
 
                 if (menuItems.isNotEmpty()) {

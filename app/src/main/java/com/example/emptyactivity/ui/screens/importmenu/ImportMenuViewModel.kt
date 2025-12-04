@@ -138,6 +138,20 @@ class ImportMenuViewModel
         fun onSaveMenu(user: User, imageUriString: String = "", context: Context? = null) {
             viewModelScope.launch {
                 Log.d(TAG, "Saving menu for user: ${user.id}")
+
+                val state = uiState.value
+
+                // Check if menuItems exist before attempting to save
+                if (state.menuItems == null) {
+                    Log.e(TAG, "Cannot save menu: no analysis results available")
+                    _uiState.update {
+                        it.copy(
+                            errorMessage = "Please analyze the menu before saving"
+                        )
+                    }
+                    return@launch
+                }
+
                 _uiState.update {
                     it.copy(
                         isSaving = true,
@@ -146,14 +160,12 @@ class ImportMenuViewModel
                     )
                 }
 
-                val state = uiState.value
-
                 when (
                     val result =
                         saveMenuUseCase(
                             userId = user.id,
                             menuText = state.menuText,
-                            menuItems = state.menuItems,
+                            menuItems = state.menuItems, // Now guaranteed to be non-null
                             imageUri = if (imageUriString.isNotBlank()) imageUriString else null,
                         )
                 ) {
