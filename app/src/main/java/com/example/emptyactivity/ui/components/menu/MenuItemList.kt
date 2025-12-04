@@ -18,6 +18,8 @@ import com.example.emptyactivity.domain.model.MenuItem
 import com.example.emptyactivity.domain.model.SafetyRating
 import com.example.emptyactivity.ui.components.TagChip
 import com.example.emptyactivity.ui.theme.RoyalGold
+import com.google.accompanist.flowlayout.FlowRow
+
 
 @Composable
 fun MenuItemList(
@@ -35,6 +37,7 @@ fun MenuItemList(
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun MenuItemCard(item: MenuItem) {
     val borderColor = when (item.safetyRating) {
@@ -69,10 +72,10 @@ fun MenuItemCard(item: MenuItem) {
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             // Name and Price Row
-            Row(
+            FlowRow(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.Top,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Text(
                     text = item.name,

@@ -2,23 +2,21 @@ package com.example.emptyactivity.ui.screens.menuanalysis
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shadow
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -39,148 +37,168 @@ fun MenuAnalysisScreen(
     navController: NavController,
     viewModel: MenuAnalysisViewModel = hiltViewModel(),
 ) {
-    val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    // Error dialog
     if (uiState.errorMessage != null) {
         AlertDialog(
             onDismissRequest = { viewModel.onErrorDismissed() },
-            title = { Text("Error", color = RoyalGold) },
+            title = { Text("Error", color = RoyalGold, fontWeight = FontWeight.Bold) },
             text = { Text(uiState.errorMessage ?: "", color = Color.White.copy(alpha = 0.9f)) },
             confirmButton = {
                 TextButton(onClick = { viewModel.onErrorDismissed() }) {
                     Text("OK", color = RoyalGold)
                 }
             },
-            containerColor = PrestigeBlack,
+            containerColor = Color(0xFF1A1A1A),
+            shape = RoundedCornerShape(20.dp)
         )
     }
 
     Box(
-        modifier =
-            Modifier
-                .fillMaxSize()
-                .background(color = PrestigeBlack),
-    ) {
-        // Back button
-        IconButton(
-            onClick = { 
-                navController.navigate(Route.SavedMenu) {
-                    popUpTo(Route.SavedMenu) { inclusive = false }
-                }
-            },
-            modifier =
-                Modifier
-                    .align(Alignment.TopStart)
-                    .padding(16.dp)
-                    .zIndex(1f),
-        ) {
-            Icon(
-                imageVector = Icons.Default.ArrowBack,
-                contentDescription = "Back",
-                tint = RoyalGold,
-                modifier = Modifier.size(24.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(PrestigeBlack, Color(0xFF0A0A0A))
+                )
             )
-        }
-
+            .safeDrawingPadding()
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 24.dp),
+                .padding(horizontal = 20.dp)
         ) {
-            // Title at top with minimal top padding
-            Spacer(modifier = Modifier.height(60.dp)) // Space for back button
-            
-            Text(
-                text = "Menu Analysis",
-                fontSize = 32.sp,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center,
-                style =
-                    TextStyle(
-                        brush =
-                            Brush.linearGradient(
-                                colors =
-                                    listOf(
-                                        Color(0xFF7A5A00),
-                                        RoyalGold,
-                                        Color(0xFFFFF4C8),
-                                        Color(0xFFD4AF37),
-                                    ),
-                            ),
-                        shadow =
-                            Shadow(
-                                color = Color(0xAA8B7500),
-                                offset = Offset(1f, 1f),
-                                blurRadius = 4f,
-                            ),
-                    ),
-                color = Color.Unspecified,
-                modifier = Modifier.fillMaxWidth(),
-            )
-
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Menu Items List - takes available space
-            if (menuItems.isNotEmpty()) {
-                MenuItemList(
-                    menuItems = menuItems,
-                    modifier = Modifier.weight(1f)
+            // ---------------------------
+            // HEADER (BACK - TITLE - SAVE)
+            // ---------------------------
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 12.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                // Back button
+                // Back button
+                IconButton(
+                    onClick = {
+                        navController.navigate(Route.Ocr) {
+                            popUpTo(navController.graph.startDestinationId) {
+                                inclusive = false
+                            }
+                            launchSingleTop = true
+                        }
+                    },
+                    modifier = Modifier
+                        .shadow(8.dp, CircleShape)
+                        .background(Color(0xFF1A1A1A), CircleShape)
+                        .size(44.dp)
                 )
+                {
+                    Icon(
+                        imageVector = Icons.Default.ArrowBack,
+                        contentDescription = "Back",
+                        tint = RoyalGold,
+                        modifier = Modifier.size(22.dp)
+                    )
+                }
+
+                // Title
+                Text(
+                    text = "Menu Analysis",
+                    modifier = Modifier.weight(1f),
+                    textAlign = TextAlign.Center,
+                    color = RoyalGold,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+                )
+
+                // Save button (same style as delete button)
+                IconButton(
+                    onClick = {
+                        viewModel.onSaveMenu(
+                            user = user,
+                            menuText = menuText,
+                            menuItems = menuItems,
+                            imageUriString = imageUriString
+                        )
+                    },
+                    enabled = !uiState.isSaving && !uiState.isSaved && menuItems.isNotEmpty(),
+                    modifier = Modifier
+                        .shadow(8.dp, CircleShape)
+                        .background(
+                            if (uiState.isSaved) Color(0xFF1A1A1A) else Color(0xFF1A1A1A),
+                            CircleShape
+                        )
+                        .size(44.dp)
+                ) {
+                    when {
+                        uiState.isSaving -> {
+                            CircularProgressIndicator(
+                                modifier = Modifier.size(20.dp),
+                                color = RoyalGold,
+                                strokeWidth = 2.dp
+                            )
+                        }
+
+                        uiState.isSaved -> {
+                            Text(
+                                "✓",
+                                color = Color(0xFF43A047),
+                                fontSize = 22.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+
+                        else -> {
+                            Text(
+                                "Save",
+                                color = RoyalGold,
+                                fontSize = 12.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+                    }
+                }
+            }
+
+            // -------------
+            // MENU ITEMS
+            // -------------
+            Text(
+                text = "MENU ITEMS",
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Bold,
+                color = RoyalGold.copy(alpha = 0.7f),
+                modifier = Modifier.padding(vertical = 8.dp)
+            )
+
+            if (menuItems.isNotEmpty()) {
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .background(Color.Transparent)
+                ) {
+                    MenuItemList(menuItems = menuItems)
+                }
             } else {
                 Box(
                     modifier = Modifier.weight(1f),
-                    contentAlignment = Alignment.Center,
+                    contentAlignment = Alignment.Center
                 ) {
                     Text(
                         text = "No menu items available",
                         color = Color.White.copy(alpha = 0.6f),
+                        fontSize = 16.sp
                     )
                 }
             }
 
             Spacer(modifier = Modifier.height(16.dp))
-
-            // Save Button at bottom
-            Button(
-                onClick = {
-                    viewModel.onSaveMenu(
-                        user = user,
-                        menuText = menuText,
-                        menuItems = menuItems,
-                        imageUriString = imageUriString,
-                        context = context,
-                    )
-                },
-                enabled = !uiState.isSaving && !uiState.isSaved && menuItems.isNotEmpty(),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 16.dp),
-                shape = androidx.compose.foundation.shape.RoundedCornerShape(28.dp),
-                colors =
-                    ButtonDefaults.buttonColors(
-                        containerColor =
-                            if (uiState.isSaved) {
-                                Color(0xFF43A047)
-                            } else {
-                                RoyalGold
-                            },
-                    ),
-            ) {
-                if (uiState.isSaving) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(20.dp),
-                        color = Color.White,
-                        strokeWidth = 2.dp,
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text("Saving...", color = Color.White)
-                } else if (uiState.isSaved) {
-                    Text("✓ Saved", color = Color.White)
-                } else {
-                    Text("Save Menu", color = PrestigeBlack, fontWeight = FontWeight.Bold)
-                }
-            }
         }
     }
 }
