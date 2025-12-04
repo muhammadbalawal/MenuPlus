@@ -50,16 +50,15 @@ fun MenuAnalysisScreen(
     val avoidItemsCount = menuItems.count { it.safetyRating == SafetyRating.RED }
 
 // Filter menu items based on selected tab
-    val filteredMenuItems =
-        remember(selectedTabIndex, menuItems) {
-            when (selectedTabIndex) {
-                0 -> menuItems // All items
-                1 -> menuItems.filter { it.safetyRating == SafetyRating.GREEN } // Safe
-                2 -> menuItems.filter { it.safetyRating == SafetyRating.YELLOW } // Caution
-                3 -> menuItems.filter { it.safetyRating == SafetyRating.RED } // Avoid
-                else -> menuItems
-            }
+    val filteredMenuItems = remember(selectedTabIndex, menuItems) {
+        when (selectedTabIndex) {
+            0 -> menuItems // All items
+            1 -> menuItems.filter { it.safetyRating == SafetyRating.GREEN } // Safe
+            2 -> menuItems.filter { it.safetyRating == SafetyRating.YELLOW } // Caution
+            3 -> menuItems.filter { it.safetyRating == SafetyRating.RED } // Avoid
+            else -> menuItems
         }
+    }
 
     // Error dialog
     if (uiState.errorMessage != null) {
@@ -107,6 +106,7 @@ fun MenuAnalysisScreen(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
+                // Back button
                 // Back button
                 IconButton(
                     onClick = {
@@ -198,32 +198,36 @@ fun MenuAnalysisScreen(
                     selectedTabIndex = selectedTabIndex,
                     containerColor = Color.Transparent,
                     contentColor = RoyalGold,
+                    indicator = { tabPositions ->
+                        TabRowDefaults.Indicator(
+                            modifier = Modifier.tabIndicatorOffset(tabPositions[selectedTabIndex]),
+                            color = RoyalGold,
+                            height = 3.dp
+                        )
+                    },
                     divider = {
                         Divider(
                             color = Color.White.copy(alpha = 0.1f),
-                            thickness = 1.dp,
+                            thickness = 1.dp
                         )
-                    },
+                    }
                 ) {
                     Tab(
                         selected = selectedTabIndex == 0,
                         onClick = { selectedTabIndex = 0 },
                         text = {
                             Row(
-                                horizontalArrangement = Arrangement.spacedBy(3.dp),
-                                verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                                verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Text(
                                     "All",
                                     fontWeight = if (selectedTabIndex == 0) FontWeight.Bold else FontWeight.Normal,
-                                    maxLines = 1,
                                 )
                                 Text(
                                     "($allItemsCount)",
-                                    fontSize = 10.sp,
-                                    color = Color.White.copy(alpha = 0.6f),
-                                    maxLines = 1,
+                                    fontSize = 11.sp,
+                                    color = Color.White.copy(alpha = 0.6f)
                                 )
                             }
                         },
@@ -235,20 +239,17 @@ fun MenuAnalysisScreen(
                         onClick = { selectedTabIndex = 1 },
                         text = {
                             Row(
-                                horizontalArrangement = Arrangement.spacedBy(3.dp),
-                                verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                                verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Text(
                                     "Safe",
                                     fontWeight = if (selectedTabIndex == 1) FontWeight.Bold else FontWeight.Normal,
-                                    maxLines = 1,
                                 )
                                 Text(
                                     "($safeItemsCount)",
-                                    fontSize = 10.sp,
-                                    color = Color(0xFF43A047).copy(alpha = 0.8f),
-                                    maxLines = 1,
+                                    fontSize = 11.sp,
+                                    color = Color(0xFF43A047).copy(alpha = 0.8f)
                                 )
                             }
                         },
@@ -260,20 +261,17 @@ fun MenuAnalysisScreen(
                         onClick = { selectedTabIndex = 2 },
                         text = {
                             Row(
-                                horizontalArrangement = Arrangement.spacedBy(3.dp),
-                                verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                                verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Text(
-                                    "Warn",
+                                    "Caution",
                                     fontWeight = if (selectedTabIndex == 2) FontWeight.Bold else FontWeight.Normal,
-                                    maxLines = 1,
                                 )
                                 Text(
                                     "($cautionItemsCount)",
-                                    fontSize = 10.sp,
-                                    color = Color(0xFFFDD835).copy(alpha = 0.8f),
-                                    maxLines = 1,
+                                    fontSize = 11.sp,
+                                    color = Color(0xFFFDD835).copy(alpha = 0.8f)
                                 )
                             }
                         },
@@ -285,20 +283,17 @@ fun MenuAnalysisScreen(
                         onClick = { selectedTabIndex = 3 },
                         text = {
                             Row(
-                                horizontalArrangement = Arrangement.spacedBy(3.dp),
-                                verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                                verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Text(
                                     "Avoid",
                                     fontWeight = if (selectedTabIndex == 3) FontWeight.Bold else FontWeight.Normal,
-                                    maxLines = 1,
                                 )
                                 Text(
                                     "($avoidItemsCount)",
-                                    fontSize = 10.sp,
-                                    color = Color(0xFFE53935).copy(alpha = 0.8f),
-                                    maxLines = 1,
+                                    fontSize = 11.sp,
+                                    color = Color(0xFFE53935).copy(alpha = 0.8f)
                                 )
                             }
                         },

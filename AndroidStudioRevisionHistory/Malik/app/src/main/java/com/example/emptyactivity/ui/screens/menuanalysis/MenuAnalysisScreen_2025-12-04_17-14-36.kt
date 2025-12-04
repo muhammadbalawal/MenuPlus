@@ -50,16 +50,15 @@ fun MenuAnalysisScreen(
     val avoidItemsCount = menuItems.count { it.safetyRating == SafetyRating.RED }
 
 // Filter menu items based on selected tab
-    val filteredMenuItems =
-        remember(selectedTabIndex, menuItems) {
-            when (selectedTabIndex) {
-                0 -> menuItems // All items
-                1 -> menuItems.filter { it.safetyRating == SafetyRating.GREEN } // Safe
-                2 -> menuItems.filter { it.safetyRating == SafetyRating.YELLOW } // Caution
-                3 -> menuItems.filter { it.safetyRating == SafetyRating.RED } // Avoid
-                else -> menuItems
-            }
+    val filteredMenuItems = remember(selectedTabIndex, menuItems) {
+        when (selectedTabIndex) {
+            0 -> menuItems // All items
+            1 -> menuItems.filter { it.safetyRating == SafetyRating.GREEN } // Safe
+            2 -> menuItems.filter { it.safetyRating == SafetyRating.YELLOW } // Caution
+            3 -> menuItems.filter { it.safetyRating == SafetyRating.RED } // Avoid
+            else -> menuItems
         }
+    }
 
     // Error dialog
     if (uiState.errorMessage != null) {
@@ -107,6 +106,7 @@ fun MenuAnalysisScreen(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
+                // Back button
                 // Back button
                 IconButton(
                     onClick = {
@@ -201,9 +201,9 @@ fun MenuAnalysisScreen(
                     divider = {
                         Divider(
                             color = Color.White.copy(alpha = 0.1f),
-                            thickness = 1.dp,
+                            thickness = 1.dp
                         )
-                    },
+                    }
                 ) {
                     Tab(
                         selected = selectedTabIndex == 0,
@@ -212,7 +212,7 @@ fun MenuAnalysisScreen(
                             Row(
                                 horizontalArrangement = Arrangement.spacedBy(3.dp),
                                 verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier.fillMaxWidth(),
+                                modifier = Modifier.fillMaxWidth()
                             ) {
                                 Text(
                                     "All",
@@ -237,7 +237,7 @@ fun MenuAnalysisScreen(
                             Row(
                                 horizontalArrangement = Arrangement.spacedBy(3.dp),
                                 verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier.fillMaxWidth(),
+                                modifier = Modifier.fillMaxWidth()
                             ) {
                                 Text(
                                     "Safe",
@@ -262,10 +262,10 @@ fun MenuAnalysisScreen(
                             Row(
                                 horizontalArrangement = Arrangement.spacedBy(3.dp),
                                 verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier.fillMaxWidth(),
+                                modifier = Modifier.fillMaxWidth()
                             ) {
                                 Text(
-                                    "Warn",
+                                    "Caution",
                                     fontWeight = if (selectedTabIndex == 2) FontWeight.Bold else FontWeight.Normal,
                                     maxLines = 1,
                                 )
@@ -287,7 +287,7 @@ fun MenuAnalysisScreen(
                             Row(
                                 horizontalArrangement = Arrangement.spacedBy(3.dp),
                                 verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier.fillMaxWidth(),
+                                modifier = Modifier.fillMaxWidth()
                             ) {
                                 Text(
                                     "Avoid",

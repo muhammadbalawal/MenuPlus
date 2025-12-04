@@ -8,7 +8,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -242,30 +241,13 @@ private fun AuthenticatedNavGraph(user: User) {
                         navController = navController,
                     )
                 } else {
-                    // Parse menuItems from JSON (direct list, not wrapped)
-                    val menuItems =
-                        remember(route.menuItemsJson) {
-                            if (route.menuItemsJson.isNotBlank()) {
-                                try {
-                                    val json =
-                                        kotlinx.serialization.json.Json { 
-                                            ignoreUnknownKeys = true
-                                            coerceInputValues = true
-                                        }
-                                    json.decodeFromString<List<com.example.emptyactivity.domain.model.MenuItem>>(route.menuItemsJson)
-                                } catch (e: Exception) {
-                                    emptyList<com.example.emptyactivity.domain.model.MenuItem>()
-                                }
-                            } else {
-                                emptyList<com.example.emptyactivity.domain.model.MenuItem>()
-                            }
-                        }
-                    
                     // Otherwise show regular MenuAnalysisScreen
                     MenuAnalysisScreen(
                         user = user,
                         menuText = route.menuText,
-                        menuItems = menuItems,
+                        safeMenuContent = route.safeMenuContent,
+                        bestMenuContent = route.bestMenuContent,
+                        fullMenuContent = route.fullMenuContent,
                         imageUriString = route.imageUriString,
                         navController = navController,
                     )

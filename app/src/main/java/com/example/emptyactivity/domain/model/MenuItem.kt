@@ -30,9 +30,9 @@ data class MenuItem(
  * Safety rating for menu items based on user's dietary profile.
  */
 enum class SafetyRating {
-    RED,    // Contains allergies/restrictions - avoid
+    RED, // Contains allergies/restrictions - avoid
     YELLOW, // Contains dislikes - caution
-    GREEN   // Safe to eat
+    GREEN, // Safe to eat
 }
 
 object SafetyRatingSerializer : KSerializer<SafetyRating> {
@@ -42,7 +42,5 @@ object SafetyRatingSerializer : KSerializer<SafetyRating> {
         encoder.encodeString(value.name)
     }
 
-    override fun deserialize(decoder: Decoder): SafetyRating {
-        return SafetyRating.valueOf(decoder.decodeString())
-    }
+    override fun deserialize(decoder: Decoder): SafetyRating = SafetyRating.valueOf(decoder.decodeString())
 }

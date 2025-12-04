@@ -15,11 +15,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shadow
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -69,28 +66,29 @@ fun SavedMenuDetailScreen(
                 Text(
                     "Error",
                     color = RoyalGold,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
                 )
             },
             text = {
                 Text(
                     uiState.errorMessage ?: "",
                     color = Color.White.copy(alpha = 0.9f),
-                    lineHeight = 20.sp
+                    lineHeight = 20.sp,
                 )
             },
             confirmButton = {
                 TextButton(
                     onClick = { viewModel.onErrorDismissed() },
-                    colors = ButtonDefaults.textButtonColors(
-                        contentColor = RoyalGold
-                    )
+                    colors =
+                        ButtonDefaults.textButtonColors(
+                            contentColor = RoyalGold,
+                        ),
                 ) {
                     Text("OK", fontWeight = FontWeight.SemiBold)
                 }
             },
             containerColor = Color(0xFF1A1A1A),
-            shape = RoundedCornerShape(20.dp)
+            shape = RoundedCornerShape(20.dp),
         )
     }
 
@@ -102,14 +100,14 @@ fun SavedMenuDetailScreen(
                 Text(
                     "Delete Menu?",
                     color = RoyalGold,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
                 )
             },
             text = {
                 Text(
                     "This action cannot be undone. Are you sure you want to delete this menu?",
                     color = Color.White.copy(alpha = 0.9f),
-                    lineHeight = 20.sp
+                    lineHeight = 20.sp,
                 )
             },
             confirmButton = {
@@ -118,9 +116,10 @@ fun SavedMenuDetailScreen(
                         showDeleteDialog = false
                         viewModel.onDeleteMenu(menuId)
                     },
-                    colors = ButtonDefaults.textButtonColors(
-                        contentColor = Color(0xFFEF5350)
-                    )
+                    colors =
+                        ButtonDefaults.textButtonColors(
+                            contentColor = Color(0xFFEF5350),
+                        ),
                 ) {
                     Text("Delete", fontWeight = FontWeight.SemiBold)
                 }
@@ -128,109 +127,115 @@ fun SavedMenuDetailScreen(
             dismissButton = {
                 TextButton(
                     onClick = { showDeleteDialog = false },
-                    colors = ButtonDefaults.textButtonColors(
-                        contentColor = Color.White.copy(alpha = 0.7f)
-                    )
+                    colors =
+                        ButtonDefaults.textButtonColors(
+                            contentColor = Color.White.copy(alpha = 0.7f),
+                        ),
                 ) {
                     Text("Cancel")
                 }
             },
             containerColor = Color(0xFF1A1A1A),
-            shape = RoundedCornerShape(20.dp)
+            shape = RoundedCornerShape(20.dp),
         )
     }
 
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(
-                        PrestigeBlack,
-                        Color(0xFF0A0A0A)
-                    )
-                )
-            )
-            .safeDrawingPadding(),
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(
+                    brush =
+                        Brush.verticalGradient(
+                            colors =
+                                listOf(
+                                    PrestigeBlack,
+                                    Color(0xFF0A0A0A),
+                                ),
+                        ),
+                ).safeDrawingPadding(),
     ) {
         if (uiState.isLoading) {
             // Enhanced loading state
             Column(
                 modifier = Modifier.align(Alignment.Center),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+                verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 CircularProgressIndicator(
                     modifier = Modifier.size(48.dp),
                     color = RoyalGold,
-                    strokeWidth = 4.dp
+                    strokeWidth = 4.dp,
                 )
                 Text(
                     text = "Loading menu...",
                     color = Color.White.copy(alpha = 0.7f),
-                    fontSize = 14.sp
+                    fontSize = 14.sp,
                 )
             }
         } else if (uiState.menu != null) {
             Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 20.dp),
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 20.dp),
             ) {
                 Spacer(modifier = Modifier.height(16.dp))
 
                 // Header with back button, title, and delete button in one row
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 8.dp),
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 8.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     // Back button with background
                     IconButton(
                         onClick = { navController.navigateUp() },
-                        modifier = Modifier
-                            .shadow(8.dp, CircleShape)
-                            .background(
-                                color = Color(0xFF1A1A1A),
-                                shape = CircleShape
-                            )
-                            .size(44.dp)
+                        modifier =
+                            Modifier
+                                .shadow(8.dp, CircleShape)
+                                .background(
+                                    color = Color(0xFF1A1A1A),
+                                    shape = CircleShape,
+                                ).size(44.dp),
                     ) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
                             contentDescription = "Back",
                             tint = RoyalGold,
-                            modifier = Modifier.size(22.dp)
+                            modifier = Modifier.size(22.dp),
                         )
                     }
 
                     // Title in the middle
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
                     ) {
                         Text(
                             text = "Saved Menu",
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold,
-                            color = RoyalGold
+                            color = RoyalGold,
                         )
 
                         Spacer(modifier = Modifier.height(2.dp))
 
                         // Date saved
                         val dateFormat = SimpleDateFormat("MMM dd, yyyy 'at' hh:mm a", Locale.getDefault())
-                        val formattedDate = remember(uiState.menu?.createdAt) {
-                            dateFormat.format(Date(uiState.menu?.createdAt ?: 0L))
-                        }
+                        val formattedDate =
+                            remember(uiState.menu?.createdAt) {
+                                dateFormat.format(Date(uiState.menu?.createdAt ?: 0L))
+                            }
 
                         Text(
                             text = formattedDate,
                             fontSize = 10.sp,
                             color = Color.White.copy(alpha = 0.5f),
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
                         )
                     }
 
@@ -238,34 +243,36 @@ fun SavedMenuDetailScreen(
                     IconButton(
                         onClick = { showDeleteDialog = true },
                         enabled = !uiState.isDeleting && !uiState.isDeleted,
-                        modifier = Modifier
-                            .shadow(8.dp, CircleShape)
-                            .background(
-                                color = if (uiState.isDeleting || uiState.isDeleted) {
-                                    Color(0xFF2A2A2A)
-                                } else {
-                                    Color(0xFF1A1A1A)
-                                },
-                                shape = CircleShape
-                            )
-                            .size(44.dp)
+                        modifier =
+                            Modifier
+                                .shadow(8.dp, CircleShape)
+                                .background(
+                                    color =
+                                        if (uiState.isDeleting || uiState.isDeleted) {
+                                            Color(0xFF2A2A2A)
+                                        } else {
+                                            Color(0xFF1A1A1A)
+                                        },
+                                    shape = CircleShape,
+                                ).size(44.dp),
                     ) {
                         if (uiState.isDeleting) {
                             CircularProgressIndicator(
                                 modifier = Modifier.size(20.dp),
                                 color = RoyalGold,
-                                strokeWidth = 2.dp
+                                strokeWidth = 2.dp,
                             )
                         } else {
                             Icon(
                                 imageVector = Icons.Default.Delete,
                                 contentDescription = "Delete",
-                                tint = if (uiState.isDeleted) {
-                                    Color(0xFF43A047)
-                                } else {
-                                    Color(0xFFEF5350)
-                                },
-                                modifier = Modifier.size(22.dp)
+                                tint =
+                                    if (uiState.isDeleted) {
+                                        Color(0xFF43A047)
+                                    } else {
+                                        Color(0xFFEF5350)
+                                    },
+                                modifier = Modifier.size(22.dp),
                             )
                         }
                     }
@@ -280,63 +287,68 @@ fun SavedMenuDetailScreen(
                     fontWeight = FontWeight.Bold,
                     color = RoyalGold.copy(alpha = 0.7f),
                     letterSpacing = 1.2.sp,
-                    modifier = Modifier.padding(horizontal = 4.dp, vertical = 8.dp)
+                    modifier = Modifier.padding(horizontal = 4.dp, vertical = 8.dp),
                 )
 
-                val menuItems = remember(uiState.menu?.menuItemsJson) {
-                    uiState.menu?.menuItemsJson?.takeIf { it.isNotBlank() }?.let { jsonString ->
-                        try {
-                            val json = Json {
-                                ignoreUnknownKeys = true
-                                coerceInputValues = true
+                val menuItems =
+                    remember(uiState.menu?.menuItemsJson) {
+                        uiState.menu?.menuItemsJson?.takeIf { it.isNotBlank() }?.let { jsonString ->
+                            try {
+                                val json =
+                                    Json {
+                                        ignoreUnknownKeys = true
+                                        coerceInputValues = true
+                                    }
+                                json.decodeFromString<List<MenuItem>>(jsonString)
+                            } catch (e: Exception) {
+                                emptyList<MenuItem>()
                             }
-                            json.decodeFromString<List<MenuItem>>(jsonString)
-                        } catch (e: Exception) {
-                            emptyList<MenuItem>()
-                        }
-                    } ?: emptyList()
-                }
+                        } ?: emptyList()
+                    }
 
                 if (menuItems.isNotEmpty()) {
                     Box(
-                        modifier = Modifier
-                            .weight(1f)
-                            .clip(RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp))
+                        modifier =
+                            Modifier
+                                .weight(1f)
+                                .clip(RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)),
                     ) {
                         MenuItemList(menuItems = menuItems)
                     }
                 } else {
                     Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1f),
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .weight(1f),
                         shape = RoundedCornerShape(24.dp),
-                        colors = CardDefaults.cardColors(
-                            containerColor = Color(0xFF1A1A1A)
-                        )
+                        colors =
+                            CardDefaults.cardColors(
+                                containerColor = Color(0xFF1A1A1A),
+                            ),
                     ) {
                         Box(
                             modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center
+                            contentAlignment = Alignment.Center,
                         ) {
                             Column(
                                 horizontalAlignment = Alignment.CenterHorizontally,
-                                verticalArrangement = Arrangement.spacedBy(12.dp)
+                                verticalArrangement = Arrangement.spacedBy(12.dp),
                             ) {
                                 Text(
                                     text = "🍽️",
-                                    fontSize = 48.sp
+                                    fontSize = 48.sp,
                                 )
                                 Text(
                                     text = "No menu items available",
                                     color = Color.White.copy(alpha = 0.6f),
                                     fontSize = 16.sp,
-                                    fontWeight = FontWeight.Medium
+                                    fontWeight = FontWeight.Medium,
                                 )
                                 Text(
                                     text = "This menu doesn't have any items",
                                     color = Color.White.copy(alpha = 0.4f),
-                                    fontSize = 13.sp
+                                    fontSize = 13.sp,
                                 )
                             }
                         }
@@ -348,30 +360,31 @@ fun SavedMenuDetailScreen(
         } else {
             // Enhanced "Menu Not Found" state
             Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(24.dp),
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .padding(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
+                verticalArrangement = Arrangement.Center,
             ) {
                 // Back button at top
                 IconButton(
                     onClick = { navController.navigateUp() },
-                    modifier = Modifier
-                        .align(Alignment.Start)
-                        .padding(bottom = 32.dp)
-                        .shadow(8.dp, CircleShape)
-                        .background(
-                            color = Color(0xFF1A1A1A),
-                            shape = CircleShape
-                        )
-                        .size(44.dp)
+                    modifier =
+                        Modifier
+                            .align(Alignment.Start)
+                            .padding(bottom = 32.dp)
+                            .shadow(8.dp, CircleShape)
+                            .background(
+                                color = Color(0xFF1A1A1A),
+                                shape = CircleShape,
+                            ).size(44.dp),
                 ) {
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
                         contentDescription = "Back",
                         tint = RoyalGold,
-                        modifier = Modifier.size(22.dp)
+                        modifier = Modifier.size(22.dp),
                     )
                 }
 
@@ -379,37 +392,43 @@ fun SavedMenuDetailScreen(
 
                 // Error content card
                 Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .shadow(12.dp, RoundedCornerShape(24.dp)),
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .shadow(12.dp, RoundedCornerShape(24.dp)),
                     shape = RoundedCornerShape(24.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = Color(0xFF1A1A1A)
-                    )
+                    colors =
+                        CardDefaults.cardColors(
+                            containerColor = Color(0xFF1A1A1A),
+                        ),
                 ) {
                     Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(32.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(32.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         Box(
-                            modifier = Modifier
-                                .size(80.dp)
-                                .clip(CircleShape)
-                                .background(
-                                    brush = Brush.radialGradient(
-                                        colors = listOf(
-                                            Color(0xFFEF5350).copy(alpha = 0.2f),
-                                            Color.Transparent
-                                        )
-                                    )
-                                ),
-                            contentAlignment = Alignment.Center
+                            modifier =
+                                Modifier
+                                    .size(80.dp)
+                                    .clip(CircleShape)
+                                    .background(
+                                        brush =
+                                            Brush.radialGradient(
+                                                colors =
+                                                    listOf(
+                                                        Color(0xFFEF5350).copy(alpha = 0.2f),
+                                                        Color.Transparent,
+                                                    ),
+                                            ),
+                                    ),
+                            contentAlignment = Alignment.Center,
                         ) {
                             Text(
                                 text = "❌",
-                                fontSize = 40.sp
+                                fontSize = 40.sp,
                             )
                         }
 
@@ -420,7 +439,7 @@ fun SavedMenuDetailScreen(
                             fontSize = 24.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.White,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
                         )
 
                         Spacer(modifier = Modifier.height(8.dp))
@@ -430,7 +449,7 @@ fun SavedMenuDetailScreen(
                             fontSize = 14.sp,
                             color = Color.White.copy(alpha = 0.6f),
                             textAlign = TextAlign.Center,
-                            lineHeight = 20.sp
+                            lineHeight = 20.sp,
                         )
 
                         Spacer(modifier = Modifier.height(24.dp))
@@ -439,16 +458,17 @@ fun SavedMenuDetailScreen(
                             onClick = { navController.navigateUp() },
                             modifier = Modifier.fillMaxWidth(),
                             shape = RoundedCornerShape(16.dp),
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = RoyalGold
-                            ),
-                            contentPadding = PaddingValues(vertical = 16.dp)
+                            colors =
+                                ButtonDefaults.buttonColors(
+                                    containerColor = RoyalGold,
+                                ),
+                            contentPadding = PaddingValues(vertical = 16.dp),
                         ) {
                             Text(
                                 "Go Back",
                                 color = PrestigeBlack,
                                 fontWeight = FontWeight.Bold,
-                                fontSize = 16.sp
+                                fontSize = 16.sp,
                             )
                         }
                     }

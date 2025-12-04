@@ -7,7 +7,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
@@ -16,7 +15,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.emptyactivity.domain.model.MenuItem
 import com.example.emptyactivity.domain.model.SafetyRating
-import com.example.emptyactivity.ui.components.TagChip
 import com.example.emptyactivity.ui.theme.RoyalGold
 import com.google.accompanist.flowlayout.FlowRow
 
@@ -40,42 +38,47 @@ fun MenuItemList(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun MenuItemCard(item: MenuItem) {
-    val borderColor = when (item.safetyRating) {
-        SafetyRating.RED -> Color(0xFFE53935)
-        SafetyRating.YELLOW -> Color(0xFFFDD835)
-        SafetyRating.GREEN -> Color(0xFF43A047)
-    }
+    val borderColor =
+        when (item.safetyRating) {
+            SafetyRating.RED -> Color(0xFFE53935)
+            SafetyRating.YELLOW -> Color(0xFFFDD835)
+            SafetyRating.GREEN -> Color(0xFF43A047)
+        }
 
-    val backgroundColor = when (item.safetyRating) {
-        SafetyRating.RED -> Color(0xFFE53935).copy(alpha = 0.1f)
-        SafetyRating.YELLOW -> Color(0xFFFDD835).copy(alpha = 0.1f)
-        SafetyRating.GREEN -> Color(0xFF43A047).copy(alpha = 0.1f)
-    }
+    val backgroundColor =
+        when (item.safetyRating) {
+            SafetyRating.RED -> Color(0xFFE53935).copy(alpha = 0.1f)
+            SafetyRating.YELLOW -> Color(0xFFFDD835).copy(alpha = 0.1f)
+            SafetyRating.GREEN -> Color(0xFF43A047).copy(alpha = 0.1f)
+        }
 
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .border(
-                width = 2.dp,
-                color = borderColor,
-                shape = RoundedCornerShape(16.dp)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .border(
+                    width = 2.dp,
+                    color = borderColor,
+                    shape = RoundedCornerShape(16.dp),
+                ),
+        colors =
+            CardDefaults.cardColors(
+                containerColor = backgroundColor,
             ),
-        colors = CardDefaults.cardColors(
-            containerColor = backgroundColor,
-        ),
         shape = RoundedCornerShape(16.dp),
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             // Name and Price Row
             FlowRow(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 Text(
                     text = item.name,
@@ -97,11 +100,12 @@ fun MenuItemCard(item: MenuItem) {
 
             // Description
             Text(
-                text = if (item.description.isBlank()) {
-                    "No description"
-                } else {
-                    item.description
-                },
+                text =
+                    if (item.description.isBlank()) {
+                        "No description"
+                    } else {
+                        item.description
+                    },
                 fontSize = 14.sp,
                 color = Color.White.copy(alpha = 0.8f),
             )
@@ -110,8 +114,8 @@ fun MenuItemCard(item: MenuItem) {
             if (item.allergies.isNotEmpty() ||
                 item.dietaryRestrictions.isNotEmpty() ||
                 item.dislikes.isNotEmpty() ||
-                item.preferences.isNotEmpty()) {
-
+                item.preferences.isNotEmpty()
+            ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(8.dp),

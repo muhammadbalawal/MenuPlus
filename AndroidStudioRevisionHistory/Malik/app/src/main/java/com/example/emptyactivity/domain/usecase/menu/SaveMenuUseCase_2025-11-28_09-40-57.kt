@@ -3,10 +3,7 @@ package com.example.emptyactivity.domain.usecase.menu
 import android.util.Log
 import com.example.emptyactivity.data.repository.menu.MenuRepository
 import com.example.emptyactivity.domain.model.Menu
-import com.example.emptyactivity.domain.model.MenuItem
 import com.example.emptyactivity.util.Result
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
 class SaveMenuUseCase
@@ -21,7 +18,9 @@ class SaveMenuUseCase
         suspend operator fun invoke(
             userId: String,
             menuText: String,
-            menuItems: List<MenuItem>,
+            safeMenuContent: String?,
+            bestMenuContent: String?,
+            fullMenuContent: String?,
             imageUri: String?,
         ): Result<Menu> {
             // Validation
@@ -31,20 +30,12 @@ class SaveMenuUseCase
 
             Log.d(TAG, "Saving menu for userId: $userId")
 
-            // Serialize menuItems to JSON
-            val menuItemsJson =
-                try {
-                    val json = Json { encodeDefaults = true }
-                    json.encodeToString(menuItems)
-                } catch (e: Exception) {
-                    Log.e(TAG, "Error serializing menu items", e)
-                    null
-                }
-
             return menuRepository.saveMenu(
                 userId = userId,
                 menuText = menuText,
-                menuItemsJson = menuItemsJson,
+                safeMenuContent = safeMenuContent,
+                bestMenuContent = bestMenuContent,
+                fullMenuContent = fullMenuContent,
                 imageUri = imageUri,
             )
         }

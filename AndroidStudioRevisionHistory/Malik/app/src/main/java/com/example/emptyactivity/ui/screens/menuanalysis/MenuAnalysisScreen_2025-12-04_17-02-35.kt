@@ -1,6 +1,7 @@
 package com.example.emptyactivity.ui.screens.menuanalysis
 
 import androidx.compose.foundation.background
+import com.example.emptyactivity.domain.model.SafetyRating
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -21,7 +22,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.example.emptyactivity.domain.model.MenuItem
-import com.example.emptyactivity.domain.model.SafetyRating
 import com.example.emptyactivity.domain.model.User
 import com.example.emptyactivity.ui.components.menu.MenuItemList
 import com.example.emptyactivity.ui.navigation.Route
@@ -50,16 +50,15 @@ fun MenuAnalysisScreen(
     val avoidItemsCount = menuItems.count { it.safetyRating == SafetyRating.RED }
 
 // Filter menu items based on selected tab
-    val filteredMenuItems =
-        remember(selectedTabIndex, menuItems) {
-            when (selectedTabIndex) {
-                0 -> menuItems // All items
-                1 -> menuItems.filter { it.safetyRating == SafetyRating.GREEN } // Safe
-                2 -> menuItems.filter { it.safetyRating == SafetyRating.YELLOW } // Caution
-                3 -> menuItems.filter { it.safetyRating == SafetyRating.RED } // Avoid
-                else -> menuItems
-            }
+    val filteredMenuItems = remember(selectedTabIndex, menuItems) {
+        when (selectedTabIndex) {
+            0 -> menuItems // All items
+            1 -> menuItems.filter { it.safetyRating == SafetyRating.GREEN } // Safe
+            2 -> menuItems.filter { it.safetyRating == SafetyRating.YELLOW } // Caution
+            3 -> menuItems.filter { it.safetyRating == SafetyRating.RED } // Avoid
+            else -> menuItems
         }
+    }
 
     // Error dialog
     if (uiState.errorMessage != null) {
@@ -107,6 +106,7 @@ fun MenuAnalysisScreen(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
+                // Back button
                 // Back button
                 IconButton(
                     onClick = {
@@ -191,128 +191,16 @@ fun MenuAnalysisScreen(
             }
 
             // -------------
-// FILTER TABS
-// -------------
-            if (menuItems.isNotEmpty()) {
-                TabRow(
-                    selectedTabIndex = selectedTabIndex,
-                    containerColor = Color.Transparent,
-                    contentColor = RoyalGold,
-                    divider = {
-                        Divider(
-                            color = Color.White.copy(alpha = 0.1f),
-                            thickness = 1.dp,
-                        )
-                    },
-                ) {
-                    Tab(
-                        selected = selectedTabIndex == 0,
-                        onClick = { selectedTabIndex = 0 },
-                        text = {
-                            Row(
-                                horizontalArrangement = Arrangement.spacedBy(3.dp),
-                                verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier.fillMaxWidth(),
-                            ) {
-                                Text(
-                                    "All",
-                                    fontWeight = if (selectedTabIndex == 0) FontWeight.Bold else FontWeight.Normal,
-                                    maxLines = 1,
-                                )
-                                Text(
-                                    "($allItemsCount)",
-                                    fontSize = 10.sp,
-                                    color = Color.White.copy(alpha = 0.6f),
-                                    maxLines = 1,
-                                )
-                            }
-                        },
-                        selectedContentColor = RoyalGold,
-                        unselectedContentColor = Color.White.copy(alpha = 0.6f),
-                    )
-                    Tab(
-                        selected = selectedTabIndex == 1,
-                        onClick = { selectedTabIndex = 1 },
-                        text = {
-                            Row(
-                                horizontalArrangement = Arrangement.spacedBy(3.dp),
-                                verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier.fillMaxWidth(),
-                            ) {
-                                Text(
-                                    "Safe",
-                                    fontWeight = if (selectedTabIndex == 1) FontWeight.Bold else FontWeight.Normal,
-                                    maxLines = 1,
-                                )
-                                Text(
-                                    "($safeItemsCount)",
-                                    fontSize = 10.sp,
-                                    color = Color(0xFF43A047).copy(alpha = 0.8f),
-                                    maxLines = 1,
-                                )
-                            }
-                        },
-                        selectedContentColor = Color(0xFF43A047),
-                        unselectedContentColor = Color.White.copy(alpha = 0.6f),
-                    )
-                    Tab(
-                        selected = selectedTabIndex == 2,
-                        onClick = { selectedTabIndex = 2 },
-                        text = {
-                            Row(
-                                horizontalArrangement = Arrangement.spacedBy(3.dp),
-                                verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier.fillMaxWidth(),
-                            ) {
-                                Text(
-                                    "Warn",
-                                    fontWeight = if (selectedTabIndex == 2) FontWeight.Bold else FontWeight.Normal,
-                                    maxLines = 1,
-                                )
-                                Text(
-                                    "($cautionItemsCount)",
-                                    fontSize = 10.sp,
-                                    color = Color(0xFFFDD835).copy(alpha = 0.8f),
-                                    maxLines = 1,
-                                )
-                            }
-                        },
-                        selectedContentColor = Color(0xFFFDD835),
-                        unselectedContentColor = Color.White.copy(alpha = 0.6f),
-                    )
-                    Tab(
-                        selected = selectedTabIndex == 3,
-                        onClick = { selectedTabIndex = 3 },
-                        text = {
-                            Row(
-                                horizontalArrangement = Arrangement.spacedBy(3.dp),
-                                verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier.fillMaxWidth(),
-                            ) {
-                                Text(
-                                    "Avoid",
-                                    fontWeight = if (selectedTabIndex == 3) FontWeight.Bold else FontWeight.Normal,
-                                    maxLines = 1,
-                                )
-                                Text(
-                                    "($avoidItemsCount)",
-                                    fontSize = 10.sp,
-                                    color = Color(0xFFE53935).copy(alpha = 0.8f),
-                                    maxLines = 1,
-                                )
-                            }
-                        },
-                        selectedContentColor = Color(0xFFE53935),
-                        unselectedContentColor = Color.White.copy(alpha = 0.6f),
-                    )
-                }
-            }
+            // MENU ITEMS
+            // -------------
+            Text(
+                text = "MENU ITEMS",
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Bold,
+                color = RoyalGold.copy(alpha = 0.7f),
+                modifier = Modifier.padding(vertical = 8.dp),
+            )
 
-            Spacer(modifier = Modifier.height(8.dp))
-
-// -------------
-// MENU ITEMS LIST
-// -------------
             if (menuItems.isNotEmpty()) {
                 Box(
                     modifier =
@@ -320,20 +208,7 @@ fun MenuAnalysisScreen(
                             .weight(1f)
                             .background(Color.Transparent),
                 ) {
-                    if (filteredMenuItems.isNotEmpty()) {
-                        MenuItemList(menuItems = filteredMenuItems)
-                    } else {
-                        Box(
-                            modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center,
-                        ) {
-                            Text(
-                                text = "No items in this category",
-                                color = Color.White.copy(alpha = 0.6f),
-                                fontSize = 16.sp,
-                            )
-                        }
-                    }
+                    MenuItemList(menuItems = menuItems)
                 }
             } else {
                 Box(
@@ -347,6 +222,8 @@ fun MenuAnalysisScreen(
                     )
                 }
             }
+
+            Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }
