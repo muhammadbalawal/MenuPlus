@@ -26,6 +26,28 @@ import com.example.emptyactivity.domain.model.User
 import com.example.emptyactivity.ui.theme.PrestigeBlack
 import com.example.emptyactivity.ui.theme.RoyalGold
 
+/**
+ * Screen that displays app settings and account management options.
+ *
+ * This screen provides users with access to app settings and account-related actions.
+ * Currently, it primarily focuses on logout functionality, but can be extended with
+ * additional settings in the future.
+ *
+ * Features:
+ * - User information display (email, name)
+ * - Logout functionality with confirmation dialog
+ * - App version information
+ * - Navigation back to previous screen
+ *
+ * The screen uses a premium black and gold theme consistent with the rest of the app.
+ *
+ * @param user The authenticated user whose settings are being displayed.
+ * @param onNavigateBack Callback function to navigate back to the previous screen.
+ * @param onLogout Callback function to handle logout. Currently unused as logout is
+ *                 handled by the ViewModel and auth state management.
+ * @param viewModel The ViewModel managing the screen's state and logout logic.
+ *                  Injected via Hilt by default.
+ */
 @Composable
 fun SettingsScreen(
     user: User,

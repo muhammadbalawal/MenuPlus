@@ -12,6 +12,21 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * ViewModel for the SettingsScreen.
+ *
+ * This ViewModel manages the state and business logic for the settings screen, primarily
+ * handling user logout functionality. It coordinates with the LogoutUseCase to sign out
+ * the user and update the authentication state.
+ *
+ * The ViewModel:
+ * - Handles logout operations
+ * - Manages loading states during logout
+ * - Handles errors and exposes error messages to the UI
+ * - Provides reactive state via StateFlow for UI observation
+ *
+ * @param logoutUseCase The use case responsible for signing out the user. Injected via Hilt.
+ */
 @HiltViewModel
 class SettingsViewModel
     @Inject
@@ -21,6 +36,15 @@ class SettingsViewModel
         private val _uiState = MutableStateFlow(SettingsUiState())
         val uiState: StateFlow<SettingsUiState> = _uiState.asStateFlow()
 
+        /**
+         * Initiates the logout process for the current user.
+         *
+         * This method calls the LogoutUseCase to sign out the user from Supabase authentication.
+         * After successful logout, the authentication state will be updated, which will trigger
+         * navigation to the unauthenticated navigation graph (Landing/Login screens).
+         *
+         * The operation is performed asynchronously and updates the loading state accordingly.
+         */
         fun onLogout() {
             viewModelScope.launch {
                 _uiState.update { it.copy(isLoading = true) }
@@ -46,6 +70,13 @@ class SettingsViewModel
             }
         }
 
+        /**
+         * Dismisses the current error message displayed to the user.
+         *
+         * This method clears the error state in the UI state, which hides any error dialogs
+         * that may be displayed. Called when the user acknowledges an error by clicking "OK"
+         * in an error dialog.
+         */
         fun onErrorDismissed() {
             _uiState.update { it.copy(errorMessage = null) }
         }

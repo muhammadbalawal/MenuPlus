@@ -13,6 +13,23 @@ import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/**
+ * Implementation of MenuRepository using Supabase as the data source.
+ *
+ * This class provides the concrete implementation of menu persistence operations using Supabase's
+ * PostgreSQL database. It handles saving, retrieving, and deleting menus in the `user_menu` table.
+ *
+ * The implementation:
+ * - Converts domain Menu models to/from Supabase DTOs
+ * - Handles database errors and converts them to Result types
+ * - Generates timestamps for menu creation
+ * - Provides logging for debugging and monitoring
+ *
+ * All operations are wrapped in try-catch blocks to handle errors gracefully and return
+ * Result types for consistent error handling.
+ *
+ * @constructor Creates an instance of MenuRepositoryImpl with Supabase client injection.
+ */
 @Singleton
 class MenuRepositoryImpl
     @Inject

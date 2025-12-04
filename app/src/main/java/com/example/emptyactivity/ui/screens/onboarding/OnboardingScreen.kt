@@ -8,6 +8,37 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.emptyactivity.domain.model.User
 import com.example.emptyactivity.ui.components.ProfileFormScreen
 
+/**
+ * Screen that guides new users through setting up their dietary profile.
+ *
+ * This screen is shown to newly registered users who haven't completed their dietary profile
+ * setup. It collects essential information needed for personalized menu analysis:
+ * - Preferred language for menu translation
+ * - Allergies (critical safety information)
+ * - Dietary restrictions (vegan, halal, kosher, etc.)
+ * - Food dislikes
+ * - Food preferences
+ *
+ * The screen uses the ProfileFormScreen component, which is also used by the ProfileScreen
+ * for editing existing profiles. After successful completion, the user is automatically
+ * navigated to the main authenticated screens.
+ *
+ * Features:
+ * - Language selection dropdown
+ * - Tag-based input for dietary information
+ * - Color-coded sections (red for allergies, orange for restrictions, yellow for dislikes, green for preferences)
+ * - Loading states during language loading and profile saving
+ * - Error handling
+ * - Support for deep link language pre-selection
+ *
+ * @param user The newly registered user who needs to complete onboarding.
+ * @param onComplete Callback function called when onboarding is successfully completed.
+ *                   Currently unused as navigation is handled by authentication state.
+ * @param viewModel The ViewModel managing the onboarding form state and profile saving logic.
+ *                  Injected via Hilt by default.
+ * @param initialLanguage Optional language name to pre-select. Useful for deep links that
+ *                        specify a language preference.
+ */
 @Composable
 fun OnboardingScreen(
     user: User,

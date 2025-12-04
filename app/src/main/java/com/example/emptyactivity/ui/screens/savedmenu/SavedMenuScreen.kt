@@ -29,6 +29,28 @@ import com.example.emptyactivity.ui.theme.RoyalGold
 import java.text.SimpleDateFormat
 import java.util.*
 
+/**
+ * Screen that displays a grid of previously saved and analyzed menus.
+ *
+ * This screen shows all menus that the user has saved after analysis. Each menu is displayed
+ * as a card in a grid layout, showing the menu image (if available), creation date, and
+ * a preview of the menu text.
+ *
+ * Features:
+ * - Grid layout with menu cards
+ * - Click on a menu card to view detailed analysis
+ * - Loading state while fetching menus
+ * - Error handling with user-friendly messages
+ * - Empty state when no menus are saved
+ *
+ * The screen automatically loads menus when it's first displayed and navigates to
+ * SavedMenuDetailScreen when a menu card is clicked.
+ *
+ * @param user The authenticated user whose menus should be displayed.
+ * @param navController Navigation controller for navigating to menu detail screen.
+ * @param viewModel The ViewModel managing the screen's state and menu loading logic.
+ *                  Injected via Hilt by default.
+ */
 @Composable
 fun SavedMenuScreen(
     user: User,

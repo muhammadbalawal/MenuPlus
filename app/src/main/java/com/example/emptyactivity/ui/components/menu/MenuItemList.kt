@@ -18,7 +18,18 @@ import com.example.emptyactivity.domain.model.SafetyRating
 import com.example.emptyactivity.ui.theme.RoyalGold
 import com.google.accompanist.flowlayout.FlowRow
 
-
+/**
+ * Composable that displays a scrollable list of menu items.
+ *
+ * This component renders a LazyColumn containing menu item cards. Each item is displayed
+ * as a card with color-coded borders and backgrounds based on safety ratings. The list
+ * is optimized for performance using LazyColumn's lazy loading.
+ *
+ * @param menuItems The list of menu items to display. Each item will be rendered as a
+ *                  MenuItemCard with appropriate styling based on its safety rating.
+ * @param modifier Optional Modifier to apply to the LazyColumn container. Useful for
+ *                 applying padding, sizing, or other layout constraints.
+ */
 @Composable
 fun MenuItemList(
     menuItems: List<MenuItem>,
@@ -35,6 +46,23 @@ fun MenuItemList(
     }
 }
 
+/**
+ * Composable that displays a single menu item as a card with safety rating styling.
+ *
+ * This component renders a Material3 Card with color-coded borders and backgrounds:
+ * - RED border/background: Items containing allergies or violating dietary restrictions
+ * - YELLOW border/background: Items containing dislikes (caution recommended)
+ * - GREEN border/background: Safe items that match user preferences
+ *
+ * Each card displays:
+ * - Item name and price (if available)
+ * - Description
+ * - Color-coded tags for allergies (red), restrictions (orange), dislikes (yellow), preferences (green)
+ * - Personalized recommendation text (if available)
+ *
+ * @param item The MenuItem to display. Contains all analysis information including
+ *             safety rating, tags, and recommendations from Gemini AI.
+ */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun MenuItemCard(item: MenuItem) {
@@ -167,6 +195,21 @@ fun MenuItemCard(item: MenuItem) {
     }
 }
 
+/**
+ * Composable that displays a read-only tag chip with color-coded styling.
+ *
+ * This component is used to display tags for allergies, dietary restrictions, dislikes,
+ * and preferences on menu item cards. The chips are non-interactive (read-only) and
+ * use color coding to indicate the type of information:
+ * - Red: Allergies (critical safety information)
+ * - Orange: Dietary restrictions
+ * - Yellow: Dislikes
+ * - Green: Preferences
+ *
+ * @param text The text to display in the tag chip.
+ * @param color The color to use for the tag. Determines both the border and text color,
+ *              with a semi-transparent background for visual distinction.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ReadOnlyTagChip(

@@ -20,6 +20,20 @@ import androidx.compose.ui.unit.sp
 import com.example.emptyactivity.ui.theme.PrestigeBlack
 import com.example.emptyactivity.ui.theme.RoyalGold
 
+/**
+ * Top app bar composable displayed on main app screens.
+ *
+ * This component provides a consistent header across main app screens with:
+ * - "MenuPlus" branding with gradient gold text and shadow effects
+ * - Settings icon button for quick access to settings
+ * - Premium black background with subtle gold gradient border
+ *
+ * The top bar is conditionally displayed on main screens (SavedMenu, Ocr, Profile) but
+ * hidden on secondary screens like Settings to provide a cleaner, focused experience.
+ *
+ * @param onSettingsClick Callback function invoked when the settings icon is clicked.
+ *                        Typically navigates to the Settings screen.
+ */
 @Composable
 fun TopBar(
     onSettingsClick: () -> Unit,

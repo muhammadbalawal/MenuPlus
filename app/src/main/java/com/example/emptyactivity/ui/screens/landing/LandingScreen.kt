@@ -24,6 +24,25 @@ import androidx.compose.ui.unit.sp
 import com.example.emptyactivity.ui.theme.PrestigeBlack
 import com.example.emptyactivity.ui.theme.RoyalGold
 
+/**
+ * Landing screen shown to unauthenticated users.
+ *
+ * This is the first screen users see when they open the app without being logged in.
+ * It displays the MenuPlus branding with a premium gold gradient effect and provides
+ * a "Continue" button to navigate to the login screen.
+ *
+ * Features:
+ * - Large "MenuPlus" logo with gradient gold text and shadow effects
+ * - Radial gradient glow effect behind the logo
+ * - Premium black background
+ * - Continue button to proceed to authentication
+ *
+ * The screen uses a simple, elegant design to create a strong first impression and
+ * guide users toward authentication.
+ *
+ * @param onContinue Callback function invoked when the user clicks the "Continue" button.
+ *                   Typically navigates to the Login screen.
+ */
 @Composable
 fun LandingScreen(
     onContinue: () -> Unit,

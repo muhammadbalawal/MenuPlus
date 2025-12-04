@@ -14,6 +14,22 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * ViewModel for the SavedMenuScreen.
+ *
+ * This ViewModel manages the state and business logic for displaying a list of previously
+ * saved menus. It handles loading menus from the database, managing loading states, and
+ * error handling.
+ *
+ * The ViewModel:
+ * - Loads all menus for the authenticated user
+ * - Manages loading state during data fetching
+ * - Handles errors and exposes error messages to the UI
+ * - Provides reactive state via StateFlow for UI observation
+ *
+ * @param getMenusUseCase The use case responsible for fetching menus from the database.
+ *                        Injected via Hilt.
+ */
 @HiltViewModel
 class SavedMenuViewModel
     @Inject
@@ -27,6 +43,16 @@ class SavedMenuViewModel
         private val _uiState = MutableStateFlow(SavedMenuUiState(isLoading = true))
         val uiState: StateFlow<SavedMenuUiState> = _uiState.asStateFlow()
 
+        /**
+         * Loads all saved menus for the specified user.
+         *
+         * This method fetches menus from the database via the GetMenusUseCase and updates
+         * the UI state with the results. The operation is performed asynchronously and
+         * updates the loading state accordingly.
+         *
+         * @param user The authenticated user whose menus should be loaded. The user ID
+         *             is used to filter menus in the database.
+         */
         fun loadMenus(user: User) {
             viewModelScope.launch {
                 Log.d(TAG, "Loading menus for user: ${user.id}")
@@ -58,6 +84,13 @@ class SavedMenuViewModel
             }
         }
 
+        /**
+         * Dismisses the current error message displayed to the user.
+         *
+         * This method clears the error state in the UI state, which hides any error dialogs
+         * that may be displayed. Called when the user acknowledges an error by clicking "OK"
+         * in an error dialog.
+         */
         fun onErrorDismissed() {
             _uiState.update { it.copy(errorMessage = null) }
         }

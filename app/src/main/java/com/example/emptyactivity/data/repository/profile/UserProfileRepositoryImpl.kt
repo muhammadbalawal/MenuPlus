@@ -15,6 +15,24 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/**
+ * Implementation of UserProfileRepository using Supabase as the data source.
+ *
+ * This class provides the concrete implementation of user profile operations using Supabase's
+ * PostgreSQL database. It handles creating, reading, and updating user profiles in the
+ * `userProfile` table and fetching languages from the `language` table.
+ *
+ * The implementation:
+ * - Converts domain UserProfile and Language models to/from Supabase DTOs
+ * - Handles database errors and converts them to Result types
+ * - Provides reactive Flow for observing profile changes
+ * - Provides logging for debugging and monitoring
+ *
+ * All operations are wrapped in try-catch blocks to handle errors gracefully and return
+ * Result types for consistent error handling.
+ *
+ * @constructor Creates an instance of UserProfileRepositoryImpl with Supabase client injection.
+ */
 @Singleton
 class UserProfileRepositoryImpl
     @Inject

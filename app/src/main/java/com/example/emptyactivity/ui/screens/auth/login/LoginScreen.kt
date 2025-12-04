@@ -35,6 +35,30 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.emptyactivity.ui.theme.PrestigeBlack
 import com.example.emptyactivity.ui.theme.RoyalGold
 
+/**
+ * Screen that displays the user login form.
+ *
+ * This screen provides a form for users to authenticate with their email and password.
+ * It features a premium black and gold theme consistent with the app's design language.
+ *
+ * Features:
+ * - Email and password input fields
+ * - Password visibility toggle
+ * - Loading state during authentication
+ * - Error handling with user-friendly messages
+ * - Navigation to registration screen
+ * - Automatic navigation on successful login
+ *
+ * The screen uses the LoginViewModel to manage form state and authentication logic.
+ * On successful login, the authentication state change triggers automatic navigation
+ * to the authenticated screens via the MenuPlusAppViewModel.
+ *
+ * @param onNavigateToRegister Callback function to navigate to the registration screen.
+ * @param onLoginSuccess Callback function called when login is successful. Currently unused
+ *                       as navigation is handled by authentication state observation.
+ * @param viewModel The ViewModel managing the login form state and authentication logic.
+ *                  Injected via Hilt by default.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(

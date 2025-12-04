@@ -39,6 +39,35 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.emptyactivity.ui.theme.PrestigeBlack
 import com.example.emptyactivity.ui.theme.RoyalGold
 
+/**
+ * Screen that displays the user registration form.
+ *
+ * This screen provides a form for new users to create an account with their name, email,
+ * and password. It features a premium black and gold theme consistent with the app's
+ * design language.
+ *
+ * Features:
+ * - Name, email, and password input fields
+ * - Password confirmation field
+ * - Password visibility toggle
+ * - Loading state during registration
+ * - Error handling with user-friendly messages
+ * - Navigation to login screen
+ * - Automatic navigation on successful registration
+ * - Support for initial email pre-filling (e.g., from deep links)
+ *
+ * The screen uses the RegisterViewModel to manage form state and registration logic.
+ * On successful registration, the authentication state change triggers automatic navigation
+ * to the onboarding screens via the MenuPlusAppViewModel.
+ *
+ * @param onNavigateToLogin Callback function to navigate to the login screen.
+ * @param onRegisterSuccess Callback function called when registration is successful. Currently
+ *                          unused as navigation is handled by authentication state observation.
+ * @param viewModel The ViewModel managing the registration form state and account creation logic.
+ *                  Injected via Hilt by default.
+ * @param initialEmail Optional email address to pre-fill in the email field. Useful for
+ *                     deep links or when navigating from the login screen with an email.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterScreen(

@@ -28,6 +28,34 @@ import com.example.emptyactivity.ui.navigation.Route
 import com.example.emptyactivity.ui.theme.PrestigeBlack
 import com.example.emptyactivity.ui.theme.RoyalGold
 
+/**
+ * Screen that displays analyzed menu items with safety ratings and filtering options.
+ *
+ * This screen is shown after menu analysis is complete. It displays menu items with color-coded
+ * safety ratings (RED/YELLOW/GREEN) and provides tabs to filter items by safety category.
+ *
+ * Features:
+ * - Tab-based filtering: All, Safe (GREEN), Warn (YELLOW), Avoid (RED)
+ * - Item counts displayed on each tab
+ * - Color-coded menu item cards with borders matching safety ratings
+ * - Save functionality to persist menus for later access
+ * - Navigation back to OCR screen
+ *
+ * The screen receives analyzed menu items as a parameter (typically from ImportMenuScreen
+ * after Gemini AI analysis) and displays them in a scrollable list with detailed information
+ * including allergies, dietary restrictions, dislikes, preferences, and recommendations.
+ *
+ * @param user The authenticated user viewing the analysis. Required for saving menus.
+ * @param menuText The original OCR-extracted menu text that was analyzed.
+ * @param menuItems The list of analyzed menu items with safety ratings, tags, and recommendations.
+ *                  Items should be pre-analyzed by Gemini AI via the AnalyzeMenuUseCase.
+ * @param imageUriString Optional URI string of the original menu image. Used when saving
+ *                       the menu for later reference.
+ * @param navController Navigation controller for navigating between screens. Used to navigate
+ *                     back to the OCR screen or to other app screens.
+ * @param viewModel The ViewModel managing the screen's state and business logic. Injected
+ *                  via Hilt by default.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MenuAnalysisScreen(

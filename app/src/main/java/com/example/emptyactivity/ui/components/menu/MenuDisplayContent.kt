@@ -13,6 +13,25 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.emptyactivity.ui.theme.RoyalGold
 
+/**
+ * Composable that displays menu analysis results in a tabbed interface.
+ *
+ * This component provides a tabbed view for displaying different sections of menu analysis:
+ * - Safe Menu: Items marked as safe (GREEN) for the user
+ * - Best Menu: Top personalized recommendations
+ * - Full Menu: Complete menu with all items and analysis
+ *
+ * The component uses Material 3 TabRow for navigation between sections and displays
+ * the content in scrollable cards with color-coded backgrounds.
+ *
+ * Note: This component appears to be legacy/unused in the current implementation, as
+ * the MenuAnalysisScreen now uses a different approach with filtering tabs. It may
+ * be kept for reference or future use.
+ *
+ * @param safeMenuContent Text content for the "Safe Menu" tab. Can be null.
+ * @param bestMenuContent Text content for the "Best Menu" tab. Can be null.
+ * @param fullMenuContent Text content for the "Full Menu" tab. Can be null.
+ */
 @Composable
 fun MenuDisplayContent(
     safeMenuContent: String?,

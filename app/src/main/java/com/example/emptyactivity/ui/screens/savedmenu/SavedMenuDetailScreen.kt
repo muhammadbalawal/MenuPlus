@@ -33,7 +33,30 @@ import kotlinx.serialization.json.Json
 import java.text.SimpleDateFormat
 import java.util.*
 
-
+/**
+ * Screen that displays detailed information about a saved menu.
+ *
+ * This screen shows the complete analysis of a previously saved menu, including all menu items
+ * with their safety ratings, tags, and recommendations. Users can view the menu details and
+ * delete the menu if they no longer need it.
+ *
+ * Features:
+ * - Displays menu items with color-coded safety ratings
+ * - Shows menu creation date
+ * - Delete functionality with confirmation dialog
+ * - Loading and error states
+ * - Navigation back to saved menus list
+ *
+ * The screen automatically loads the menu when displayed and parses the stored menu items
+ * from JSON format for display.
+ *
+ * @param menuId The unique identifier of the menu to display. Used to fetch the menu
+ *               from the database.
+ * @param navController Navigation controller for navigating back to the saved menus list
+ *                     or other screens.
+ * @param viewModel The ViewModel managing the screen's state and menu loading/deletion logic.
+ *                  Injected via Hilt by default.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SavedMenuDetailScreen(

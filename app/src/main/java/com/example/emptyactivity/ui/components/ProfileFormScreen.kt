@@ -30,6 +30,39 @@ import com.example.emptyactivity.ui.screens.onboarding.OnboardingViewModel
 import com.example.emptyactivity.ui.theme.PrestigeBlack
 import com.example.emptyactivity.ui.theme.RoyalGold
 
+/**
+ * Reusable composable form for collecting and editing user dietary profile information.
+ *
+ * This component is used by both the OnboardingScreen (for new users) and ProfileScreen
+ * (for editing existing profiles). It provides a comprehensive form for managing:
+ * - Preferred language selection
+ * - Allergies (RED - critical safety information)
+ * - Dietary restrictions (ORANGE - must avoid)
+ * - Dislikes (YELLOW - prefer not to eat)
+ * - Preferences (GREEN - enjoy eating)
+ *
+ * Features:
+ * - Premium black and gold theme with gradient effects
+ * - Language dropdown with all available languages
+ * - Tag-based input system for each category
+ * - Color-coded sections matching safety rating colors
+ * - Loading states during language loading and profile saving
+ * - Error handling with user-friendly dialogs
+ * - Scrollable layout for smaller screens
+ *
+ * The component uses the OnboardingViewModel for state management, which handles both
+ * creating new profiles and updating existing ones.
+ *
+ * @param user The user whose profile is being set up or edited.
+ * @param viewModel The OnboardingViewModel managing the form state and profile operations.
+ * @param title The title text to display at the top of the form (e.g., "Edit Profile" or "Set Up Your Profile").
+ * @param subtitle The subtitle text providing context (e.g., "Update your dietary preferences").
+ * @param buttonText The text to display on the save button (e.g., "Save Changes" or "Complete Setup").
+ * @param onSaveComplete Callback function called when the profile is successfully saved.
+ *                       Typically used to navigate away from the screen.
+ * @param onErrorDismiss Optional callback for dismissing errors. Defaults to ViewModel's
+ *                       onErrorDismissed method.
+ */
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun ProfileFormScreen(
