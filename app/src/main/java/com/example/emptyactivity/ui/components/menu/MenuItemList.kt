@@ -22,9 +22,10 @@ import com.example.emptyactivity.ui.theme.RoyalGold
 @Composable
 fun MenuItemList(
     menuItems: List<MenuItem>,
+    modifier: Modifier = Modifier,
 ) {
     LazyColumn(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(12.dp),
         contentPadding = PaddingValues(vertical = 8.dp),
     ) {
