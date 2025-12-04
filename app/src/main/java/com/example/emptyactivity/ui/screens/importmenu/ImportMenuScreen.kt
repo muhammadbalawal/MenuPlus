@@ -55,9 +55,10 @@ fun ImportMenuScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(uiState.isAnalyzing, uiState.menuItems) {
-        if (!uiState.isAnalyzing && uiState.menuItems != null && uiState.menuItems.isNotEmpty()) {
+        val menuItems = uiState.menuItems
+        if (!uiState.isAnalyzing && menuItems != null && menuItems.isNotEmpty()) {
             val json = Json { encodeDefaults = true }
-            val menuItemsJson = json.encodeToString(uiState.menuItems)
+            val menuItemsJson = json.encodeToString(menuItems)
             
             navController.navigate(
                 Route.MenuAnalysis(
