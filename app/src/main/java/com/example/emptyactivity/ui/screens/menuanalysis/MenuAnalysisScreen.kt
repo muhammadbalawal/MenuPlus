@@ -62,6 +62,7 @@ fun MenuAnalysisScreen(
                 .fillMaxSize()
                 .background(color = PrestigeBlack),
     ) {
+        // Back button
         IconButton(
             onClick = { 
                 navController.navigate(Route.SavedMenu) {
@@ -83,11 +84,13 @@ fun MenuAnalysisScreen(
         }
 
         Column(
-            modifier =
-                Modifier
-                    .fillMaxSize()
-                    .padding(24.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 24.dp),
         ) {
+            // Title at top with minimal top padding
+            Spacer(modifier = Modifier.height(60.dp)) // Space for back button
+            
             Text(
                 text = "Menu Analysis",
                 fontSize = 32.sp,
@@ -118,6 +121,27 @@ fun MenuAnalysisScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            // Menu Items List - takes available space
+            if (menuItems.isNotEmpty()) {
+                MenuItemList(
+                    menuItems = menuItems,
+                    modifier = Modifier.weight(1f)
+                )
+            } else {
+                Box(
+                    modifier = Modifier.weight(1f),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Text(
+                        text = "No menu items available",
+                        color = Color.White.copy(alpha = 0.6f),
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Save Button at bottom
             Button(
                 onClick = {
                     viewModel.onSaveMenu(
@@ -129,7 +153,10 @@ fun MenuAnalysisScreen(
                     )
                 },
                 enabled = !uiState.isSaving && !uiState.isSaved && menuItems.isNotEmpty(),
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp),
+                shape = androidx.compose.foundation.shape.RoundedCornerShape(28.dp),
                 colors =
                     ButtonDefaults.buttonColors(
                         containerColor =
@@ -151,24 +178,7 @@ fun MenuAnalysisScreen(
                 } else if (uiState.isSaved) {
                     Text("✓ Saved", color = Color.White)
                 } else {
-                    Text("Save Menu", color = PrestigeBlack)
-                }
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // Menu Items List
-            if (menuItems.isNotEmpty()) {
-                MenuItemList(menuItems = menuItems)
-            } else {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Text(
-                        text = "No menu items available",
-                        color = Color.White.copy(alpha = 0.6f),
-                    )
+                    Text("Save Menu", color = PrestigeBlack, fontWeight = FontWeight.Bold)
                 }
             }
         }
