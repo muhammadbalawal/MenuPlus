@@ -24,7 +24,6 @@ import com.example.emptyactivity.domain.model.User
 import com.example.emptyactivity.ui.MenuPlusAppUiState
 import com.example.emptyactivity.ui.MenuPlusAppViewModel
 import com.example.emptyactivity.ui.components.TopBar
-import com.example.emptyactivity.ui.screens.aboutus.AboutUsScreen
 import com.example.emptyactivity.ui.screens.auth.login.LoginScreen
 import com.example.emptyactivity.ui.screens.auth.register.RegisterScreen
 import com.example.emptyactivity.ui.screens.importmenu.ImportMenuScreen
@@ -33,6 +32,7 @@ import com.example.emptyactivity.ui.screens.menuanalysis.MenuAnalysisScreen
 import com.example.emptyactivity.ui.screens.ocr.OcrScreen
 import com.example.emptyactivity.ui.screens.onboarding.OnboardingScreen
 import com.example.emptyactivity.ui.screens.profile.ProfileScreen
+import com.example.emptyactivity.ui.screens.aboutus.AboutUsScreen
 import com.example.emptyactivity.ui.screens.savedmenu.SavedMenuDetailScreen
 import com.example.emptyactivity.ui.screens.savedmenu.SavedMenuScreen
 import com.example.emptyactivity.ui.screens.settings.SettingsScreen

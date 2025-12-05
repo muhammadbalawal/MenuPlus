@@ -225,10 +225,9 @@ fun SettingsScreen(
                 Button(
                     onClick = onNavigateToAboutUs,
                     modifier = Modifier.fillMaxWidth(),
-                    colors =
-                        ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFF1A1A1A),
-                        ),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFF1A1A1A),
+                    ),
                 ) {
                     Icon(
                         imageVector = Icons.Default.Info,
@@ -246,10 +245,9 @@ fun SettingsScreen(
                 Button(
                     onClick = { showLogoutDialog = true },
                     modifier = Modifier.fillMaxWidth(),
-                    colors =
-                        ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFFD32F2F),
-                        ),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFFD32F2F),
+                    ),
                 ) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.Logout,

@@ -59,19 +59,17 @@ fun AboutUsScreen(
     val scrollState = rememberScrollState()
 
     Box(
-        modifier =
-            Modifier
-                .fillMaxSize()
-                .background(color = PrestigeBlack),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = PrestigeBlack),
     ) {
         // Back button positioned at top start
         IconButton(
             onClick = onNavigateBack,
-            modifier =
-                Modifier
-                    .align(Alignment.TopStart)
-                    .padding(16.dp)
-                    .zIndex(1f),
+            modifier = Modifier
+                .align(Alignment.TopStart)
+                .padding(16.dp)
+                .zIndex(1f),
         ) {
             Icon(
                 imageVector = Icons.Default.ArrowBack,
@@ -82,32 +80,28 @@ fun AboutUsScreen(
         }
 
         Column(
-            modifier =
-                Modifier
-                    .fillMaxSize()
-                    .verticalScroll(scrollState)
-                    .padding(24.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(scrollState)
+                .padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Spacer(modifier = Modifier.height(32.dp))
 
             // App Icon and Title
             Box(
-                modifier =
-                    Modifier
-                        .size(80.dp)
-                        .shadow(12.dp, CircleShape)
-                        .background(
-                            brush =
-                                Brush.linearGradient(
-                                    colors =
-                                        listOf(
-                                            Color(0xFF7A5A00),
-                                            RoyalGold,
-                                        ),
-                                ),
-                            shape = CircleShape,
+                modifier = Modifier
+                    .size(80.dp)
+                    .shadow(12.dp, CircleShape)
+                    .background(
+                        brush = Brush.linearGradient(
+                            colors = listOf(
+                                Color(0xFF7A5A00),
+                                RoyalGold,
+                            ),
                         ),
+                        shape = CircleShape,
+                    ),
                 contentAlignment = Alignment.Center,
             ) {
                 Icon(
@@ -125,25 +119,21 @@ fun AboutUsScreen(
                 text = "MenuPlus",
                 fontSize = 32.sp,
                 fontWeight = FontWeight.Bold,
-                style =
-                    TextStyle(
-                        brush =
-                            Brush.linearGradient(
-                                colors =
-                                    listOf(
-                                        Color(0xFF7A5A00),
-                                        RoyalGold,
-                                        Color(0xFFFFF4C8),
-                                        Color(0xFFD4AF37),
-                                    ),
-                            ),
-                        shadow =
-                            Shadow(
-                                color = Color(0xAA8B7500),
-                                offset = Offset(1f, 1f),
-                                blurRadius = 4f,
-                            ),
+                style = TextStyle(
+                    brush = Brush.linearGradient(
+                        colors = listOf(
+                            Color(0xFF7A5A00),
+                            RoyalGold,
+                            Color(0xFFFFF4C8),
+                            Color(0xFFD4AF37),
+                        ),
                     ),
+                    shadow = Shadow(
+                        color = Color(0xAA8B7500),
+                        offset = Offset(1f, 1f),
+                        blurRadius = 4f,
+                    ),
+                ),
                 color = Color.Unspecified,
             )
 
@@ -160,21 +150,18 @@ fun AboutUsScreen(
 
             // Our Mission Card
             Card(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .shadow(8.dp, RoundedCornerShape(16.dp)),
-                colors =
-                    CardDefaults.cardColors(
-                        containerColor = Color(0xFF1A1A1A),
-                    ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .shadow(8.dp, RoundedCornerShape(16.dp)),
+                colors = CardDefaults.cardColors(
+                    containerColor = Color(0xFF1A1A1A),
+                ),
                 shape = RoundedCornerShape(16.dp),
             ) {
                 Column(
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(20.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(20.dp),
                 ) {
                     Text(
                         text = "Our Mission",
@@ -203,21 +190,18 @@ fun AboutUsScreen(
 
             // The Team Card
             Card(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .shadow(8.dp, RoundedCornerShape(16.dp)),
-                colors =
-                    CardDefaults.cardColors(
-                        containerColor = Color(0xFF1A1A1A),
-                    ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .shadow(8.dp, RoundedCornerShape(16.dp)),
+                colors = CardDefaults.cardColors(
+                    containerColor = Color(0xFF1A1A1A),
+                ),
                 shape = RoundedCornerShape(16.dp),
             ) {
                 Column(
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(20.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(20.dp),
                 ) {
                     Text(
                         text = "The Team",
@@ -256,21 +240,18 @@ fun AboutUsScreen(
 
             // What We Offer Card
             Card(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .shadow(8.dp, RoundedCornerShape(16.dp)),
-                colors =
-                    CardDefaults.cardColors(
-                        containerColor = Color(0xFF1A1A1A),
-                    ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .shadow(8.dp, RoundedCornerShape(16.dp)),
+                colors = CardDefaults.cardColors(
+                    containerColor = Color(0xFF1A1A1A),
+                ),
                 shape = RoundedCornerShape(16.dp),
             ) {
                 Column(
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(20.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(20.dp),
                 ) {
                     Text(
                         text = "What We Offer",
