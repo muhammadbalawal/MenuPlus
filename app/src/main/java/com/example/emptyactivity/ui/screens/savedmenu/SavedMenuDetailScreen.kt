@@ -25,6 +25,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.example.emptyactivity.domain.model.MenuItem
+import com.example.emptyactivity.domain.model.SafetyRating
 import com.example.emptyactivity.ui.components.menu.MenuItemList
 import com.example.emptyactivity.ui.navigation.Route
 import com.example.emptyactivity.ui.theme.PrestigeBlack
@@ -42,6 +43,8 @@ import java.util.*
  *
  * Features:
  * - Displays menu items with color-coded safety ratings
+ * - Tab-based filtering: All, Safe (GREEN), Warn (YELLOW), Avoid (RED)
+ * - Item counts displayed on each tab
  * - Shows menu creation date
  * - Delete functionality with confirmation dialog
  * - Loading and error states
@@ -67,7 +70,11 @@ fun SavedMenuDetailScreen(
     viewModel: SavedMenuDetailViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
     var showDeleteDialog by remember { mutableStateOf(false) }
+
+    // Tab state for filtering by safety rating
+    var selectedTabIndex by remember { mutableIntStateOf(0) }
 
     LaunchedEffect(menuId) {
         if (menuId.isNotBlank()) {
@@ -80,6 +87,38 @@ fun SavedMenuDetailScreen(
             navController.navigate(Route.SavedMenu) {
                 popUpTo(Route.SavedMenu) { inclusive = false }
             }
+        }
+    }
+
+    // Parse menu items
+    val menuItems = remember(uiState.menu?.menuItemsJson) {
+        uiState.menu?.menuItemsJson?.takeIf { it.isNotBlank() }?.let { jsonString ->
+            try {
+                val json = Json {
+                    ignoreUnknownKeys = true
+                    coerceInputValues = true
+                }
+                json.decodeFromString<List<MenuItem>>(jsonString)
+            } catch (e: Exception) {
+                emptyList<MenuItem>()
+            }
+        } ?: emptyList()
+    }
+
+    // Calculate item counts for each category
+    val allItemsCount = menuItems.size
+    val safeItemsCount = menuItems.count { it.safetyRating == SafetyRating.GREEN }
+    val cautionItemsCount = menuItems.count { it.safetyRating == SafetyRating.YELLOW }
+    val avoidItemsCount = menuItems.count { it.safetyRating == SafetyRating.RED }
+
+    // Filter menu items based on selected tab
+    val filteredMenuItems = remember(selectedTabIndex, menuItems) {
+        when (selectedTabIndex) {
+            0 -> menuItems // All items
+            1 -> menuItems.filter { it.safetyRating == SafetyRating.GREEN } // Safe
+            2 -> menuItems.filter { it.safetyRating == SafetyRating.YELLOW } // Caution
+            3 -> menuItems.filter { it.safetyRating == SafetyRating.RED } // Avoid
+            else -> menuItems
         }
     }
 
@@ -104,10 +143,9 @@ fun SavedMenuDetailScreen(
             confirmButton = {
                 TextButton(
                     onClick = { viewModel.onErrorDismissed() },
-                    colors =
-                        ButtonDefaults.textButtonColors(
-                            contentColor = RoyalGold,
-                        ),
+                    colors = ButtonDefaults.textButtonColors(
+                        contentColor = RoyalGold,
+                    ),
                 ) {
                     Text("OK", fontWeight = FontWeight.SemiBold)
                 }
@@ -141,10 +179,9 @@ fun SavedMenuDetailScreen(
                         showDeleteDialog = false
                         viewModel.onDeleteMenu(menuId)
                     },
-                    colors =
-                        ButtonDefaults.textButtonColors(
-                            contentColor = Color(0xFFEF5350),
-                        ),
+                    colors = ButtonDefaults.textButtonColors(
+                        contentColor = Color(0xFFEF5350),
+                    ),
                 ) {
                     Text("Delete", fontWeight = FontWeight.SemiBold)
                 }
@@ -152,10 +189,9 @@ fun SavedMenuDetailScreen(
             dismissButton = {
                 TextButton(
                     onClick = { showDeleteDialog = false },
-                    colors =
-                        ButtonDefaults.textButtonColors(
-                            contentColor = Color.White.copy(alpha = 0.7f),
-                        ),
+                    colors = ButtonDefaults.textButtonColors(
+                        contentColor = Color.White.copy(alpha = 0.7f),
+                    ),
                 ) {
                     Text("Cancel")
                 }
@@ -166,19 +202,17 @@ fun SavedMenuDetailScreen(
     }
 
     Box(
-        modifier =
-            Modifier
-                .fillMaxSize()
-                .background(
-                    brush =
-                        Brush.verticalGradient(
-                            colors =
-                                listOf(
-                                    PrestigeBlack,
-                                    Color(0xFF0A0A0A),
-                                ),
-                        ),
-                ).safeDrawingPadding(),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(
+                        PrestigeBlack,
+                        Color(0xFF0A0A0A),
+                    ),
+                ),
+            )
+            .safeDrawingPadding(),
     ) {
         if (uiState.isLoading) {
             // Enhanced loading state
@@ -200,32 +234,30 @@ fun SavedMenuDetailScreen(
             }
         } else if (uiState.menu != null) {
             Column(
-                modifier =
-                    Modifier
-                        .fillMaxSize()
-                        .padding(horizontal = 20.dp),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 20.dp),
             ) {
                 Spacer(modifier = Modifier.height(16.dp))
 
                 // Header with back button, title, and delete button in one row
                 Row(
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 8.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 8.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     // Back button with background
                     IconButton(
                         onClick = { navController.navigateUp() },
-                        modifier =
-                            Modifier
-                                .shadow(8.dp, CircleShape)
-                                .background(
-                                    color = Color(0xFF1A1A1A),
-                                    shape = CircleShape,
-                                ).size(44.dp),
+                        modifier = Modifier
+                            .shadow(8.dp, CircleShape)
+                            .background(
+                                color = Color(0xFF1A1A1A),
+                                shape = CircleShape,
+                            )
+                            .size(44.dp),
                     ) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
@@ -246,15 +278,13 @@ fun SavedMenuDetailScreen(
                             fontWeight = FontWeight.Bold,
                             color = RoyalGold,
                         )
-
                         Spacer(modifier = Modifier.height(2.dp))
 
                         // Date saved
                         val dateFormat = SimpleDateFormat("MMM dd, yyyy 'at' hh:mm a", Locale.getDefault())
-                        val formattedDate =
-                            remember(uiState.menu?.createdAt) {
-                                dateFormat.format(Date(uiState.menu?.createdAt ?: 0L))
-                            }
+                        val formattedDate = remember(uiState.menu?.createdAt) {
+                            dateFormat.format(Date(uiState.menu?.createdAt ?: 0L))
+                        }
 
                         Text(
                             text = formattedDate,
@@ -268,18 +298,17 @@ fun SavedMenuDetailScreen(
                     IconButton(
                         onClick = { showDeleteDialog = true },
                         enabled = !uiState.isDeleting && !uiState.isDeleted,
-                        modifier =
-                            Modifier
-                                .shadow(8.dp, CircleShape)
-                                .background(
-                                    color =
-                                        if (uiState.isDeleting || uiState.isDeleted) {
-                                            Color(0xFF2A2A2A)
-                                        } else {
-                                            Color(0xFF1A1A1A)
-                                        },
-                                    shape = CircleShape,
-                                ).size(44.dp),
+                        modifier = Modifier
+                            .shadow(8.dp, CircleShape)
+                            .background(
+                                color = if (uiState.isDeleting || uiState.isDeleted) {
+                                    Color(0xFF2A2A2A)
+                                } else {
+                                    Color(0xFF1A1A1A)
+                                },
+                                shape = CircleShape,
+                            )
+                            .size(44.dp),
                     ) {
                         if (uiState.isDeleting) {
                             CircularProgressIndicator(
@@ -291,12 +320,11 @@ fun SavedMenuDetailScreen(
                             Icon(
                                 imageVector = Icons.Default.Delete,
                                 contentDescription = "Delete",
-                                tint =
-                                    if (uiState.isDeleted) {
-                                        Color(0xFF43A047)
-                                    } else {
-                                        Color(0xFFEF5350)
-                                    },
+                                tint = if (uiState.isDeleted) {
+                                    Color(0xFF43A047)
+                                } else {
+                                    Color(0xFFEF5350)
+                                },
                                 modifier = Modifier.size(22.dp),
                             )
                         }
@@ -305,52 +333,155 @@ fun SavedMenuDetailScreen(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Menu items section with label
-                Text(
-                    text = "MENU ITEMS",
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = RoyalGold.copy(alpha = 0.7f),
-                    letterSpacing = 1.2.sp,
-                    modifier = Modifier.padding(horizontal = 4.dp, vertical = 8.dp),
-                )
-
-                val menuItems =
-                    remember(uiState.menu?.menuItemsJson) {
-                        uiState.menu?.menuItemsJson?.takeIf { it.isNotBlank() }?.let { jsonString ->
-                            try {
-                                val json =
-                                    Json {
-                                        ignoreUnknownKeys = true
-                                        coerceInputValues = true
-                                    }
-                                json.decodeFromString<List<MenuItem>>(jsonString)
-                            } catch (e: Exception) {
-                                emptyList<MenuItem>()
-                            }
-                        } ?: emptyList()
+                // Filter Tabs (only show if there are menu items)
+                if (menuItems.isNotEmpty()) {
+                    TabRow(
+                        selectedTabIndex = selectedTabIndex,
+                        containerColor = Color.Transparent,
+                        contentColor = RoyalGold,
+                        divider = {
+                            Divider(
+                                color = Color.White.copy(alpha = 0.1f),
+                                thickness = 1.dp,
+                            )
+                        },
+                    ) {
+                        Tab(
+                            selected = selectedTabIndex == 0,
+                            onClick = { selectedTabIndex = 0 },
+                            text = {
+                                Row(
+                                    horizontalArrangement = Arrangement.spacedBy(3.dp),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier.fillMaxWidth(),
+                                ) {
+                                    Text(
+                                        "All",
+                                        fontWeight = if (selectedTabIndex == 0) FontWeight.Bold else FontWeight.Normal,
+                                        maxLines = 1,
+                                    )
+                                    Text(
+                                        "($allItemsCount)",
+                                        fontSize = 10.sp,
+                                        color = Color.White.copy(alpha = 0.6f),
+                                        maxLines = 1,
+                                    )
+                                }
+                            },
+                            selectedContentColor = RoyalGold,
+                            unselectedContentColor = Color.White.copy(alpha = 0.6f),
+                        )
+                        Tab(
+                            selected = selectedTabIndex == 1,
+                            onClick = { selectedTabIndex = 1 },
+                            text = {
+                                Row(
+                                    horizontalArrangement = Arrangement.spacedBy(3.dp),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier.fillMaxWidth(),
+                                ) {
+                                    Text(
+                                        "Safe",
+                                        fontWeight = if (selectedTabIndex == 1) FontWeight.Bold else FontWeight.Normal,
+                                        maxLines = 1,
+                                    )
+                                    Text(
+                                        "($safeItemsCount)",
+                                        fontSize = 10.sp,
+                                        color = Color(0xFF43A047).copy(alpha = 0.8f),
+                                        maxLines = 1,
+                                    )
+                                }
+                            },
+                            selectedContentColor = Color(0xFF43A047),
+                            unselectedContentColor = Color.White.copy(alpha = 0.6f),
+                        )
+                        Tab(
+                            selected = selectedTabIndex == 2,
+                            onClick = { selectedTabIndex = 2 },
+                            text = {
+                                Row(
+                                    horizontalArrangement = Arrangement.spacedBy(3.dp),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier.fillMaxWidth(),
+                                ) {
+                                    Text(
+                                        "Warn",
+                                        fontWeight = if (selectedTabIndex == 2) FontWeight.Bold else FontWeight.Normal,
+                                        maxLines = 1,
+                                    )
+                                    Text(
+                                        "($cautionItemsCount)",
+                                        fontSize = 10.sp,
+                                        color = Color(0xFFFDD835).copy(alpha = 0.8f),
+                                        maxLines = 1,
+                                    )
+                                }
+                            },
+                            selectedContentColor = Color(0xFFFDD835),
+                            unselectedContentColor = Color.White.copy(alpha = 0.6f),
+                        )
+                        Tab(
+                            selected = selectedTabIndex == 3,
+                            onClick = { selectedTabIndex = 3 },
+                            text = {
+                                Row(
+                                    horizontalArrangement = Arrangement.spacedBy(3.dp),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier.fillMaxWidth(),
+                                ) {
+                                    Text(
+                                        "Avoid",
+                                        fontWeight = if (selectedTabIndex == 3) FontWeight.Bold else FontWeight.Normal,
+                                        maxLines = 1,
+                                    )
+                                    Text(
+                                        "($avoidItemsCount)",
+                                        fontSize = 10.sp,
+                                        color = Color(0xFFE53935).copy(alpha = 0.8f),
+                                        maxLines = 1,
+                                    )
+                                }
+                            },
+                            selectedContentColor = Color(0xFFE53935),
+                            unselectedContentColor = Color.White.copy(alpha = 0.6f),
+                        )
                     }
 
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
+
+                // Menu items section
                 if (menuItems.isNotEmpty()) {
                     Box(
-                        modifier =
-                            Modifier
-                                .weight(1f)
-                                .clip(RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)),
+                        modifier = Modifier
+                            .weight(1f)
+                            .background(Color.Transparent),
                     ) {
-                        MenuItemList(menuItems = menuItems)
+                        if (filteredMenuItems.isNotEmpty()) {
+                            MenuItemList(menuItems = filteredMenuItems)
+                        } else {
+                            Box(
+                                modifier = Modifier.fillMaxSize(),
+                                contentAlignment = Alignment.Center,
+                            ) {
+                                Text(
+                                    text = "No items in this category",
+                                    color = Color.White.copy(alpha = 0.6f),
+                                    fontSize = 16.sp,
+                                )
+                            }
+                        }
                     }
                 } else {
                     Card(
-                        modifier =
-                            Modifier
-                                .fillMaxWidth()
-                                .weight(1f),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f),
                         shape = RoundedCornerShape(24.dp),
-                        colors =
-                            CardDefaults.cardColors(
-                                containerColor = Color(0xFF1A1A1A),
-                            ),
+                        colors = CardDefaults.cardColors(
+                            containerColor = Color(0xFF1A1A1A),
+                        ),
                     ) {
                         Box(
                             modifier = Modifier.fillMaxSize(),
@@ -385,25 +516,24 @@ fun SavedMenuDetailScreen(
         } else {
             // Enhanced "Menu Not Found" state
             Column(
-                modifier =
-                    Modifier
-                        .fillMaxSize()
-                        .padding(24.dp),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
             ) {
                 // Back button at top
                 IconButton(
                     onClick = { navController.navigateUp() },
-                    modifier =
-                        Modifier
-                            .align(Alignment.Start)
-                            .padding(bottom = 32.dp)
-                            .shadow(8.dp, CircleShape)
-                            .background(
-                                color = Color(0xFF1A1A1A),
-                                shape = CircleShape,
-                            ).size(44.dp),
+                    modifier = Modifier
+                        .align(Alignment.Start)
+                        .padding(bottom = 32.dp)
+                        .shadow(8.dp, CircleShape)
+                        .background(
+                            color = Color(0xFF1A1A1A),
+                            shape = CircleShape,
+                        )
+                        .size(44.dp),
                 ) {
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
@@ -417,38 +547,32 @@ fun SavedMenuDetailScreen(
 
                 // Error content card
                 Card(
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .shadow(12.dp, RoundedCornerShape(24.dp)),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .shadow(12.dp, RoundedCornerShape(24.dp)),
                     shape = RoundedCornerShape(24.dp),
-                    colors =
-                        CardDefaults.cardColors(
-                            containerColor = Color(0xFF1A1A1A),
-                        ),
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color(0xFF1A1A1A),
+                    ),
                 ) {
                     Column(
-                        modifier =
-                            Modifier
-                                .fillMaxWidth()
-                                .padding(32.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(32.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         Box(
-                            modifier =
-                                Modifier
-                                    .size(80.dp)
-                                    .clip(CircleShape)
-                                    .background(
-                                        brush =
-                                            Brush.radialGradient(
-                                                colors =
-                                                    listOf(
-                                                        Color(0xFFEF5350).copy(alpha = 0.2f),
-                                                        Color.Transparent,
-                                                    ),
-                                            ),
+                            modifier = Modifier
+                                .size(80.dp)
+                                .clip(CircleShape)
+                                .background(
+                                    brush = Brush.radialGradient(
+                                        colors = listOf(
+                                            Color(0xFFEF5350).copy(alpha = 0.2f),
+                                            Color.Transparent,
+                                        ),
                                     ),
+                                ),
                             contentAlignment = Alignment.Center,
                         ) {
                             Text(
@@ -483,10 +607,9 @@ fun SavedMenuDetailScreen(
                             onClick = { navController.navigateUp() },
                             modifier = Modifier.fillMaxWidth(),
                             shape = RoundedCornerShape(16.dp),
-                            colors =
-                                ButtonDefaults.buttonColors(
-                                    containerColor = RoyalGold,
-                                ),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = RoyalGold,
+                            ),
                             contentPadding = PaddingValues(vertical = 16.dp),
                         ) {
                             Text(
