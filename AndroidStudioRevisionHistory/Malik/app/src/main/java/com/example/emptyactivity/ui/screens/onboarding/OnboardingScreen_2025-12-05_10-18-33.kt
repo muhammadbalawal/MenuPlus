@@ -63,37 +63,40 @@ fun OnboardingScreen(
         }
     }
 
-    LaunchedEffect(uiState.isSuccess) {
-        if (uiState.isSuccess) {
-            // Check if this was launched for result (from launcher app via deep link)
-            val isLaunchedForResult = activity?.intent?.action == Intent.ACTION_VIEW
-            
-            if (isLaunchedForResult && activity != null) {
-                // Return result and finish immediately
-                val selectedLanguageName =
-                    uiState.languages
-                        .find { 
-                            it.id == uiState.selectedLanguageId 
-                        }?.name ?: "Unknown"
+    LaunchedEffect(navigationEvent) {
+        when (navigationEvent) {
+            OnboardingNavigationEvent.NavigateToMain -> {
+                viewModel.onNavigationEventHandled()
                 
-                val resultData =
-                    """
-                    Onboarding Completed Successfully!
-                    Language: $selectedLanguageName
-                    Allergies: ${uiState.allergies.joinToString(", ").ifEmpty { "None" }}
-                    Dietary Restrictions: ${uiState.dietaryRestrictions.joinToString(", ").ifEmpty { "None" }}
-                    Dislikes: ${uiState.dislikes.joinToString(", ").ifEmpty { "None" }}
-                    Preferences: ${uiState.preferences.joinToString(", ").ifEmpty { "None" }}
-                    """.trimIndent()
+                // Check if this was launched for result (from launcher app via deep link)
+                val isLaunchedForResult = activity?.intent?.action == Intent.ACTION_VIEW
+                
+                if (isLaunchedForResult && activity != null) {
+                    // Return result and finish immediately
+                    val selectedLanguageName = uiState.languages.find { 
+                        it.id == uiState.selectedLanguageId 
+                    }?.name ?: "Unknown"
+                    
+                    val resultData = """
+                        Onboarding Completed Successfully!
+                        Language: $selectedLanguageName
+                        Allergies: ${uiState.allergies.joinToString(", ").ifEmpty { "None" }}
+                        Dietary Restrictions: ${uiState.dietaryRestrictions.joinToString(", ").ifEmpty { "None" }}
+                        Dislikes: ${uiState.dislikes.joinToString(", ").ifEmpty { "None" }}
+                        Preferences: ${uiState.preferences.joinToString(", ").ifEmpty { "None" }}
+                        """.trimIndent()
 
-                val resultIntent =
-                    activity.intent.apply {
+                    val resultIntent = Intent().apply {
                         putExtra("resultData", resultData)
                     }
-                activity.setResult(Activity.RESULT_OK, resultIntent)
-                activity.finish()
+                    activity.setResult(Activity.RESULT_OK, resultIntent)
+                    activity.finish()
+                } else {
+                    // Normal flow - let auth state handle navigation
+                    onComplete()
+                }
             }
-            onComplete()
+            null -> { }
         }
     }
 
