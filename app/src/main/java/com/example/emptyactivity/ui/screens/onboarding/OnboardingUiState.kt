@@ -50,5 +50,6 @@ data class OnboardingUiState(
     val isLoading: Boolean = false,
     val isLoadingLanguages: Boolean = true,
     val isSaving: Boolean = false,
+    val isSuccess: Boolean = false,
     val errorMessage: String? = null,
 )

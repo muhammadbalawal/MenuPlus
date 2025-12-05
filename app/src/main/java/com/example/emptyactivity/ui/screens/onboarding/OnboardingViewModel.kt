@@ -234,7 +234,7 @@ class OnboardingViewModel
                         )
                 ) {
                     is Result.Success -> {
-                        _uiState.update { it.copy(isSaving = false, isLoading = false) }
+                        _uiState.update { it.copy(isSaving = false, isLoading = false, isSuccess = true) }
                         // Call callback if provided, otherwise use navigation event
                         if (onSaveComplete != {}) {
                             onSaveComplete()
