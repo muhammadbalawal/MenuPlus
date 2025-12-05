@@ -243,21 +243,23 @@ private fun AuthenticatedNavGraph(user: User) {
                     )
                 } else {
                     // Parse menuItems from JSON (direct list, not wrapped)
-                    val menuItems = remember(route.menuItemsJson) {
-                        if (route.menuItemsJson.isNotBlank()) {
-                            try {
-                                val json = kotlinx.serialization.json.Json { 
-                                    ignoreUnknownKeys = true
-                                    coerceInputValues = true
+                    val menuItems =
+                        remember(route.menuItemsJson) {
+                            if (route.menuItemsJson.isNotBlank()) {
+                                try {
+                                    val json =
+                                        kotlinx.serialization.json.Json { 
+                                            ignoreUnknownKeys = true
+                                            coerceInputValues = true
+                                        }
+                                    json.decodeFromString<List<com.example.emptyactivity.domain.model.MenuItem>>(route.menuItemsJson)
+                                } catch (e: Exception) {
+                                    emptyList<com.example.emptyactivity.domain.model.MenuItem>()
                                 }
-                                json.decodeFromString<List<com.example.emptyactivity.domain.model.MenuItem>>(route.menuItemsJson)
-                            } catch (e: Exception) {
+                            } else {
                                 emptyList<com.example.emptyactivity.domain.model.MenuItem>()
                             }
-                        } else {
-                            emptyList<com.example.emptyactivity.domain.model.MenuItem>()
                         }
-                    }
                     
                     // Otherwise show regular MenuAnalysisScreen
                     MenuAnalysisScreen(

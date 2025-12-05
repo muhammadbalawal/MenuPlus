@@ -17,8 +17,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.Json
 import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
 /**
@@ -146,7 +146,7 @@ class ImportMenuViewModel
                     Log.e(TAG, "Cannot save menu: no analysis results available")
                     _uiState.update {
                         it.copy(
-                            errorMessage = "Please analyze the menu before saving"
+                            errorMessage = "Please analyze the menu before saving",
                         )
                     }
                     return@launch
@@ -250,16 +250,18 @@ class ImportMenuViewModel
                 // Try to extract JSON from response (in case Gemini wraps it in markdown)
                 val jsonStart = response.indexOf("{")
                 val jsonEnd = response.lastIndexOf("}") + 1
-                val jsonString = if (jsonStart != -1 && jsonEnd > jsonStart) {
-                    response.substring(jsonStart, jsonEnd)
-                } else {
-                    response
-                }
+                val jsonString =
+                    if (jsonStart != -1 && jsonEnd > jsonStart) {
+                        response.substring(jsonStart, jsonEnd)
+                    } else {
+                        response
+                    }
 
-                val json = Json {
-                    ignoreUnknownKeys = true
-                    coerceInputValues = true
-                }
+                val json =
+                    Json {
+                        ignoreUnknownKeys = true
+                        coerceInputValues = true
+                    }
 
                 @Serializable
                 data class MenuItemDto(
@@ -277,30 +279,32 @@ class ImportMenuViewModel
 
                 @Serializable
                 data class MenuAnalysisResponseDto(
-                    val menuItems: List<MenuItemDto>
+                    val menuItems: List<MenuItemDto>,
                 )
 
                 val responseDto = json.decodeFromString<MenuAnalysisResponseDto>(jsonString)
 
-                responseDto.menuItems.map { dto ->
-                    MenuItem(
-                        name = dto.name,
-                        description = dto.description,
-                        price = dto.price,
-                        safetyRating = when (dto.safetyRating.uppercase()) {
-                            "RED" -> SafetyRating.RED
-                            "YELLOW" -> SafetyRating.YELLOW
-                            "GREEN" -> SafetyRating.GREEN
-                            else -> SafetyRating.GREEN
-                        },
-                        allergies = dto.allergies,
-                        dietaryRestrictions = dto.dietaryRestrictions,
-                        dislikes = dto.dislikes,
-                        preferences = dto.preferences,
-                        recommendation = dto.recommendation,
-                        rank = dto.rank ?: Int.MAX_VALUE,
-                    )
-                }.sortedBy { it.rank } // Sort by rank (best first)
+                responseDto.menuItems
+                    .map { dto ->
+                        MenuItem(
+                            name = dto.name,
+                            description = dto.description,
+                            price = dto.price,
+                            safetyRating =
+                                when (dto.safetyRating.uppercase()) {
+                                    "RED" -> SafetyRating.RED
+                                    "YELLOW" -> SafetyRating.YELLOW
+                                    "GREEN" -> SafetyRating.GREEN
+                                    else -> SafetyRating.GREEN
+                                },
+                            allergies = dto.allergies,
+                            dietaryRestrictions = dto.dietaryRestrictions,
+                            dislikes = dto.dislikes,
+                            preferences = dto.preferences,
+                            recommendation = dto.recommendation,
+                            rank = dto.rank ?: Int.MAX_VALUE,
+                        )
+                    }.sortedBy { it.rank } // Sort by rank (best first)
             } catch (e: Exception) {
                 Log.e(TAG, "Error parsing JSON response", e)
                 Log.e(TAG, "Response was: $response")
