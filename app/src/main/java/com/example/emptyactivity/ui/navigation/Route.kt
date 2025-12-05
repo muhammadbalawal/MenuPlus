@@ -68,4 +68,7 @@ sealed interface Route {
 
     /** Settings screen for app configuration and account management. */
     @Serializable data object Settings : Route
+
+    /** About Us screen describing the team and app motivation. */
+    @Serializable data object AboutUs : Route
 }

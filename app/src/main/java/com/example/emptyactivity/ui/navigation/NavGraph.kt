@@ -32,6 +32,7 @@ import com.example.emptyactivity.ui.screens.menuanalysis.MenuAnalysisScreen
 import com.example.emptyactivity.ui.screens.ocr.OcrScreen
 import com.example.emptyactivity.ui.screens.onboarding.OnboardingScreen
 import com.example.emptyactivity.ui.screens.profile.ProfileScreen
+import com.example.emptyactivity.ui.screens.aboutus.AboutUsScreen
 import com.example.emptyactivity.ui.screens.savedmenu.SavedMenuDetailScreen
 import com.example.emptyactivity.ui.screens.savedmenu.SavedMenuScreen
 import com.example.emptyactivity.ui.screens.settings.SettingsScreen
@@ -230,7 +231,14 @@ private fun AuthenticatedNavGraph(user: User) {
                 SettingsScreen(
                     user = user,
                     onNavigateBack = { navController.navigateUp() },
+                    onNavigateToAboutUs = { navController.navigate(Route.AboutUs) },
                     onLogout = {},
+                )
+            }
+
+            composable<Route.AboutUs> {
+                AboutUsScreen(
+                    onNavigateBack = { navController.navigateUp() },
                 )
             }
 

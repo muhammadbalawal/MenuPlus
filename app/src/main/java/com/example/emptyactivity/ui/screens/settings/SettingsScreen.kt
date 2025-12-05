@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -35,6 +36,7 @@ import com.example.emptyactivity.ui.theme.RoyalGold
  *
  * Features:
  * - User information display (email, name)
+ * - About Us navigation
  * - Logout functionality with confirmation dialog
  * - App version information
  * - Navigation back to previous screen
@@ -43,6 +45,7 @@ import com.example.emptyactivity.ui.theme.RoyalGold
  *
  * @param user The authenticated user whose settings are being displayed.
  * @param onNavigateBack Callback function to navigate back to the previous screen.
+ * @param onNavigateToAboutUs Callback function to navigate to the About Us screen.
  * @param onLogout Callback function to handle logout. Currently unused as logout is
  *                 handled by the ViewModel and auth state management.
  * @param viewModel The ViewModel managing the screen's state and logout logic.
@@ -54,6 +57,7 @@ import com.example.emptyactivity.ui.theme.RoyalGold
 fun SettingsScreen(
     user: User,
     onNavigateBack: () -> Unit,
+    onNavigateToAboutUs: () -> Unit,
     onLogout: () -> Unit,
     viewModel: SettingsViewModel = hiltViewModel(),
 ) {
@@ -212,25 +216,50 @@ fun SettingsScreen(
                 }
             }
 
-            // Sign Out Button at bottom
-            Button(
-                onClick = { showLogoutDialog = true },
+            // About Us and Sign Out Buttons at bottom
+            Column(
                 modifier = Modifier.fillMaxWidth(),
-                colors =
-                    ButtonDefaults.buttonColors(
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                // About Us Button
+                Button(
+                    onClick = onNavigateToAboutUs,
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFF1A1A1A),
+                    ),
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Info,
+                        contentDescription = "About Us",
+                        tint = RoyalGold,
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = "About Us",
+                        color = RoyalGold,
+                    )
+                }
+
+                // Sign Out Button
+                Button(
+                    onClick = { showLogoutDialog = true },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(
                         containerColor = Color(0xFFD32F2F),
                     ),
-            ) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.Logout,
-                    contentDescription = "Logout",
-                    tint = Color.White,
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = "Sign Out",
-                    color = Color.White,
-                )
+                ) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.Logout,
+                        contentDescription = "Logout",
+                        tint = Color.White,
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = "Sign Out",
+                        color = Color.White,
+                    )
+                }
             }
         }
     }
