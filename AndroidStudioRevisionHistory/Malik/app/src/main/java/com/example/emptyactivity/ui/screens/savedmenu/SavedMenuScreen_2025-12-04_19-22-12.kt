@@ -36,6 +36,7 @@ import com.example.emptyactivity.ui.navigation.Route
 import com.example.emptyactivity.ui.theme.PrestigeBlack
 import com.example.emptyactivity.ui.theme.RoyalGold
 import kotlinx.serialization.json.Json
+import java.text.SimpleDateFormat
 import java.util.*
 
 /**
@@ -110,7 +111,7 @@ fun SavedMenuScreen(
                         launchSingleTop = true
                         restoreState = true
                     }
-                },
+                }
             )
         } else {
             // Sort menus by date (newest first)
@@ -148,18 +149,17 @@ fun MenuCard(
     onClick: () -> Unit,
 ) {
     // Parse menu items to get stats
-    val menuItems =
-        remember(menu.menuItemsJson) {
-            if (!menu.menuItemsJson.isNullOrBlank()) {
-                try {
-                    Json.decodeFromString<List<MenuItem>>(menu.menuItemsJson)
-                } catch (e: Exception) {
-                    emptyList()
-                }
-            } else {
+    val menuItems = remember(menu.menuItemsJson) {
+        if (!menu.menuItemsJson.isNullOrBlank()) {
+            try {
+                Json.decodeFromString<List<MenuItem>>(menu.menuItemsJson)
+            } catch (e: Exception) {
                 emptyList()
             }
+        } else {
+            emptyList()
         }
+    }
 
     val itemCount = menuItems.size
     val safeCount = menuItems.count { it.safetyRating == SafetyRating.GREEN }
@@ -167,22 +167,24 @@ fun MenuCard(
     val avoidCount = menuItems.count { it.safetyRating == SafetyRating.RED }
 
     // Extract menu title from menu text (first line or first 30 chars)
-    val menuTitle =
-        remember(menu.menuText) {
-            val lines = menu.menuText.lines().filter { it.isNotBlank() }
-            if (lines.isNotEmpty()) {
-                val firstLine = lines.first().trim()
-                if (firstLine.length > 30) {
-                    firstLine.take(30) + "..."
-                } else {
-                    firstLine
-                }
+    val menuTitle = remember(menu.menuText) {
+        val lines = menu.menuText.lines().filter { it.isNotBlank() }
+        if (lines.isNotEmpty()) {
+            val firstLine = lines.first().trim()
+            if (firstLine.length > 30) {
+                firstLine.take(30) + "..."
             } else {
-                "Menu"
+                firstLine
             }
+        } else {
+            "Menu"
         }
+    }
 
-    // Don't show date since timestamp parsing isn't working reliably
+    // Format date as relative time
+    val formattedDate = remember(menu.createdAt) {
+        formatRelativeDate(menu.createdAt)
+    }
 
     val imageUri =
         remember(menu.imageUri) {
@@ -210,7 +212,7 @@ fun MenuCard(
             ),
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth()
         ) {
             // Image section
             Box(
@@ -223,26 +225,23 @@ fun MenuCard(
                     AsyncImage(
                         model = imageUri,
                         contentDescription = "Menu image",
-                        modifier =
-                            Modifier
-                                .fillMaxSize()
-                                .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)),
                         contentScale = ContentScale.Crop,
                     )
                     // Gradient overlay for better text readability
                     Box(
-                        modifier =
-                            Modifier
-                                .fillMaxSize()
-                                .background(
-                                    Brush.verticalGradient(
-                                        colors =
-                                            listOf(
-                                                Color.Transparent,
-                                                Color.Black.copy(alpha = 0.6f),
-                                            ),
-                                    ),
-                                ),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(
+                                Brush.verticalGradient(
+                                    colors = listOf(
+                                        Color.Transparent,
+                                        Color.Black.copy(alpha = 0.6f)
+                                    )
+                                )
+                            )
                     )
                 } else {
                     Box(
@@ -251,12 +250,11 @@ fun MenuCard(
                                 .fillMaxSize()
                                 .background(
                                     Brush.verticalGradient(
-                                        colors =
-                                            listOf(
-                                                Color(0xFF2A2A2A),
-                                                Color(0xFF1A1A1A),
-                                            ),
-                                    ),
+                                        colors = listOf(
+                                            Color(0xFF2A2A2A),
+                                            Color(0xFF1A1A1A)
+                                        )
+                                    )
                                 ),
                         contentAlignment = Alignment.Center,
                     ) {
@@ -264,7 +262,7 @@ fun MenuCard(
                             imageVector = Icons.Default.Restaurant,
                             contentDescription = "Menu",
                             tint = RoyalGold.copy(alpha = 0.5f),
-                            modifier = Modifier.size(48.dp),
+                            modifier = Modifier.size(48.dp)
                         )
                     }
                 }
@@ -276,12 +274,11 @@ fun MenuCard(
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White,
-                        modifier =
-                            Modifier
-                                .align(Alignment.BottomStart)
-                                .padding(12.dp),
+                        modifier = Modifier
+                            .align(Alignment.BottomStart)
+                            .padding(12.dp),
                         maxLines = 2,
-                        overflow = TextOverflow.Ellipsis,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
             }
@@ -292,7 +289,7 @@ fun MenuCard(
                     Modifier
                         .fillMaxWidth()
                         .padding(12.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 // Title (if no image)
                 if (imageUri == null) {
@@ -302,16 +299,24 @@ fun MenuCard(
                         fontWeight = FontWeight.Bold,
                         color = Color.White,
                         maxLines = 2,
-                        overflow = TextOverflow.Ellipsis,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
+
+                // Date
+                Text(
+                    text = formattedDate,
+                    fontSize = 11.sp,
+                    color = RoyalGold.copy(alpha = 0.8f),
+                    fontWeight = FontWeight.Medium,
+                )
 
                 // Stats row
                 if (itemCount > 0) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalAlignment = Alignment.CenterVertically,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
                         // Item count
                         Text(
@@ -327,21 +332,21 @@ fun MenuCard(
                             SafetyIndicator(
                                 count = safeCount,
                                 color = Color(0xFF43A047),
-                                size = 6.dp,
+                                size = 6.dp
                             )
                         }
                         if (cautionCount > 0) {
                             SafetyIndicator(
                                 count = cautionCount,
                                 color = Color(0xFFFDD835),
-                                size = 6.dp,
+                                size = 6.dp
                             )
                         }
                         if (avoidCount > 0) {
                             SafetyIndicator(
                                 count = avoidCount,
                                 color = Color(0xFFE53935),
-                                size = 6.dp,
+                                size = 6.dp
                             )
                         }
                     }
@@ -361,17 +366,16 @@ fun MenuCard(
 fun SafetyIndicator(
     count: Int,
     color: Color,
-    size: androidx.compose.ui.unit.Dp = 6.dp,
+    size: androidx.compose.ui.unit.Dp = 6.dp
 ) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(4.dp),
-        verticalAlignment = Alignment.CenterVertically,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
-            modifier =
-                Modifier
-                    .size(size)
-                    .background(color, RoundedCornerShape(50)),
+            modifier = Modifier
+                .size(size)
+                .background(color, RoundedCornerShape(50))
         )
         if (count > 0) {
             Text(
@@ -380,6 +384,54 @@ fun SafetyIndicator(
                 color = Color.White.copy(alpha = 0.6f),
             )
         }
+    }
+}
+
+fun formatRelativeDate(timestamp: Long): String {
+    val now = System.currentTimeMillis()
+
+    // Detect if timestamp is in seconds (Unix timestamp) vs milliseconds
+    // Unix timestamps are typically 10 digits, millisecond timestamps are 13 digits
+    val timestampInMillis = if (timestamp < 10000000000L) {
+        // Timestamp is in seconds, convert to milliseconds
+        timestamp * 1000
+    } else {
+        // Timestamp is already in milliseconds
+        timestamp
+    }
+
+    val diff = now - timestampInMillis
+
+    // Handle edge cases: negative diff (future) or very large diff (invalid timestamp)
+    if (diff < 0) {
+        // Timestamp is in the future, show absolute date
+        val dateFormat = SimpleDateFormat("MMM dd", Locale.getDefault())
+        return dateFormat.format(Date(timestampInMillis))
+    }
+
+    // If diff is suspiciously small (less than 1 second), it might be a parsing issue
+    // Check if timestamp is actually very old by comparing to a reasonable minimum
+    val minValidTimestamp = 1000000000000L // Jan 1, 2001 in milliseconds
+    if (timestampInMillis < minValidTimestamp) {
+        // Invalid timestamp, show absolute date
+        val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
+        return dateFormat.format(Date(timestampInMillis))
+    }
+
+    val seconds = diff / 1000
+    val minutes = seconds / 60
+    val hours = minutes / 60
+    val days = hours / 24
+
+    return when {
+        days > 7 -> {
+            val dateFormat = SimpleDateFormat("MMM dd", Locale.getDefault())
+            dateFormat.format(Date(timestampInMillis))
+        }
+        days > 0 -> "${days}d ago"
+        hours > 0 -> "${hours}h ago"
+        minutes > 0 -> "${minutes}m ago"
+        else -> "Just now"
     }
 }
 
@@ -394,30 +446,28 @@ fun EmptyState(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp),
-            modifier = Modifier.padding(32.dp),
+            modifier = Modifier.padding(32.dp)
         ) {
             // Icon with gradient background
             Box(
-                modifier =
-                    Modifier
-                        .size(120.dp)
-                        .background(
-                            Brush.radialGradient(
-                                colors =
-                                    listOf(
-                                        RoyalGold.copy(alpha = 0.2f),
-                                        Color.Transparent,
-                                    ),
-                            ),
-                            RoundedCornerShape(50),
+                modifier = Modifier
+                    .size(120.dp)
+                    .background(
+                        Brush.radialGradient(
+                            colors = listOf(
+                                RoyalGold.copy(alpha = 0.2f),
+                                Color.Transparent
+                            )
                         ),
-                contentAlignment = Alignment.Center,
+                        RoundedCornerShape(50)
+                    ),
+                contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = Icons.Default.Restaurant,
                     contentDescription = "No menus",
                     tint = RoyalGold.copy(alpha = 0.6f),
-                    modifier = Modifier.size(64.dp),
+                    modifier = Modifier.size(64.dp)
                 )
             }
 
@@ -433,7 +483,7 @@ fun EmptyState(
                 fontSize = 14.sp,
                 color = Color.White.copy(alpha = 0.7f),
                 textAlign = TextAlign.Center,
-                lineHeight = 20.sp,
+                lineHeight = 20.sp
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -441,16 +491,14 @@ fun EmptyState(
             // CTA Button
             Button(
                 onClick = onScanClick,
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .height(52.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(52.dp),
                 shape = RoundedCornerShape(16.dp),
-                colors =
-                    ButtonDefaults.buttonColors(
-                        containerColor = RoyalGold,
-                        contentColor = PrestigeBlack,
-                    ),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = RoyalGold,
+                    contentColor = PrestigeBlack
+                )
             ) {
                 Text(
                     text = "Scan Your First Menu",

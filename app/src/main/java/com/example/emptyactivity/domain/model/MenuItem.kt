@@ -71,8 +71,10 @@ data class MenuItem(
 enum class SafetyRating {
     /** Item contains allergens or violates dietary restrictions - avoid */
     RED,
+
     /** Item contains disliked ingredients - caution recommended */
     YELLOW,
+
     /** Item is safe and may match preferences - recommended */
     GREEN,
 }
