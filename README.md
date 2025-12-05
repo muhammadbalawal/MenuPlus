@@ -128,6 +128,7 @@ app/src/main/java/com/example/emptyactivity/
 │   │   └── vision/          # Google Vision API client
 │   └── repository/         # Repository implementations
 │       ├── auth/
+│       ├── menu/
 │       ├── ocr/
 │       └── profile/
 ├── domain/
@@ -141,12 +142,14 @@ app/src/main/java/com/example/emptyactivity/
 │   ├── components/          # Reusable UI components
 │   ├── navigation/          # Navigation graphs & routes
 │   ├── screens/            # Screen composables
+│   │   ├── aboutus/        # About Us screen
 │   │   ├── auth/           # Login, Register
 │   │   ├── importmenu/     # Menu analysis screen
+│   │   ├── menuanalysis/   # Menu analysis results screen
 │   │   ├── ocr/            # OCR scanning screen
 │   │   ├── onboarding/    # Onboarding flow
 │   │   ├── profile/       # User profile
-│   │   ├── savedmenu/     # Saved menus
+│   │   ├── savedmenu/     # Saved menus (list & detail)
 │   │   └── settings/      # Settings
 │   └── theme/              # App theming (Black & Gold)
 └── util/                    # Utility classes
@@ -236,16 +239,23 @@ To check for linting issues:
 
 1. **OCR Screen** → Take/select menu image → Extract text
 2. **Import Menu Screen** → AI analysis with loading animation
-3. **Results** → Three-tab view (Safe/Best/Full Menu)
-4. **Saved Menus** → Access previously analyzed menus
+3. **Menu Analysis Screen** → Three-tab view (Safe/Best/Full Menu) with detailed results
+4. **Saved Menus** → Access previously analyzed menus (list & detail views)
 5. **Profile** → View/edit dietary preferences
-6. **Settings** → App configuration
+6. **Settings** → App configuration (includes About Us)
 
 ### Navigation
 
 -   **Type-safe Navigation** - All routes defined in `Route.kt` with `@Serializable`
 -   **State-based Navigation** - Navigation graph changes based on authentication state
 -   **Deep Linking** - Support for onboarding and signup deep links
+-   **Key Routes**:
+    -   `Landing`, `Login`, `Register` - Authentication flow
+    -   `Onboarding` - Dietary profile setup
+    -   `SavedMenu`, `Ocr`, `Profile` - Main app screens with bottom navigation
+    -   `ImportMenu` - Menu text input and AI analysis trigger
+    -   `MenuAnalysis` - Display analysis results (Safe/Best/Full Menu tabs)
+    -   `Settings`, `AboutUs` - App configuration and information
 
 ---
 
@@ -279,8 +289,8 @@ To check for linting issues:
 
 MenuPlus features a **premium black and gold theme**:
 
--   **Prestige Black** (`#000000`) - Primary background
--   **Royal Gold** (`#D4AF37`) - Accent color for highlights, buttons, and icons
+-   **Prestige Black** (`#0B0B0B`) - Primary background
+-   **Royal Gold** (`#FFD700`) - Accent color for highlights, buttons, and icons
 -   **Gradient Text** - Gold gradient effects on titles
 -   **Background Glow** - Subtle radial gradients for depth
 -   **Material 3 Components** - Modern, accessible UI components
