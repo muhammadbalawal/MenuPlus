@@ -1,6 +1,7 @@
 package com.example.emptyactivity.ui.screens.onboarding
 
 import android.app.Activity
+import android.content.Intent
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -66,25 +67,34 @@ fun OnboardingScreen(
         when (navigationEvent) {
             OnboardingNavigationEvent.NavigateToMain -> {
                 viewModel.onNavigationEventHandled()
-                val selectedLanguageName = uiState.languages.find { it.id == uiState.selectedLanguageId }?.name ?: "Unknown"
-                val resultData =
-                    """
-                    Onboarding Completed Successfully!
-                    Language: $selectedLanguageName
-                    Allergies: ${uiState.allergies.joinToString(", ")}
-                    Dietary Restrictions: ${uiState.dietaryRestrictions.joinToString(", ")}
-                    Dislikes: ${uiState.dislikes.joinToString(", ")}
-                    Preferences: ${uiState.preferences.joinToString(", ")}
-                    """.trimIndent()
+                
+                // Check if this was launched for result (from launcher app via deep link)
+                val isLaunchedForResult = activity?.intent?.action == Intent.ACTION_VIEW
+                
+                if (isLaunchedForResult && activity != null) {
+                    // Return result and finish immediately
+                    val selectedLanguageName = uiState.languages.find { 
+                        it.id == uiState.selectedLanguageId 
+                    }?.name ?: "Unknown"
+                    
+                    val resultData = """
+                        Onboarding Completed Successfully!
+                        Language: $selectedLanguageName
+                        Allergies: ${uiState.allergies.joinToString(", ").ifEmpty { "None" }}
+                        Dietary Restrictions: ${uiState.dietaryRestrictions.joinToString(", ").ifEmpty { "None" }}
+                        Dislikes: ${uiState.dislikes.joinToString(", ").ifEmpty { "None" }}
+                        Preferences: ${uiState.preferences.joinToString(", ").ifEmpty { "None" }}
+                        """.trimIndent()
 
-                activity?.let { safeActivity ->
-                    val resultIntent = safeActivity.intent
-                    resultIntent.putExtra("resultData", resultData)
-                    safeActivity.setResult(Activity.RESULT_OK, resultIntent)
-                    safeActivity.finish()
+                    val resultIntent = Intent().apply {
+                        putExtra("resultData", resultData)
+                    }
+                    activity.setResult(Activity.RESULT_OK, resultIntent)
+                    activity.finish()
+                } else {
+                    // Normal flow - let auth state handle navigation
+                    onComplete()
                 }
-
-                onComplete()
             }
             null -> { }
         }
