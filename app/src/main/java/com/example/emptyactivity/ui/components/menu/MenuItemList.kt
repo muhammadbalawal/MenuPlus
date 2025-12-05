@@ -29,6 +29,8 @@ import com.google.accompanist.flowlayout.FlowRow
  *                  MenuItemCard with appropriate styling based on its safety rating.
  * @param modifier Optional Modifier to apply to the LazyColumn container. Useful for
  *                 applying padding, sizing, or other layout constraints.
+ *
+ * Mostly created by: Malik
  */
 @Composable
 fun MenuItemList(

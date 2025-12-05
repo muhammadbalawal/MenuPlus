@@ -47,6 +47,8 @@ import com.example.emptyactivity.ui.theme.RoyalGold
  *                 handled by the ViewModel and auth state management.
  * @param viewModel The ViewModel managing the screen's state and logout logic.
  *                  Injected via Hilt by default.
+ *
+ * Mostly created by: Malik
  */
 @Composable
 fun SettingsScreen(

@@ -9,6 +9,8 @@ package com.example.emptyactivity.domain.model
  *
  * @param id The unique identifier of the language (e.g., "en", "fr", "es").
  * @param name The display name of the language (e.g., "English", "French", "Spanish").
+ *
+ * Mostly created by: Malik
  */
 data class Language(
     val id: String,

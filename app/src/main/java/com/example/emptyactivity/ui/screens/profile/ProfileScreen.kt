@@ -29,6 +29,8 @@ import com.example.emptyactivity.ui.screens.onboarding.OnboardingViewModel
  * @param viewModel The OnboardingViewModel managing the profile form state and save operations.
  *                  Injected via Hilt by default. Note: Despite the name, this ViewModel is
  *                  used for both onboarding and profile editing.
+ *
+ * Mostly created by: Muhammad
  */
 @Composable
 fun ProfileScreen(

@@ -10,6 +10,8 @@ package com.example.emptyactivity.data.repository.ocr
  * - Switch OCR providers in the future without changing business logic
  * - Easily mock this interface for testing
  * - Keep OCR implementation details separate from the UI layer
+ *
+ * Mostly created by: Malik
  */
 interface OcrRepository {
     /**

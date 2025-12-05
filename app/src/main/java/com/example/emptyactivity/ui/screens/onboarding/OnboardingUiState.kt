@@ -33,6 +33,8 @@ import com.example.emptyactivity.domain.model.Language
  * @param errorMessage Optional error message to display to the user. When not null, an error
  *                     dialog should be shown with this message. Set to null when the error
  *                     is dismissed or when a new operation starts.
+ *
+ * Mostly created by: Muhammad
  */
 data class OnboardingUiState(
     val languages: List<Language> = emptyList(),

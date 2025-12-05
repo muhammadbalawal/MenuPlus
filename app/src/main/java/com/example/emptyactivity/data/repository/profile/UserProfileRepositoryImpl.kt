@@ -32,6 +32,8 @@ import javax.inject.Singleton
  * Result types for consistent error handling.
  *
  * @constructor Creates an instance of UserProfileRepositoryImpl with Supabase client injection.
+ *
+ * Mostly created by: Malik
  */
 @Singleton
 class UserProfileRepositoryImpl

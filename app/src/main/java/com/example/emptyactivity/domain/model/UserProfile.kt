@@ -18,6 +18,8 @@ package com.example.emptyactivity.domain.model
  *                 marked YELLOW (caution) in menu analysis.
  * @param preferences List of foods the user enjoys. Used to provide personalized recommendations
  *                    and mark items as GREEN (safe and recommended).
+ *
+ * Mostly created by: Malik
  */
 data class UserProfile(
     val userId: String,

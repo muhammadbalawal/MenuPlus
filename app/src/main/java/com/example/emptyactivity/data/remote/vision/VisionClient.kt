@@ -18,6 +18,8 @@ import retrofit2.converter.moshi.MoshiConverterFactory
  *
  * The created client automatically adds the API key to all requests and handles JSON conversion
  * between Kotlin data classes and the API's JSON format.
+ *
+ * Mostly created by: Malik
  */
 object VisionClient {
     /**

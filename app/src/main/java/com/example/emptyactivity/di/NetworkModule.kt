@@ -21,6 +21,8 @@ import javax.inject.Singleton
  *
  * All clients are provided as singletons, meaning a single instance is shared across
  * the entire application lifecycle. This is efficient and ensures consistent configuration.
+ *
+ * Mostly created by: Muhammad
  */
 @Module
 @InstallIn(SingletonComponent::class)

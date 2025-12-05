@@ -17,6 +17,8 @@ package com.example.emptyactivity.util
  * ```
  *
  * @param T The type of data returned on success. Use Unit if no data is returned.
+ *
+ * Mostly created by: Muhammad
  */
 sealed class Result<out T> {
     /**

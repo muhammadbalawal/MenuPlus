@@ -55,6 +55,8 @@ import com.example.emptyactivity.ui.theme.RoyalGold
  *                     back to the OCR screen or to other app screens.
  * @param viewModel The ViewModel managing the screen's state and business logic. Injected
  *                  via Hilt by default.
+ *
+ * Mostly created by: Malik
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

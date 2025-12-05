@@ -26,6 +26,8 @@ import javax.inject.Singleton
  *
  * All repositories are provided as singletons to ensure consistent data access throughout
  * the application lifecycle.
+ *
+ * Mostly created by: Muhammad
  */
 @Module
 @InstallIn(SingletonComponent::class)

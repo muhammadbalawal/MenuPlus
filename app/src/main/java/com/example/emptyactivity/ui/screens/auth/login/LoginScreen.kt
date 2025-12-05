@@ -58,6 +58,8 @@ import com.example.emptyactivity.ui.theme.RoyalGold
  *                       as navigation is handled by authentication state observation.
  * @param viewModel The ViewModel managing the login form state and authentication logic.
  *                  Injected via Hilt by default.
+ *
+ * Mostly created by: Malik
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

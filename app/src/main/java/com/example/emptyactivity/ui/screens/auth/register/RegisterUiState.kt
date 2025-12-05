@@ -15,6 +15,8 @@ package com.example.emptyactivity.ui.screens.auth.register
  * @param isLoading Whether a registration request is currently in progress.
  * @param isSuccess Whether the registration was successful.
  * @param errorMessage The error message to display if registration fails, null if no error.
+ *
+ * Mostly created by: Muhammad
  */
 data class RegisterUiState(
     val name: String = "",

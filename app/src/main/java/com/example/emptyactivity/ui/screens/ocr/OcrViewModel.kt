@@ -24,6 +24,8 @@ import javax.inject.Inject
  * when the OCR state changes (loading, success, error).
  *
  * @param extractTextUseCase The use case for extracting text from images. Injected via Hilt.
+ *
+ * Mostly created by: Muhammad
  */
 @HiltViewModel
 class OcrViewModel

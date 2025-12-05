@@ -38,6 +38,8 @@ import com.example.emptyactivity.ui.components.ProfileFormScreen
  *                  Injected via Hilt by default.
  * @param initialLanguage Optional language name to pre-select. Useful for deep links that
  *                        specify a language preference.
+ *
+ * Mostly created by: Malik
  */
 @Composable
 fun OnboardingScreen(

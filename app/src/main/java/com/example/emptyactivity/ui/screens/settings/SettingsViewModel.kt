@@ -26,6 +26,8 @@ import javax.inject.Inject
  * - Provides reactive state via StateFlow for UI observation
  *
  * @param logoutUseCase The use case responsible for signing out the user. Injected via Hilt.
+ *
+ * Mostly created by: Malik
  */
 @HiltViewModel
 class SettingsViewModel

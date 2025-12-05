@@ -21,6 +21,8 @@ import javax.inject.Inject
  * by MenuPlusAppViewModel, which triggers navigation to the authenticated screens.
  *
  * @param loginUseCase The use case for performing user login.
+ *
+ * Mostly created by: Malik
  */
 @HiltViewModel
 class LoginViewModel

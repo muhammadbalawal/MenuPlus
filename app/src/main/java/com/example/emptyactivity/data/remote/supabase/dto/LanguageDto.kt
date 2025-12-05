@@ -15,6 +15,8 @@ import kotlinx.serialization.Serializable
  *
  * @param languageId The unique identifier of the language (e.g., "en", "fr", "es").
  * @param languageName The display name of the language (e.g., "English", "French", "Spanish").
+ *
+ * Mostly created by: Malik
  */
 @Serializable
 data class LanguageDto(

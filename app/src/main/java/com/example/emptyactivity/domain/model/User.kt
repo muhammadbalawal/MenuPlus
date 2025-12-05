@@ -12,6 +12,8 @@ package com.example.emptyactivity.domain.model
  * @param hasCompletedOnboarding True if the user has completed the dietary profile setup,
  *                               false if they need to go through onboarding.
  * @param createdAt Timestamp of when the user account was created (milliseconds since epoch).
+ *
+ * Mostly created by: Muhammad
  */
 data class User(
     val id: String,

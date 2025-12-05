@@ -35,6 +35,8 @@ import javax.inject.Inject
  * @param saveUserProfileUseCase The use case for saving the user's dietary profile.
  * @param getUserProfileUseCase The use case for loading an existing profile (used when editing).
  *                              All injected via Hilt.
+ *
+ * Mostly created by: Malik
  */
 @HiltViewModel
 class OnboardingViewModel

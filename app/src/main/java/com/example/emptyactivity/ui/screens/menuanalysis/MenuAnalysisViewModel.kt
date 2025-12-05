@@ -31,6 +31,8 @@ import javax.inject.Inject
  *
  * @param saveMenuUseCase The use case responsible for persisting menus to the database.
  *                        Injected via Hilt.
+ *
+ * Mostly created by: Malik
  */
 @HiltViewModel
 class MenuAnalysisViewModel

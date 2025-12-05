@@ -21,6 +21,8 @@ import javax.inject.Inject
  * by MenuPlusAppViewModel, which triggers navigation to the authenticated screens.
  *
  * @param registerUseCase The use case for performing user registration.
+ *
+ * Mostly created by: Muhammad
  */
 @HiltViewModel
 class RegisterViewModel

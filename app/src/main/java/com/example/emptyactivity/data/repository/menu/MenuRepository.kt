@@ -16,6 +16,8 @@ import com.example.emptyactivity.util.Result
  * - Keep database implementation details separate from the domain layer
  *
  * All operations return Result types for consistent error handling across the application.
+ *
+ * Mostly created by: Malik
  */
 interface MenuRepository {
     /**

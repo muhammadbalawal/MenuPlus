@@ -14,6 +14,8 @@ import javax.inject.Inject
  * navigation to the unauthenticated screens (Landing/Login) via the MenuPlusAppViewModel.
  *
  * @param authRepository The authentication repository used to perform logout.
+ *
+ * Mostly created by: Malik
  */
 class LogoutUseCase
     @Inject

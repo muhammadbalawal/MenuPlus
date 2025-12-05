@@ -17,6 +17,8 @@ import androidx.compose.ui.unit.sp
  *
  * Additional text styles (titleLarge, labelSmall, etc.) can be added as needed for
  * different text elements throughout the app.
+ *
+ * Mostly created by: Muhammad
  */
 val Typography =
     Typography(

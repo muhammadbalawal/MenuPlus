@@ -48,6 +48,8 @@ import com.example.emptyactivity.ui.theme.RoyalGold
  * 3. Scan the image with AI (OCR + Gemini analysis)
  *
  * The OCR extraction happens behind the scenes - users don't see the raw text.
+ *
+ * Mostly created by: Muhammad
  */
 @Composable
 fun OcrScreen(

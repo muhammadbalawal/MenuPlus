@@ -16,6 +16,8 @@ import javax.inject.Inject
  * of observing authentication state, making it reusable across the application.
  *
  * @param authRepository The authentication repository used to observe auth state.
+ *
+ * Mostly created by: Muhammad
  */
 class ObserveAuthStateUseCase
     @Inject

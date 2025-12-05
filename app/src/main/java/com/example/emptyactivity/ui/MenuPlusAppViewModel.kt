@@ -23,6 +23,8 @@ import javax.inject.Inject
  * the MenuPlusApp composable to determine which screens to show.
  *
  * @param observeAuthStateUseCase The use case for observing authentication state changes.
+ *
+ * Mostly created by: Malik
  */
 @HiltViewModel
 class MenuPlusAppViewModel

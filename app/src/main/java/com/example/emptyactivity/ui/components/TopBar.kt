@@ -33,6 +33,8 @@ import com.example.emptyactivity.ui.theme.RoyalGold
  *
  * @param onSettingsClick Callback function invoked when the settings icon is clicked.
  *                        Typically navigates to the Settings screen.
+ *
+ * Mostly created by: Malik
  */
 @Composable
 fun TopBar(

@@ -22,6 +22,8 @@ import kotlinx.serialization.Serializable
  *                 image was provided.
  * @param createdAt Timestamp when the menu was created, as a string from the database.
  *                  Can be null for older records.
+ *
+ * Mostly created by: Muhammad
  */
 @Serializable
 data class MenuDto(

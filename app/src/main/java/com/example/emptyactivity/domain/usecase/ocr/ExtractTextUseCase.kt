@@ -12,6 +12,8 @@ import javax.inject.Inject
  * proper error handling and returns a Result type for consistent state management.
  *
  * @param ocrRepository The OCR repository used to extract text from images.
+ *
+ * Mostly created by: Malik
  */
 class ExtractTextUseCase
     @Inject

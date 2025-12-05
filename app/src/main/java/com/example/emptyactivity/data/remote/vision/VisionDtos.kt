@@ -9,6 +9,8 @@ import com.squareup.moshi.Json
  * of multiple images. We typically send a single image per request.
  *
  * @param requests List of image annotation requests. Each request contains one image to analyze.
+ *
+ * Mostly created by: Muhammad
  */
 data class VisionRequest(
     val requests: List<AnnotateImageRequest>,

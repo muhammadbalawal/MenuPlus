@@ -29,6 +29,8 @@ import javax.inject.Singleton
  * and return Result types for consistent error handling.
  *
  * @constructor Creates an instance of AuthRepositoryImpl with Supabase client injection.
+ *
+ * Mostly created by: Muhammad
  */
 @Singleton
 class AuthRepositoryImpl

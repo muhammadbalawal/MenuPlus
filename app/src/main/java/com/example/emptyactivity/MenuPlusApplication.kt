@@ -11,6 +11,8 @@ import dagger.hilt.android.HiltAndroidApp
  * code for Hilt to work with the application.
  *
  * This class must be registered in the AndroidManifest.xml file.
+ *
+ * Mostly created by: Muhammad
  */
 @HiltAndroidApp
 class MenuPlusApplication : Application()

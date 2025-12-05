@@ -38,6 +38,8 @@ import kotlinx.serialization.encoding.Encoder
  * @param rank Optional ranking value indicating how well this item matches the user's
  *             preferences (1 = best match, higher numbers = less ideal). Used for sorting
  *             items by recommendation quality.
+ *
+ * Mostly created by: Malik
  */
 @Serializable
 data class MenuItem(

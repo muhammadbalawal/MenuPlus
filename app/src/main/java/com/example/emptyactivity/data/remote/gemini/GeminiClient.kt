@@ -20,6 +20,8 @@ import javax.inject.Singleton
  *
  * The client uses Firebase AI SDK which provides a unified interface to Google's
  * generative AI models. It's configured as a singleton to ensure efficient resource usage.
+ *
+ * Mostly created by: Malik
  */
 @Singleton
 class GeminiClient

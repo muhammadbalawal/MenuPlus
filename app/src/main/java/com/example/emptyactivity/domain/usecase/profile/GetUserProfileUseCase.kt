@@ -12,6 +12,8 @@ import javax.inject.Inject
  * preferences, restrictions, and language settings.
  *
  * @param userProfileRepository The repository for accessing user profile data.
+ *
+ * Mostly created by: Malik
  */
 class GetUserProfileUseCase
     @Inject

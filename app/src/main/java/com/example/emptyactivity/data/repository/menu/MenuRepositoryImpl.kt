@@ -29,6 +29,8 @@ import javax.inject.Singleton
  * Result types for consistent error handling.
  *
  * @constructor Creates an instance of MenuRepositoryImpl with Supabase client injection.
+ *
+ * Mostly created by: Muhammad
  */
 @Singleton
 class MenuRepositoryImpl

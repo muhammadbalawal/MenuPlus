@@ -13,6 +13,8 @@ package com.example.emptyactivity.ui.screens.auth.login
  * @param isLoading Whether a login request is currently in progress.
  * @param isSuccess Whether the login was successful.
  * @param errorMessage The error message to display if login fails, null if no error.
+ *
+ * Mostly created by: Muhammad
  */
 data class LoginUiState(
     val email: String = "",

@@ -42,6 +42,8 @@ import kotlinx.serialization.json.Json
  * This screen has two states:
  * 1. LOADING: Shows the menu image with animated magnifying glass while Gemini analyzes
  * 2. RESULTS: Shows tabbed analysis (Safe Menu, Best Menu, Full Menu)
+ *
+ * Mostly created by: Muhammad
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

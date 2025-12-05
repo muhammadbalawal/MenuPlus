@@ -14,6 +14,8 @@ import javax.inject.Inject
  * before delegating to the authentication repository.
  *
  * @param authRepository The authentication repository used to perform registration.
+ *
+ * Mostly created by: Malik
  */
 class RegisterUseCase
     @Inject

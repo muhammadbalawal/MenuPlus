@@ -18,6 +18,8 @@ import com.example.emptyactivity.domain.model.MenuItem
  * @param errorMessage Error message string if menu analysis fails. Null if no error has occurred.
  * @param isSaving True when menu is being saved to database, false otherwise.
  * @param isSaved True when menu has been successfully saved, false otherwise.
+ *
+ * Mostly created by: Malik
  */
 data class ImportMenuUiState(
     val menuText: String = "",

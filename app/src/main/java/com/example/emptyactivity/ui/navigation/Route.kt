@@ -11,6 +11,8 @@ import kotlinx.serialization.Serializable
  *
  * The sealed interface ensures compile-time safety - you can't navigate to a route that
  * doesn't exist, and the compiler will catch missing route parameters.
+ *
+ * Mostly created by: Malik
  */
 @Serializable
 sealed interface Route {

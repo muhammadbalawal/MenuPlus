@@ -42,6 +42,8 @@ import com.example.emptyactivity.ui.theme.RoyalGold
  *
  * @param onContinue Callback function invoked when the user clicks the "Continue" button.
  *                   Typically navigates to the Login screen.
+ *
+ * Mostly created by: Muhammad
  */
 @Composable
 fun LandingScreen(

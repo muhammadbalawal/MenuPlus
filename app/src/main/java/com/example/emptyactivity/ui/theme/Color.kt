@@ -17,6 +17,8 @@ import androidx.compose.ui.graphics.Color
  * - RoyalGold: Primary accent color (#FFD700) used for highlights, buttons, and branding
  * - FadedYellow: Subtle yellow tint for backgrounds
  * - Ink: Dark text/background color (#111827)
+ *
+ * Mostly created by: Muhammad
  */
 val Purple80 = Color(0xFFD0BCFF)
 val PurpleGrey80 = Color(0xFFCCC2DC)

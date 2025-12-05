@@ -67,6 +67,8 @@ import com.example.emptyactivity.ui.theme.RoyalGold
  *                  Injected via Hilt by default.
  * @param initialEmail Optional email address to pre-fill in the email field. Useful for
  *                     deep links or when navigating from the login screen with an email.
+ *
+ * Mostly created by: Malik
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

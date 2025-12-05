@@ -49,6 +49,8 @@ import com.example.emptyactivity.ui.screens.settings.SettingsScreen
  *
  * @param appViewModel The ViewModel managing app-level state (authentication, user data).
  *                     Injected via Hilt.
+ *
+ * Mostly created by: Muhammad
  */
 @Composable
 fun MenuPlusApp(

@@ -16,6 +16,8 @@ import com.example.emptyactivity.data.remote.vision.*
  * - Splits the text into individual lines and filters out empty lines
  *
  * @param api The VisionApi instance configured with API key and base URL. Injected via dependency injection.
+ *
+ * Mostly created by: Muhammad
  */
 class OcrRepositoryImpl(
     private val api: VisionApi,

@@ -40,6 +40,8 @@ import javax.inject.Inject
  *
  * @param analyzeMenuUseCase The use case that handles menu analysis with Gemini AI.
  *                           Injected via Hilt.
+ *
+ * Mostly created by: Malik
  */
 @HiltViewModel
 class ImportMenuViewModel

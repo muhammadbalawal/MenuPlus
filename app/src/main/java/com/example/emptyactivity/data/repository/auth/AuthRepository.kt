@@ -13,6 +13,8 @@ import kotlinx.coroutines.flow.Flow
  *
  * The repository exposes reactive flows for observing authentication state changes, allowing
  * the UI layer to automatically update when users log in or out.
+ *
+ * Mostly created by: Malik
  */
 interface AuthRepository {
     /**

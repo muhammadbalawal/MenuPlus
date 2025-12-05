@@ -14,6 +14,8 @@ import io.github.jan.supabase.storage.Storage
  * and auto-load from storage enabled for seamless authentication state management.
  *
  * The client is initialized lazily on first access, ensuring it's only created when needed.
+ *
+ * Mostly created by: Muhammad
  */
 object SupabaseClientProvider {
     /**

@@ -10,6 +10,8 @@ import android.util.Base64
  * This utility is used to convert Android image URIs (from gallery, camera, etc.) into
  * base64-encoded strings that can be sent to the Vision API. The encoding uses NO_WRAP
  * flag to ensure compatibility with Google Cloud Vision API requirements.
+ *
+ * Mostly created by: Malik
  */
 object ImageEncoding {
     /**

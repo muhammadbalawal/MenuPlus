@@ -1,5 +1,11 @@
 package com.example.emptyactivity.ui.theme
 
+/**
+ * EmptyActivityTheme for MenuPlus application.
+ *
+ * Mostly created by: Malik
+ */
+
 import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme

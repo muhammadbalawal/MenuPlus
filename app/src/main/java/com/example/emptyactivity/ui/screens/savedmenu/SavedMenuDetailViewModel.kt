@@ -31,6 +31,8 @@ import javax.inject.Inject
  * @param getMenuByIdUseCase The use case responsible for fetching a menu by ID from the database.
  * @param deleteMenuUseCase The use case responsible for deleting a menu from the database.
  *                          Both injected via Hilt.
+ *
+ * Mostly created by: Malik
  */
 @HiltViewModel
 class SavedMenuDetailViewModel

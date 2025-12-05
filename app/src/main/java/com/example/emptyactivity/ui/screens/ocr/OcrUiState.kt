@@ -13,6 +13,8 @@ import android.net.Uri
  * @param lines List of text lines extracted from the image. Empty until OCR completes successfully.
  * @param loading True when OCR extraction is in progress, false otherwise.
  * @param error Error message string if OCR fails. Null if no error has occurred.
+ *
+ * Mostly created by: Malik
  */
 data class OcrUiState(
     val imageUri: Uri? = null,

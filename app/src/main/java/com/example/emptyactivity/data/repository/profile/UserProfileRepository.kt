@@ -19,6 +19,8 @@ import kotlinx.coroutines.flow.Flow
  *
  * All operations return Result types for consistent error handling, and the repository
  * provides a reactive Flow for observing profile changes.
+ *
+ * Mostly created by: Malik
  */
 interface UserProfileRepository {
     /**

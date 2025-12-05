@@ -15,6 +15,8 @@ import dagger.hilt.android.AndroidEntryPoint
  *
  * This Activity sets up the Compose UI with edge-to-edge display and applies the app theme.
  * It uses Hilt for dependency injection and delegates navigation to the MenuPlusApp composable.
+ *
+ * Mostly created by: Muhammad
  */
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

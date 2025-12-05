@@ -62,6 +62,8 @@ import com.example.emptyactivity.ui.theme.RoyalGold
  *                       Typically used to navigate away from the screen.
  * @param onErrorDismiss Optional callback for dismissing errors. Defaults to ViewModel's
  *                       onErrorDismissed method.
+ *
+ * Mostly created by: Muhammad
  */
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable

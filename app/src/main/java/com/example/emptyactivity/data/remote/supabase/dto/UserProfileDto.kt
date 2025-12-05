@@ -20,6 +20,8 @@ import kotlinx.serialization.Serializable
  * @param userDietaryRestrictions Comma-separated string of dietary restrictions. Null if none are set.
  * @param userDislikes Comma-separated string of disliked foods. Null if none are set.
  * @param userPreferences Comma-separated string of preferred foods. Null if none are set.
+ *
+ * Mostly created by: Malik
  */
 @Serializable
 data class UserProfileDto(

@@ -33,6 +33,8 @@ import com.example.emptyactivity.ui.theme.RoyalGold
  * The bar uses Material 3 NavigationBar with premium black/gold theme.
  *
  * @param navController Navigation controller for handling route navigation.
+ *
+ * Mostly created by: Muhammad
  */
 @Composable
 fun BottomNavigationBar(navController: NavHostController) {

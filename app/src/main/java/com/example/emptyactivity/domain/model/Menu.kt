@@ -13,6 +13,8 @@ package com.example.emptyactivity.domain.model
  * @param menuItemsJson JSON string of analyzed menu items (List<MenuItem>).
  * @param imageUri Optional URI string of the original menu image.
  * @param createdAt Timestamp when the menu was saved (milliseconds since epoch).
+ *
+ * Mostly created by: Muhammad
  */
 data class Menu(
     val menuId: String,

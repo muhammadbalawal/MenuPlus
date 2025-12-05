@@ -31,6 +31,8 @@ import com.example.emptyactivity.ui.theme.RoyalGold
  * @param safeMenuContent Text content for the "Safe Menu" tab. Can be null.
  * @param bestMenuContent Text content for the "Best Menu" tab. Can be null.
  * @param fullMenuContent Text content for the "Full Menu" tab. Can be null.
+ *
+ * Mostly created by: Malik
  */
 @Composable
 fun MenuDisplayContent(

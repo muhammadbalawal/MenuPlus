@@ -8,6 +8,8 @@ import com.example.emptyactivity.domain.model.User
  * This state determines which navigation graph and screens should be displayed
  * based on the user's authentication and onboarding status. The state is managed
  * by MenuPlusAppViewModel and observed by the MenuPlusApp composable.
+ *
+ * Mostly created by: Muhammad
  */
 sealed interface MenuPlusAppUiState {
     /**
